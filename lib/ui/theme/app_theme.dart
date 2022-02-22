@@ -2,30 +2,31 @@ import 'package:accounting_app/ui/theme/app_colors.dart';
 import 'package:accounting_app/ui/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
-final ThemeData appThemeData = ThemeData();
-
 class AppThemeData {
-  static ThemeData get lightTheme {
+  static ThemeData get darkTheme {
     return ThemeData(
-      scaffoldBackgroundColor: kBlueColor,
+      scaffoldBackgroundColor: kBackgroundColor,
       colorScheme: const ColorScheme(
-        brightness: Brightness.light,
-        primary: kTealColor,
-        onPrimary: kBlack,
-        secondary: kLightYellow,
-        onSecondary: kLightBlack,
-        error: kLightRed,
-        onError: kLightGrey,
-        background: kBlueColor,
-        onBackground: kBlack,
-        surface: kLightTealColor,
-        onSurface: kLightBlack,
+        brightness: Brightness.dark,
+        primary: kDarkGreyColor,
+        onPrimary: kWhiteColor,
+        secondary: kPurpleColor,
+        onSecondary: Colors.white,
+        error: kRedColor,
+        onError: kWhiteColor,
+        background: kBackgroundColor,
+        onBackground: kGreyColor,
+        surface: kSurfaceColor,
+        onSurface: kWhiteColor,
       ),
       fontFamily: 'IranSans',
-      textTheme: TextTheme(
+      appBarTheme: const AppBarTheme(
+        elevation: 1,
+      ),
+      textTheme: const TextTheme(
         bodyText2: kBodyText,
-        bodyLarge: kBodyLarge,
-        bodyMedium: kBodyMedium,
+        bodyText1: kBodyLarge,
+        headline6: kBodyMedium,
       ),
     );
   }

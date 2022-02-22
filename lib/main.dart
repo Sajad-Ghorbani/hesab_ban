@@ -1,5 +1,6 @@
 import 'package:accounting_app/bindings/app_bindings.dart';
 import 'package:accounting_app/routes/app_pages.dart';
+import 'package:accounting_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
       defaultTransition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 200),
+      theme: AppThemeData.darkTheme,
     );
   }
 }
