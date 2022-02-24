@@ -6,7 +6,7 @@ const kWeightBlack = FontWeight.w900;
 
 const TextStyle kBodyText = TextStyle(
   fontWeight: kWeightRegular,
-  fontSize: 18,
+  fontSize: 16,
 );
 
 const TextStyle kBodyLarge = TextStyle(
@@ -16,5 +16,5 @@ const TextStyle kBodyLarge = TextStyle(
 
 const TextStyle kBodyMedium = TextStyle(
   fontWeight: kWeightBold,
-  fontSize: 24,
+  fontSize: 22,
 );

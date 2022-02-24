@@ -19,9 +19,10 @@ class AppThemeData {
         surface: kSurfaceColor,
         onSurface: kWhiteColor,
       ),
-      fontFamily: 'IranSans',
+      fontFamily: 'Yekan',
       appBarTheme: const AppBarTheme(
         elevation: 1,
+        toolbarHeight: 60,
       ),
       textTheme: const TextTheme(
         bodyText2: kBodyText,

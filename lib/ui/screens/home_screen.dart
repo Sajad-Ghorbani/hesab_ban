@@ -9,20 +9,6 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('فروشان'),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('سلام'),
-            ),
-            const Text('سلام'),
-
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {},child: const Icon(Icons.add),),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
