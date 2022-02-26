@@ -1,3 +1,4 @@
+import 'package:accounting_app/models/category_model.dart';
 import 'package:hive/hive.dart';
 
 part 'product_model.g.dart';
@@ -31,6 +32,9 @@ class Product extends HiveObject {
   @HiveField(8)
   double? unitRatio;
 
+  @HiveField(9)
+  Category? category;
+
   Product({
     this.id,
     this.name,
@@ -41,6 +45,7 @@ class Product extends HiveObject {
     this.subCountingUnit,
     this.count,
     this.unitRatio,
+    this.category,
   });
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -53,6 +58,7 @@ class Product extends HiveObject {
     subCountingUnit = json['sub_counting_unit'];
     count = json['count'];
     unitRatio = json['unit_ratio'];
+    category = json['category'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +72,7 @@ class Product extends HiveObject {
     data['sub_counting_unit'] = subCountingUnit;
     data['count'] = count;
     data['unit_ratio'] = unitRatio;
+    data['category'] = category;
     return data;
   }
 }

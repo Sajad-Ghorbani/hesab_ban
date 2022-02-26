@@ -1,15 +1,21 @@
-import 'dart:ui';
-
+import 'package:accounting_app/constants.dart';
 import 'package:accounting_app/controllers/product_controller.dart';
-import 'package:accounting_app/models/product_model.dart';
+import 'package:accounting_app/controllers/search_controller.dart';
 import 'package:accounting_app/routes/app_pages.dart';
+import 'package:accounting_app/ui/screens/search_screen.dart';
 import 'package:accounting_app/ui/theme/app_colors.dart';
 import 'package:accounting_app/ui/widgets/base_widget.dart';
+import 'package:accounting_app/ui/widgets/category_widget.dart';
 import 'package:accounting_app/ui/widgets/grid_menu_widget.dart';
+import 'package:accounting_app/ui/widgets/product_list.dart';
+import 'package:accounting_app/ui/widgets/product_widget.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
+import '../../models/category_model.dart';
+import '../../models/product_model.dart';
 import '../../static_methods.dart';
 
 class AllProductScreen extends GetView<ProductController> {
@@ -19,215 +25,170 @@ class AllProductScreen extends GetView<ProductController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       title: 'کالاها',
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GridMenuWidget(
-                      title: 'ساخت محصول جدید',
-                      onTap: () {
-                        Get.toNamed(Routes.productScreen);
-                      }),
-                  GridMenuWidget(
-                    title: 'ساخت پوشه جدید',
-                    onTap: () {
-                      StaticMethods.showFolderDialog(
-                        'ساخت پوشه جدید',
-                        controller.folderNameController,
-                        () {
-                          controller.addNewFolder();
-                          Get.back();
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Obx(
-            () => SliverList(
-              delegate: SliverChildListDelegate(
-                controller.productFolder.value.map((String folderName) {
-                  String name = folderName.split('/').first;
-                  int folderNumber = int.parse(folderName.split('/').last);
-                  return ListTile(
-                    title: Text(name),
-                    leading: const FaIcon(
-                      FontAwesomeIcons.solidFolder,
-                      color: kTealColor,
-                    ),
-                    onTap: () {
-
-                      controller.getFolderProduct(context,folderNumber);
-                    },
-                    onLongPress: () {
-                      Get.bottomSheet(
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ClipRect(
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                                child: Container(
-                                  width: Get.width - 80,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .cardColor
-                                        .withOpacity(0.5),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          name,
-                                          style: const TextStyle(
-                                            color: kOrangeColor,
-                                          ),
-                                        ),
-                                      ),
-                                      const Divider(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                          StaticMethods.showFolderDialog(
-                                            'ویرایش $name',
-                                            controller.folderNameController,
-                                            () {
-                                              controller.updateNewFolder(
-                                                  folderNumber);
-                                              Get.back();
-                                            },
-                                          );
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('ویرایش'),
-                                        ),
-                                      ),
-                                      const Divider(),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                          Get.defaultDialog(
-                                            title: 'احتیاط',
-                                            content: Text(
-                                              'در صورت حذف پوشه "$name" تمام کالاهای داخل آن نیز حذف می شوند.'
-                                              ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
-                                              style: const TextStyle(
-                                                height: 1.5,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            confirm: InkWell(
-                                              onTap: () {
-                                                controller
-                                                    .deleteFolder(folderNumber);
-                                                Get.back();
-                                              },
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      kGreenColor,
-                                                      kLightGreenColor,
-                                                    ],
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomLeft,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                ),
-                                                height: 35,
-                                                width: 80,
-                                                alignment: Alignment.center,
-                                                child: const Text('تایید'),
-                                              ),
-                                            ),
-                                            cancel: InkWell(
-                                              onTap: () {
-                                                Get.back();
-                                              },
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(10),
-                                              ),
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      kRedColor,
-                                                      Colors.redAccent,
-                                                    ],
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomLeft,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                ),
-                                                height: 35,
-                                                width: 80,
-                                                alignment: Alignment.center,
-                                                child: const Text('لغو'),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('حذف'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
+      child: Stack(
+        children: [
+          NotificationListener<UserScrollNotification>(
+            onNotification: (notification) {
+              if (notification.direction == ScrollDirection.forward) {
+                controller.showProductsFab.value = true;
+              } //
+              else if (notification.direction == ScrollDirection.reverse) {
+                controller.showProductsFab.value = false;
+              }
+              return true;
+            },
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GridMenuWidget(
+                            title: 'ساخت محصول جدید',
+                            onTap: () {
+                              Get.toNamed(Routes.productScreen);
+                            }),
+                        GridMenuWidget(
+                          title: 'ساخت پوشه جدید',
+                          onTap: () {
+                            StaticMethods.showFolderDialog(
+                              title: 'ساخت پوشه جدید',
+                              controller: controller.categoryNameController,
+                              onTap: () {
+                                controller.addNewCategory();
+                                Get.back();
+                              },
+                            );
+                          },
                         ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: OpenContainer(
+                      closedBuilder: (context, action) {
+                        return Container(
+                          height: 45,
+                          width: 20,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                            border: Border.all(
+                              color: kGreyColor,
+                              width: 1.5,
+                            ),
+                            gradient: LinearGradient(
+                              colors: [
+                                kGreyColor.withOpacity(0.4),
+                                kSurfaceColor.withOpacity(0.4),
+                              ],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                            ),
+                          ),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.search,color: kOrangeColor,),
+                              SizedBox(width: 20,),
+                              Text('جست و جوی کالا'),
+                            ],
+                          ),
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        );
+                      },
+                      openBuilder: (context, action) {
+                        return SearchScreen();
+                      },
+                      closedElevation: 0,
+                      closedColor: Colors.transparent,
+                      onClosed: (value){
+                        Get.find<SearchController>().clearScreen();
+                      },
+                    ),
+                  ),
+                ),
+                ProductListWidget(
+                  child: Obx(
+                    () => SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          List<Category> list = controller
+                              .productCategory.value.reversed
+                              .toList();
+                          Category category = list[index];
+                          return Visibility(
+                            visible: category.name != defaultCategoryName,
+                            child: CategoryWidget(
+                              index: index,
+                              category: category,
+                              categoryList: list,
+                            ),
+                          );
+                        },
+                        childCount: controller.productCategory.value.length,
+                      ),
+                    ),
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 10,
+                  ),
+                ),
+                ProductListWidget(
+                  child: Obx(
+                    () => SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          List<Product> list =
+                              controller.mainProduct.value.reversed.toList();
+                          Product product = list[index];
+                          return ProductWidget(
+                            product: product,
+                            productList: list,
+                          );
+                        },
+                        childCount: controller.mainProduct.value.length,
+                      ),
+                    ),
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 75,
+                  ),
+                ),
+              ],
             ),
           ),
-          Obx(
-            () => SliverList(
-              delegate: SliverChildListDelegate(
-                controller.allProducts.value.map((Product product) {
-                  return ListTile(
-                    title: Text(product.name!),
-                    leading: const FaIcon(
-                      FontAwesomeIcons.boxOpen,
-                      color: kLightPurpleColor,
-                    ),
-                    onTap: () {},
-                  );
-                }).toList(),
+          Positioned(
+            bottom: 70,
+            right: 10,
+            child: Obx(
+              () => AnimatedScale(
+                duration: const Duration(milliseconds: 200),
+                scale: controller.showProductsFab.value ? 1 : 0,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    controller.scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  },
+                  child: const Icon(Icons.arrow_upward_rounded),
+                  mini: true,
+                ),
               ),
             ),
           ),

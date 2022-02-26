@@ -43,6 +43,7 @@ dependencies:
   animations: ^2.0.2
   persistent_bottom_nav_bar: ^4.0.2
   font_awesome_flutter: ^9.2.0
+  sliver_tools: ^0.2.5
 
 dev_dependencies:
   flutter_test:

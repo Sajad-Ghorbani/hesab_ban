@@ -1,5 +1,6 @@
 import 'package:accounting_app/bindings/app_bindings.dart';
 import 'package:accounting_app/models/bill_model.dart';
+import 'package:accounting_app/models/category_model.dart';
 import 'package:accounting_app/models/check_model.dart';
 import 'package:accounting_app/models/customer_model.dart';
 import 'package:accounting_app/models/factor_model.dart';
@@ -20,6 +21,7 @@ void main()async {
   Hive.registerAdapter(CustomerAdapter());
   Hive.registerAdapter(CheckAdapter());
   Hive.registerAdapter(BillAdapter());
+  Hive.registerAdapter(CategoryAdapter());
   runApp(const MyApp());
 }
 

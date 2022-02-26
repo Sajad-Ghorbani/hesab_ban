@@ -1,4 +1,5 @@
 import 'package:accounting_app/constants.dart';
+import 'package:accounting_app/models/category_model.dart';
 import 'package:accounting_app/models/product_model.dart';
 import 'package:accounting_app/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,10 @@ class SplashController extends GetxController {
 
   openAppBox() async {
     await Hive.openBox<Product>(allProductBox);
-    await Hive.openBox<String>(productFolderNameBox);
+    var box = await Hive.openBox<Category>(productCategoryBox);
+    if (box.isEmpty) {
+      await box.add(Category(id: 0, name: defaultCategoryName));
+    }
     Get.offNamed(Routes.mainScreen);
   }
 }

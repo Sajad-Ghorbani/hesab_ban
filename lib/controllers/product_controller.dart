@@ -1,9 +1,13 @@
 import 'package:accounting_app/constants.dart';
 import 'package:accounting_app/models/product_model.dart';
 import 'package:accounting_app/static_methods.dart';
+import 'package:accounting_app/ui/screens/product_folder_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+import '../models/category_model.dart';
 
 class ProductController extends GetxController {
   List<DropdownMenuItem<int>> productUnitList = [];
@@ -15,20 +19,29 @@ class ProductController extends GetxController {
   TextEditingController productCountController = TextEditingController();
   TextEditingController productUnitRatioController = TextEditingController();
 
-  TextEditingController folderNameController = TextEditingController();
+  TextEditingController categoryNameController = TextEditingController();
 
   int productMainUnit = 0;
   int? productSubCountingUnit;
-  RxList<String> productFolder = <String>[].obs;
+  RxList<Category> productCategory = <Category>[].obs;
   RxList<Product> allProducts = <Product>[].obs;
+  RxList<Product> allProductCategory = <Product>[].obs;
+  RxList<Product> mainProduct = <Product>[].obs;
+  String productCategoryName = defaultCategoryName;
+
+  RxBool showProductsFab = true.obs;
+  RxBool showCategoryProductsFab = true.obs;
+
+  ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     productUnitList = getUnitList();
-    productFolder.value = getFolderList();
+    productCategory.value = getCategoryList();
     allProducts.value = getAllProducts();
+    mainProduct.value = getProductsOfCategory(defaultCategoryName);
   }
 
   String unitListName(Unit item) {
@@ -76,16 +89,16 @@ class ProductController extends GetxController {
       Product product = Product(
         name: productNameController.text.trim(),
         count: productCountController.text.isEmpty
-            ? null
+            ? 0
             : int.parse(productCountController.text.trim()),
         priceOfBuy: productBuyController.text.isEmpty
-            ? null
+            ? 0
             : int.parse(productBuyController.text.trim()),
         priceOfOneSell: productOneSellController.text.isEmpty
-            ? null
+            ? 0
             : int.parse(productOneSellController.text.trim()),
         priceOfMajorSell: productMajorSellController.text.isEmpty
-            ? null
+            ? 0
             : int.parse(productMajorSellController.text.trim()),
         unitRatio: productUnitRatioController.text.isEmpty
             ? null
@@ -94,12 +107,24 @@ class ProductController extends GetxController {
         subCountingUnit: productSubCountingUnit == null
             ? null
             : Unit.values[productSubCountingUnit!],
+        category: getCurrentCategory(productCategoryName),
       );
       final int key = await productBox.add(product);
       product.id = key;
       await product.save();
       resetProductScreen(context);
+      allProducts.value = productBox.values.toList();
+      allProductCategory.value = getProductsOfCategory(productCategoryName);
+      mainProduct.value = getProductsOfCategory(defaultCategoryName);
     }
+  }
+
+  Category getCurrentCategory(String categoryName) {
+    var categoryBox = Hive.box<Category>(productCategoryBox);
+
+    return categoryBox.values
+        .where((element) => element.name == categoryName)
+        .first;
   }
 
   void resetProductScreen(context) {
@@ -112,9 +137,9 @@ class ProductController extends GetxController {
     productCountController.clear();
   }
 
-  List<String> getFolderList() {
-    var folderBox = Hive.box<String>(productFolderNameBox);
-    return folderBox.values.toList();
+  List<Category> getCategoryList() {
+    var categoryBox = Hive.box<Category>(productCategoryBox);
+    return categoryBox.values.toList();
   }
 
   List<Product> getAllProducts() {
@@ -122,57 +147,117 @@ class ProductController extends GetxController {
     return productsBox.values.toList();
   }
 
-  void getFolderProduct(context,int folderNumber)async{
-    var productsBox = await Hive.openBox<Product>('folder$folderNumber');
-    allProducts.value = productsBox.values.toList();
-    // pushNewScreen(context, screen: const ProductScreen());
+  List<Product> getProductsOfCategory(String categoryName) {
+    var productsBox = Hive.box<Product>(allProductBox);
+    List<Product> list = productsBox.values
+        .where((element) => element.category!.name == categoryName)
+        .toList();
+    return list;
   }
 
-  void addNewFolder() async {
-    String folderName = folderNameController.text.trim();
-    if (folderName.isEmpty) {
+  void navigateToCategory(context, String categoryName) async{
+    productCategoryName = categoryName;
+    allProductCategory.value = getProductsOfCategory(productCategoryName);
+    await pushNewScreen(context, screen: const ProductFolderScreen());
+    productCategoryName = defaultCategoryName;
+  }
+
+  void addNewCategory() async {
+    String categoryName = categoryNameController.text.trim();
+    if (categoryName.isEmpty) {
       Future.delayed(const Duration(milliseconds: 300), () {
         StaticMethods.showSnackBar(
             title: 'خطا', description: 'لطفا نام را وارد کنید.');
       });
     } //
     else {
-      var folderBox = Hive.box<String>(productFolderNameBox);
-      if (folderBox.isEmpty) {
-        folderBox.add('$folderName/0');
-        await Hive.openBox<Product>('folder0');
+      var categoryBox = Hive.box<Category>(productCategoryBox);
+      if (categoryBox.isEmpty) {
+        await categoryBox.add(Category(id: 0, name: categoryName));
       } //
       else {
-        int folderNumber = int.parse(folderBox.values.last.split('/').last);
-        folderBox.add('$folderName/${folderNumber + 1}');
-        await Hive.openBox<Product>('folder${folderNumber + 1}');
+        Category newCategory = Category(name: categoryName);
+        int index = await categoryBox.add(newCategory);
+        newCategory.id = index;
+        newCategory.save();
       }
-      productFolder.value = getFolderList();
-      folderNameController.clear();
+      productCategory.value = getCategoryList();
+      categoryNameController.clear();
     }
   }
 
-  void updateNewFolder(int folderNumber)async {
-    String folderName = folderNameController.text.trim();
-    if (folderName.isEmpty) {
+  void updateCategory(Category category) async {
+    String categoryName = categoryNameController.text.trim();
+    if (categoryName.isEmpty) {
       Future.delayed(const Duration(milliseconds: 300), () {
         StaticMethods.showSnackBar(
             title: 'خطا', description: 'لطفا نام را وارد کنید.');
       });
     } //
     else {
-      var folderBox = Hive.box<String>(productFolderNameBox);
-      await folderBox.putAt(folderNumber, '$folderName/$folderNumber');
-      productFolder.value = getFolderList();
-      folderNameController.clear();
+      category.name = categoryName;
+      category.save();
+      productCategory.value = getCategoryList();
+      categoryNameController.clear();
     }
   }
 
-  void deleteFolder(int folderNumber) async{
-    var folderBox = Hive.box<String>(productFolderNameBox);
-    await folderBox.deleteAt(folderNumber);
-    var oldFolderBox = Hive.box<Product>('folder$folderNumber');
-    await oldFolderBox.deleteFromDisk();
-    productFolder.value = getFolderList();
+  void deleteCategory(Category category) async {
+    var productBox = Hive.box<Product>(allProductBox);
+    for (var item in productBox.values) {
+      if (item.category!.name == category.name) {
+        await item.delete();
+      }
+    }
+    await category.delete();
+    productCategory.value = getCategoryList();
+  }
+
+  void deleteProduct(Product product) async {
+    await product.delete();
+    var productBox = Hive.box<Product>(allProductBox);
+    allProducts.value = productBox.values.toList();
+    allProductCategory.value = getProductsOfCategory(productCategoryName);
+    mainProduct.value = getProductsOfCategory(defaultCategoryName);
+  }
+
+  void updateProduct(context, Product product) async {
+    var productBox = Hive.box<Product>(allProductBox);
+    if (productNameController.text.isEmpty) {
+      StaticMethods.showSnackBar(
+          title: 'خطا', description: 'لطفا نام را وارد کنید.');
+    } //
+    else {
+      product.name = productNameController.text.trim();
+      product.count = productCountController.text.isEmpty
+          ? null
+          : int.parse(productCountController.text.trim());
+      product.priceOfBuy = productBuyController.text.isEmpty
+          ? null
+          : int.parse(productBuyController.text.trim());
+      product.priceOfOneSell = productOneSellController.text.isEmpty
+          ? null
+          : int.parse(productOneSellController.text.trim());
+      product.priceOfMajorSell = productMajorSellController.text.isEmpty
+          ? null
+          : int.parse(productMajorSellController.text.trim());
+      product.unitRatio = productUnitRatioController.text.isEmpty
+          ? null
+          : double.parse(productUnitRatioController.text.trim());
+      product.mainUnit = Unit.values[productMainUnit];
+      product.subCountingUnit = productSubCountingUnit == null
+          ? null
+          : Unit.values[productSubCountingUnit!];
+      product.save();
+      resetProductScreen(context);
+      allProducts.value = productBox.values.toList();
+      allProductCategory.value = getProductsOfCategory(productCategoryName);
+      mainProduct.value = getProductsOfCategory(defaultCategoryName);
+    }
+  }
+
+  void backToHome(BuildContext context) {
+    productCategoryName = defaultCategoryName;
+    Navigator.pop(context);
   }
 }

@@ -7,16 +7,36 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../models/product_model.dart';
+
 class ProductScreen extends GetView<ProductController> {
   const ProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Product? product = Get.arguments;
+    if (product != null) {
+      controller.productNameController.text = product.name!;
+      controller.productBuyController.text =
+          product.priceOfBuy == null ? '' : product.priceOfBuy.toString();
+      controller.productOneSellController.text = product.priceOfOneSell == null
+          ? ''
+          : product.priceOfOneSell.toString();
+      controller.productMajorSellController.text =
+          product.priceOfMajorSell == null
+              ? ''
+              : product.priceOfMajorSell.toString();
+      controller.productCountController.text =
+          product.count == null ? '' : product.count.toString();
+      controller.productUnitRatioController.text =
+          product.unitRatio == null ? '' : product.unitRatio.toString();
+    }
     return BaseWidget(
-      title: 'کالای جدید',
+      title: product == null ? 'کالای جدید' : 'ویرایش ${product.name}',
       appBarLeading: IconButton(
         onPressed: () {
           Get.back();
+          controller.resetProductScreen(context);
         },
         icon: const Icon(Icons.arrow_back_ios),
         splashRadius: 30,
@@ -24,7 +44,14 @@ class ProductScreen extends GetView<ProductController> {
       appBarActions: [
         IconButton(
           onPressed: () {
-            controller.saveProduct(context);
+            if (product == null) {
+              controller.saveProduct(context);
+            } //
+            else {
+              controller.updateProduct(context, product);
+              Get.back();
+              controller.resetProductScreen(context);
+            }
           },
           icon: const Icon(FontAwesomeIcons.solidSave),
           splashRadius: 30,
@@ -153,7 +180,8 @@ class ProductScreen extends GetView<ProductController> {
                         Expanded(
                           child: DropdownButtonFormField(
                             items: controller.productUnitList,
-                            value: 0,
+                            value:
+                                product != null ? product.mainUnit!.index : 0,
                             onChanged: (int? value) {
                               controller.productMainUnit = value!;
                             },
@@ -177,6 +205,10 @@ class ProductScreen extends GetView<ProductController> {
                           child: DropdownButtonFormField(
                             items: controller.productUnitList,
                             hint: const Text('یک گزینه را انتخاب کنید.'),
+                            value: product != null &&
+                                    product.subCountingUnit != null
+                                ? product.subCountingUnit!.index
+                                : null,
                             onChanged: (int? value) {
                               controller.productSubCountingUnit = value;
                             },
@@ -202,6 +234,7 @@ class ProductScreen extends GetView<ProductController> {
                                 controller:
                                     controller.productUnitRatioController,
                                 maxLength: 5,
+                                keyboardType: TextInputType.number,
                                 decoration:
                                     const InputDecoration(counterText: ''),
                               ),

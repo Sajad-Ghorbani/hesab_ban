@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../controllers/home_controller.dart';
+import '../../controllers/main_controller.dart';
 import '../theme/app_colors.dart';
 
 class MainScreen extends GetView<MainController> {
