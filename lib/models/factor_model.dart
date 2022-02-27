@@ -24,6 +24,9 @@ class Factor extends HiveObject {
   @HiveField(5)
   String? factorStatus;
 
+  @HiveField(6)
+  String? typeOfFactor;
+
   Factor({
     this.id,
     this.customer,
@@ -31,6 +34,7 @@ class Factor extends HiveObject {
     this.products,
     this.factorSum,
     this.factorStatus,
+    this.typeOfFactor,
   });
 
   Factor.fromJson(Map<String, dynamic> json) {
@@ -40,6 +44,7 @@ class Factor extends HiveObject {
     products = json['products'].cast<Product>();
     factorSum = json['factor_sum'];
     factorStatus = json['factor_status'];
+    typeOfFactor = json['type_of_factor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,6 +55,7 @@ class Factor extends HiveObject {
     data['products'] = products;
     data['factor_sum'] = factorSum;
     data['factor_status'] = factorStatus;
+    data['type_of_factor'] = typeOfFactor;
     return data;
   }
 }

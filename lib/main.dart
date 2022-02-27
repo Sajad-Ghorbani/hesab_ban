@@ -1,4 +1,4 @@
-import 'package:accounting_app/bindings/app_bindings.dart';
+import 'package:accounting_app/bindings/initial_binding.dart';
 import 'package:accounting_app/models/bill_model.dart';
 import 'package:accounting_app/models/category_model.dart';
 import 'package:accounting_app/models/check_model.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.initial,
       getPages: AppPages.pages,
-      initialBinding: AppBindings(),
+      initialBinding: InitialBinding(),
       locale: const Locale('fa','IR'),
       fallbackLocale: const Locale('en', 'US'),
       defaultTransition: Transition.rightToLeftWithFade,

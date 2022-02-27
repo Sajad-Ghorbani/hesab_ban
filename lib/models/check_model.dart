@@ -26,6 +26,9 @@ class Check extends HiveObject {
   @HiveField(6)
   DateTime? checkDeliveryDate;
 
+  @HiveField(7)
+  String? typeOfCheck;
+
   Check({
     this.id,
     this.bankName,
@@ -33,7 +36,8 @@ class Check extends HiveObject {
     this.customerCheck,
     this.checkAmount,
     this.checkDueDate,
-    this.checkDeliveryDate
+    this.checkDeliveryDate,
+    this.typeOfCheck,
   });
 
   Check.fromJson(Map<String, dynamic> json) {
@@ -44,6 +48,7 @@ class Check extends HiveObject {
     checkAmount = json['check_amount'];
     checkDueDate = json['check_due_date'];
     checkDeliveryDate = json['check_delivery_date'];
+    typeOfCheck = json['type_of_check'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +60,7 @@ class Check extends HiveObject {
     data['check_amount'] = checkAmount;
     data['check_due_date'] = checkDueDate;
     data['check_delivery_date'] = checkDeliveryDate;
+    data['type_of_check'] = typeOfCheck;
     return data;
   }
 }

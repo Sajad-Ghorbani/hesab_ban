@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 part 'bill_model.g.dart';
 
 @HiveType(typeId: 7)
-class Bill extends HiveObject{
+class Bill extends HiveObject {
   @HiveField(0)
   int? id;
 

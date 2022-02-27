@@ -5,10 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../../controllers/main_controller.dart';
+import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
 
-class MainScreen extends GetView<MainController> {
+class MainScreen extends GetView<HomeController> {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
@@ -83,7 +83,7 @@ class MainScreen extends GetView<MainController> {
         ),
         navBarStyle: NavBarStyle.style6,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        navBarHeight: 65,
+        navBarHeight: 60,
       ),
     );
   }

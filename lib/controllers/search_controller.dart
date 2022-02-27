@@ -1,5 +1,6 @@
 import 'package:accounting_app/constants.dart';
 import 'package:accounting_app/models/category_model.dart';
+import 'package:accounting_app/models/customer_model.dart';
 import 'package:accounting_app/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -9,10 +10,44 @@ class SearchController extends GetxController {
   TextEditingController searchController = TextEditingController();
   List<Product> productList = [];
   List<Category> categoryList = [];
+  List<Customer> customerList = [];
 
   RxBool searchEmpty = true.obs;
 
-  void search(String text) {
+  void searchCustomer(String text) {
+    var customerBox = Hive.box<Customer>(customersBox);
+    customerList.clear();
+
+    if (searchController.text.length < 2) {
+      customerList.clear();
+    } //
+    else {
+      for (var item in customerBox.values) {
+        if (item.name!.contains(text)) {
+          customerList.add(item);
+        }
+      }
+    }
+
+    if(customerList.isEmpty){
+      searchEmpty.value = true;
+    }//
+    else{
+      searchEmpty.value = false;
+    }
+
+    update();
+  }
+
+  void clearScreen() {
+    searchController.clear();
+    categoryList.clear();
+    productList.clear();
+    customerList.clear();
+    update();
+  }
+
+  void searchProduct(String text) {
     var productBox = Hive.box<Product>(allProductBox);
     var categoryBox = Hive.box<Category>(productCategoryBox);
     categoryList.clear();
@@ -43,13 +78,6 @@ class SearchController extends GetxController {
       searchEmpty.value = false;
     }
 
-    update();
-  }
-
-  void clearScreen() {
-    searchController.clear();
-    categoryList.clear();
-    productList.clear();
     update();
   }
 }

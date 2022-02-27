@@ -1,7 +1,7 @@
 import 'package:accounting_app/controllers/search_controller.dart';
 import 'package:accounting_app/models/product_model.dart';
 import 'package:accounting_app/ui/widgets/category_widget.dart';
-import 'package:accounting_app/ui/widgets/product_list.dart';
+import 'package:accounting_app/ui/widgets/box_container_widget.dart';
 import 'package:accounting_app/ui/widgets/product_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,8 +10,9 @@ import '../../models/category_model.dart';
 import '../theme/app_colors.dart';
 import '../theme/constants_app_styles.dart';
 
-class SearchScreen extends StatelessWidget {
-  SearchScreen({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class SearchProductScreen extends StatelessWidget {
+  SearchProductScreen({Key? key}) : super(key: key);
   SearchController controller = Get.put(SearchController());
 
   @override
@@ -64,7 +65,7 @@ class SearchScreen extends StatelessWidget {
                               decoration: customInputDecoration,
                               autofocus: true,
                               onChanged: (value) {
-                                controller.search(value);
+                                controller.searchProduct(value);
                               },
                             ),
                           ),
@@ -83,31 +84,34 @@ class SearchScreen extends StatelessWidget {
                           child: Text('هیچ موردی پیدا نشد...'),
                         ),
                       )
-                    : ProductListWidget(
-                        child: GetBuilder<SearchController>(
-                          builder: (controller) {
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  Category category =
-                                      controller.categoryList[index];
-                                  return CategoryWidget(
-                                    index: index,
-                                    category: category,
-                                    categoryList: controller.categoryList,
-                                  );
-                                },
-                                childCount: controller.categoryList.length,
-                              ),
-                            );
-                          },
+                    : SliverPadding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        sliver: BoxContainerWidget(
+                          child: GetBuilder<SearchController>(
+                            builder: (controller) {
+                              return SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    Category category =
+                                        controller.categoryList[index];
+                                    return CategoryWidget(
+                                      index: index,
+                                      category: category,
+                                      categoryList: controller.categoryList,
+                                    );
+                                  },
+                                  childCount: controller.categoryList.length,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
               ),
               Obx(
                 () => controller.searchEmpty.value
                     ? const SliverToBoxAdapter()
-                    : ProductListWidget(
+                    : BoxContainerWidget(
                         child: GetBuilder<SearchController>(
                           builder: (controller) {
                             return SliverList(

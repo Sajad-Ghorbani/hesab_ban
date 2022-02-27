@@ -1,4 +1,5 @@
 import 'package:accounting_app/controllers/product_controller.dart';
+import 'package:accounting_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -22,54 +23,60 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(index == 1 ? 15 : 0),
-            bottom: Radius.circular(category == categoryList.last ? 15 : 0),
+      child: Theme(
+        data: AppThemeData.darkTheme.copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent
+        ),
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(index == 1 ? 15 : 0),
+              bottom: Radius.circular(category == categoryList.last ? 15 : 0),
+            ),
           ),
+          title: Text(category.name!),
+          leading: const FaIcon(
+            FontAwesomeIcons.solidFolder,
+            color: kTealColor,
+          ),
+          onTap: () {
+            Get.find<ProductController>().navigateToCategory(
+              context,
+              category.name!,
+            );
+          },
+          onLongPress: () {
+            StaticMethods.productBottomSheet(
+              context,
+              name: category.name!,
+              onEditTap: () {
+                Get.back();
+                StaticMethods.showFolderDialog(
+                  title: 'ویرایش ${category.name}',
+                  controller:
+                      Get.find<ProductController>().categoryNameController,
+                  onTap: () {
+                    Get.find<ProductController>().updateCategory(category);
+                    Get.back();
+                  },
+                );
+              },
+              onDeleteTap: () {
+                Get.back();
+                StaticMethods.deleteDialog(
+                  content:
+                      'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
+                      ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
+                  onConfirm: () {
+                    Get.find<ProductController>().deleteCategory(category);
+                    Get.back();
+                  },
+                );
+              },
+            );
+          },
         ),
-        title: Text(category.name!),
-        leading: const FaIcon(
-          FontAwesomeIcons.solidFolder,
-          color: kTealColor,
-        ),
-        onTap: () {
-          Get.find<ProductController>().navigateToCategory(
-            context,
-            category.name!,
-          );
-        },
-        onLongPress: () {
-          StaticMethods.productBottomSheet(
-            context,
-            name: category.name!,
-            onEditTap: () {
-              Get.back();
-              StaticMethods.showFolderDialog(
-                title: 'ویرایش ${category.name}',
-                controller:
-                    Get.find<ProductController>().categoryNameController,
-                onTap: () {
-                  Get.find<ProductController>().updateCategory(category);
-                  Get.back();
-                },
-              );
-            },
-            onDeleteTap: () {
-              Get.back();
-              StaticMethods.deleteDialog(
-                content:
-                    'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
-                    ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
-                onConfirm: () {
-                  Get.find<ProductController>().deleteCategory(category);
-                  Get.back();
-                },
-              );
-            },
-          );
-        },
       ),
     );
   }

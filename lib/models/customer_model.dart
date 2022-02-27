@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'bill_model.dart';
 
 part 'customer_model.g.dart';
 
@@ -21,7 +20,7 @@ class Customer extends HiveObject {
   String? phoneNumber2;
 
   @HiveField(5)
-  Bill? bill;
+  int? initialAccountBalance;
 
   Customer({
     this.id,
@@ -29,7 +28,7 @@ class Customer extends HiveObject {
     this.address,
     this.phoneNumber1,
     this.phoneNumber2,
-    this.bill,
+    this.initialAccountBalance,
   });
 
   Customer.fromJson(Map<String, dynamic> json) {
@@ -38,7 +37,7 @@ class Customer extends HiveObject {
     address = json['address'];
     phoneNumber1 = json['phone_number_1'];
     phoneNumber2 = json['phone_number_2'];
-    bill = json['bill'];
+    initialAccountBalance = json['initial_account_balance'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +47,7 @@ class Customer extends HiveObject {
     data['address'] = address;
     data['phone_number_1'] = phoneNumber1;
     data['phone_number_2'] = phoneNumber2;
-    data['bill'] = bill;
+    data['initial_account_balance'] = initialAccountBalance;
     return data;
   }
 }

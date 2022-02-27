@@ -1,4 +1,5 @@
 import 'package:accounting_app/models/product_model.dart';
+import 'package:accounting_app/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -19,51 +20,57 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(product == productList.first ? 15 : 0),
-            bottom: Radius.circular(product == productList.last ? 15 : 0),
+      child: Theme(
+        data: AppThemeData.darkTheme.copyWith(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent
+        ),
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(product == productList.first ? 15 : 0),
+              bottom: Radius.circular(product == productList.last ? 15 : 0),
+            ),
           ),
-        ),
-        title: Text(product.name!),
-        leading: const FaIcon(
-          FontAwesomeIcons.boxOpen,
-          color: kLightPurpleColor,
-        ),
-        trailing: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.27,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('موجودی'),
-              Text('${product.count}'),
-            ],
+          title: Text(product.name!),
+          leading: const FaIcon(
+            FontAwesomeIcons.boxOpen,
+            color: kLightPurpleColor,
           ),
+          trailing: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.27,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('موجودی'),
+                Text('${product.count}'),
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.toNamed(Routes.productScreen, arguments: product);
+          },
+          onLongPress: () {
+            StaticMethods.productBottomSheet(
+              context,
+              name: product.name!,
+              onEditTap: () {
+                Get.toNamed(Routes.productScreen, arguments: product);
+              },
+              onDeleteTap: () {
+                Get.back();
+                StaticMethods.deleteDialog(
+                  content: 'با حذف کالای "${product.name}" موافق هستید؟'
+                      ' این عملیات برگشت پذیر نیست.',
+                  onConfirm: () {
+                    Get.find<ProductController>().deleteProduct(product);
+                    Get.back();
+                  },
+                );
+              },
+            );
+          },
         ),
-        onTap: () {
-          Get.toNamed(Routes.productScreen, arguments: product);
-        },
-        onLongPress: () {
-          StaticMethods.productBottomSheet(
-            context,
-            name: product.name!,
-            onEditTap: () {
-              Get.toNamed(Routes.productScreen, arguments: product);
-            },
-            onDeleteTap: () {
-              Get.back();
-              StaticMethods.deleteDialog(
-                content: 'با حذف کالای "${product.name}" موافق هستید؟'
-                    ' این عملیات برگشت پذیر نیست.',
-                onConfirm: () {
-                  Get.find<ProductController>().deleteProduct(product);
-                  Get.back();
-                },
-              );
-            },
-          );
-        },
       ),
     );
   }
