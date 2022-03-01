@@ -1,4 +1,7 @@
+import 'package:accounting_app/bindings/check_binding.dart';
+import 'package:accounting_app/bindings/customer_binding.dart';
 import 'package:accounting_app/bindings/home_binding.dart';
+import 'package:accounting_app/ui/screens/create_check_screen.dart';
 import 'package:accounting_app/ui/screens/create_customer_screen.dart';
 import 'package:accounting_app/ui/screens/customer_balance_screen.dart';
 import 'package:accounting_app/ui/screens/main_screen.dart';
@@ -23,10 +26,16 @@ class AppPages {
     GetPage(
       name: Routes.createCustomerScreen,
       page: () => const CreateCustomerScreen(),
+      binding: CustomerBinding(),
     ),
     GetPage(
       name: Routes.customerBalanceScreen,
       page: () => const CustomerBalanceScreen(),
+    ),
+    GetPage(
+      name: Routes.createCheckScreen,
+      page: () => const CreateCheckScreen(),
+      binding: CheckBinding(),
     ),
   ];
 }

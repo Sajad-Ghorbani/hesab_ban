@@ -25,7 +25,7 @@ class Factor extends HiveObject {
   String? factorStatus;
 
   @HiveField(6)
-  String? typeOfFactor;
+  TypeOfFactor? typeOfFactor;
 
   Factor({
     this.id,
@@ -59,3 +59,5 @@ class Factor extends HiveObject {
     return data;
   }
 }
+
+enum TypeOfFactor{sell,buy}

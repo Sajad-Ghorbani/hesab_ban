@@ -1,24 +1,28 @@
 import 'package:accounting_app/controllers/home_controller.dart';
-import 'package:accounting_app/routes/app_pages.dart';
-import 'package:accounting_app/ui/screens/search_customer_screen.dart';
+import 'package:accounting_app/models/check_model.dart';
+import 'package:accounting_app/ui/screens/search_check_screen.dart';
 import 'package:accounting_app/ui/widgets/base_widget.dart';
 import 'package:accounting_app/ui/widgets/box_container_widget.dart';
-import 'package:accounting_app/ui/widgets/customers_container_widget.dart';
-import 'package:accounting_app/ui/widgets/grid_menu_widget.dart';
+import 'package:accounting_app/ui/widgets/check_container_widget.dart';
 import 'package:accounting_app/ui/widgets/scroll_to_up.dart';
-import 'package:accounting_app/ui/widgets/search_box_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/search_controller.dart';
+import '../../routes/app_pages.dart';
+import '../widgets/grid_menu_widget.dart';
+import '../widgets/search_box_widget.dart';
 
-class CustomersScreen extends GetView<HomeController> {
-  const CustomersScreen({Key? key}) : super(key: key);
+class AllCheckScreen extends GetView<HomeController> {
+  const AllCheckScreen(this.typeOfCheck, {Key? key}) : super(key: key);
+  final TypeOfCheck typeOfCheck;
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      title: 'لیست مشتریان',
+      title: typeOfCheck == TypeOfCheck.send
+          ? 'لیست چکهای پرداختی'
+          : 'لیست چکهای دریافتی',
       appBarLeading: IconButton(
         onPressed: () {
           Navigator.pop(context);
@@ -27,19 +31,19 @@ class CustomersScreen extends GetView<HomeController> {
         splashRadius: 30,
       ),
       child: ScrollToUp(
-        showFab: controller.showCustomersFab,
-        scrollController: controller.customerScreenScrollController,
+        showFab: controller.showCheckFab,
+        scrollController: controller.checkScreenScrollController,
         child: CustomScrollView(
-          controller: controller.customerScreenScrollController,
+          controller: controller.checkScreenScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(10),
               sliver: SliverToBoxAdapter(
                 child: GridMenuWidget(
-                  title: 'ایجاد حساب جدید',
+                  title: 'ورود چک',
                   onTap: () {
-                    Get.toNamed(Routes.createCustomerScreen);
+                    Get.toNamed(Routes.createCheckScreen);
                   },
                 ),
               ),
@@ -47,20 +51,22 @@ class CustomersScreen extends GetView<HomeController> {
             SliverToBoxAdapter(
               child: SearchBoxWidget(
                 searchText: 'جست و جو',
-                openBuilderWidget: SearchCustomerScreen(),
+                openBuilderWidget: SearchCheckScreen(typeOfCheck: typeOfCheck,),
                 onClosed: (value) {
                   Get.find<SearchController>().clearScreen();
                 },
               ),
             ),
             GetBuilder<HomeController>(
-              builder: (myController) {
-                return const BoxContainerWidget(
-                  child: CustomersContainerWidget(
+              builder: (controller) {
+                return BoxContainerWidget(
+                  child: CheckContainerWidget(
+                    typeOfCheck: typeOfCheck,
+                    onRowTapped: (selected) {},
                     miniDataTable: false,
                   ),
                 );
-              }
+              },
             ),
             const SliverToBoxAdapter(
               child: SizedBox(

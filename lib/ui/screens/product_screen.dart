@@ -185,7 +185,7 @@ class ProductScreen extends GetView<ProductController> {
                             onChanged: (int? value) {
                               controller.productMainUnit = value!;
                             },
-                            decoration: customInputDecoration,
+                            decoration: kCustomInputDecoration,
                           ),
                         ),
                       ],
@@ -212,7 +212,7 @@ class ProductScreen extends GetView<ProductController> {
                             onChanged: (int? value) {
                               controller.productSubCountingUnit = value;
                             },
-                            decoration: customInputDecoration,
+                            decoration: kCustomInputDecoration,
                           ),
                         ),
                       ],

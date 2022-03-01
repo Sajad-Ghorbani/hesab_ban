@@ -6,4 +6,5 @@ abstract class Routes{
   static const String productScreen = '/product';
   static const String createCustomerScreen = '/createCustomer';
   static const String customerBalanceScreen = '/customerBalance';
+  static const String createCheckScreen = '/createCheck';
 }

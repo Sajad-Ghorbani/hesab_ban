@@ -44,6 +44,7 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   font_awesome_flutter: ^9.2.0
   sliver_tools: ^0.2.5
+  persian_datetime_picker: ^2.4.0
 
 dev_dependencies:
   flutter_test:

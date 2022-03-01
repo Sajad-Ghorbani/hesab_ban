@@ -1,5 +1,6 @@
 import 'package:accounting_app/constants.dart';
 import 'package:accounting_app/models/customer_model.dart';
+import 'package:accounting_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -7,15 +8,11 @@ import 'package:hive/hive.dart';
 import '../static_methods.dart';
 
 class CustomerController extends GetxController {
-  Customer? customer = Get.arguments;
   TextEditingController customerNameController = TextEditingController();
   TextEditingController customerPhoneController = TextEditingController();
   TextEditingController customerPhone2Controller = TextEditingController();
   TextEditingController customerAddressController = TextEditingController();
   TextEditingController customerBalanceController = TextEditingController();
-
-  ScrollController scrollController = ScrollController();
-  RxBool showCustomersFab = true.obs;
 
   late final Box customerBox;
 
@@ -24,6 +21,17 @@ class CustomerController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     customerBox = Hive.box<Customer>(customersBox);
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    customerNameController.dispose();
+    customerPhoneController.dispose();
+    customerPhone2Controller.dispose();
+    customerAddressController.dispose();
+    customerBalanceController.dispose();
   }
 
   void saveCustomer(BuildContext context) async {
@@ -45,8 +53,15 @@ class CustomerController extends GetxController {
       final int key = await customerBox.add(newCustomer);
       newCustomer.id = key;
       await newCustomer.save();
+      StaticMethods.showSnackBar(
+        title: 'تبریک',
+        description: 'کاربر ${newCustomer.name} با موفقیت ثبت شد.',
+        color: kLightGreenColor,
+      );
       resetCustomerScreen(context);
     }
+
+    update();
   }
 
   void updateCustomer(BuildContext context, Customer customer) async {
@@ -66,10 +81,8 @@ class CustomerController extends GetxController {
       customer.save();
       resetCustomerScreen(context);
     }
-  }
 
-  void deleteCustomer(){
-
+    update();
   }
 
   void resetCustomerScreen(BuildContext context) {

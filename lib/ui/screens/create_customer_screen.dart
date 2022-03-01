@@ -4,6 +4,7 @@ import 'package:accounting_app/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/constants_app_styles.dart';
@@ -92,7 +93,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                   ),
                   Row(
                     children: [
-                      const Text('شماره تماس 1'),
+                      Text('شماره تماس 1'.toPersianDigit()),
                       const SizedBox(
                         width: 10,
                       ),
@@ -111,7 +112,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                   ),
                   Row(
                     children: [
-                      const Text('شماره تماس 2'),
+                      Text('شماره تماس 2'.toPersianDigit()),
                       const SizedBox(
                         width: 10,
                       ),

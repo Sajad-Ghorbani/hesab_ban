@@ -1,16 +1,17 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:accounting_app/ui/widgets/customers_container_widget.dart';
-import 'package:accounting_app/ui/widgets/search_container.dart';
+import 'package:accounting_app/controllers/search_controller.dart';
+import 'package:accounting_app/models/check_model.dart';
+import 'package:accounting_app/ui/widgets/check_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/search_controller.dart';
 import '../widgets/box_container_widget.dart';
+import '../widgets/search_container.dart';
 
-class SearchCustomerScreen extends StatelessWidget {
-  SearchCustomerScreen({Key? key}) : super(key: key);
-  SearchController controller = Get.put(SearchController());
+// ignore: must_be_immutable
+class SearchCheckScreen extends StatelessWidget {
+  SearchCheckScreen({Key? key, required this.typeOfCheck}) : super(key: key);
+  final TypeOfCheck typeOfCheck;
+  SearchController controller = Get.put<SearchController>(SearchController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class SearchCustomerScreen extends StatelessWidget {
             SearchContainer(
               textEditingController: controller.searchController,
               onChanged: (value) {
-                controller.searchCustomer(value);
+                controller.searchCheck(value,typeOfCheck);
               },
             ),
             Obx(
@@ -34,10 +35,12 @@ class SearchCustomerScreen extends StatelessWidget {
                   : BoxContainerWidget(
                       child: GetBuilder<SearchController>(
                         builder: (controller) {
-                          return CustomersContainerWidget(
-                            isBox: false,
-                            customerList: controller.customerList,
+                          return CheckContainerWidget(
+                            typeOfCheck: typeOfCheck,
+                            onRowTapped: (selected) {},
                             miniDataTable: false,
+                            isBox: false,
+                            checkList: controller.checkList,
                           );
                         },
                       ),

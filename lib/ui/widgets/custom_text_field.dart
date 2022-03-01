@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
-      decoration: customInputDecoration,
+      decoration: kCustomInputDecoration,
     );
   }
 }

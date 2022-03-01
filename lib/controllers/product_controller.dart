@@ -2,6 +2,7 @@ import 'package:accounting_app/constants.dart';
 import 'package:accounting_app/models/product_model.dart';
 import 'package:accounting_app/static_methods.dart';
 import 'package:accounting_app/ui/screens/product_folder_screen.dart';
+import 'package:accounting_app/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -83,7 +84,10 @@ class ProductController extends GetxController {
           title: 'خطا', description: 'لطفا نام را وارد کنید.');
     } else if (productBox.values
         .any((element) => element.name == productNameController.text.trim())) {
-      StaticMethods.showSnackBar(title: 'خطا', description: 'نام تکراری است');
+      StaticMethods.showSnackBar(
+        title: 'خطا',
+        description: 'نام تکراری است',
+      );
     } //
     else {
       Product product = Product(
@@ -113,6 +117,11 @@ class ProductController extends GetxController {
       product.id = key;
       await product.save();
       resetProductScreen(context);
+      StaticMethods.showSnackBar(
+        title: 'تبریک!',
+        description: 'محصول جدید با موفقیت ثبت شد.',
+        color: kLightGreenColor,
+      );
       allProducts.value = productBox.values.toList();
       allProductCategory.value = getProductsOfCategory(productCategoryName);
       mainProduct.value = getProductsOfCategory(defaultCategoryName);
@@ -155,7 +164,7 @@ class ProductController extends GetxController {
     return list;
   }
 
-  void navigateToCategory(context, String categoryName) async{
+  void navigateToCategory(context, String categoryName) async {
     productCategoryName = categoryName;
     allProductCategory.value = getProductsOfCategory(productCategoryName);
     await pushNewScreen(context, screen: const ProductFolderScreen());
@@ -165,10 +174,13 @@ class ProductController extends GetxController {
   void addNewCategory() async {
     String categoryName = categoryNameController.text.trim();
     if (categoryName.isEmpty) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        StaticMethods.showSnackBar(
-            title: 'خطا', description: 'لطفا نام را وارد کنید.');
-      });
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () {
+          StaticMethods.showSnackBar(
+              title: 'خطا', description: 'لطفا نام را وارد کنید.');
+        },
+      );
     } //
     else {
       var categoryBox = Hive.box<Category>(productCategoryBox);
@@ -181,6 +193,11 @@ class ProductController extends GetxController {
         newCategory.id = index;
         newCategory.save();
       }
+      StaticMethods.showSnackBar(
+        title: 'تبریک!',
+        description: 'دسته جدید با موفقیت ثبت شد.',
+        color: kLightGreenColor,
+      );
       productCategory.value = getCategoryList();
       categoryNameController.clear();
     }
@@ -199,6 +216,11 @@ class ProductController extends GetxController {
       category.save();
       productCategory.value = getCategoryList();
       categoryNameController.clear();
+      StaticMethods.showSnackBar(
+        title: 'تبریک!',
+        description: 'دسته $categoryName با موفقیت ویرایش شد.',
+        color: kLightGreenColor,
+      );
     }
   }
 
@@ -250,6 +272,11 @@ class ProductController extends GetxController {
           : Unit.values[productSubCountingUnit!];
       product.save();
       resetProductScreen(context);
+      StaticMethods.showSnackBar(
+        title: 'تبریک!',
+        description: 'محصول ${product.name} با موفقیت ویرایش شد.',
+        color: kLightGreenColor,
+      );
       allProducts.value = productBox.values.toList();
       allProductCategory.value = getProductsOfCategory(productCategoryName);
       mainProduct.value = getProductsOfCategory(defaultCategoryName);

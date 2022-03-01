@@ -22,6 +22,7 @@ void main()async {
   Hive.registerAdapter(CheckAdapter());
   Hive.registerAdapter(BillAdapter());
   Hive.registerAdapter(CategoryAdapter());
+  Hive.registerAdapter(TypeOfCheckAdapter());
   runApp(const MyApp());
 }
 

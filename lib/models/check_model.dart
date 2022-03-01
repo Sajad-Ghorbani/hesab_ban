@@ -27,7 +27,7 @@ class Check extends HiveObject {
   DateTime? checkDeliveryDate;
 
   @HiveField(7)
-  String? typeOfCheck;
+  TypeOfCheck? typeOfCheck;
 
   Check({
     this.id,
@@ -63,4 +63,13 @@ class Check extends HiveObject {
     data['type_of_check'] = typeOfCheck;
     return data;
   }
+}
+
+@HiveType(typeId: 9)
+enum TypeOfCheck {
+  @HiveField(0)
+  send,
+
+  @HiveField(1)
+  received,
 }

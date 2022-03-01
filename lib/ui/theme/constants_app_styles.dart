@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-const InputDecoration customInputDecoration = InputDecoration(
+const InputDecoration kCustomInputDecoration = InputDecoration(
   border: OutlineInputBorder(
     borderSide: BorderSide.none,
   ),
