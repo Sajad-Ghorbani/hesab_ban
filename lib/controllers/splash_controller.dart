@@ -1,8 +1,8 @@
-import 'package:accounting_app/constants.dart';
-import 'package:accounting_app/models/category_model.dart';
-import 'package:accounting_app/models/check_model.dart';
-import 'package:accounting_app/models/product_model.dart';
-import 'package:accounting_app/routes/app_pages.dart';
+import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/category_model.dart';
+import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 

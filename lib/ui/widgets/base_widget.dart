@@ -1,4 +1,4 @@
-import 'package:accounting_app/ui/widgets/painted_widgets.dart';
+import 'package:hesab_ban/ui/widgets/painted_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

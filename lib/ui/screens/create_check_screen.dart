@@ -1,7 +1,7 @@
-import 'package:accounting_app/controllers/check_controller.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
-import 'package:accounting_app/ui/widgets/custom_text_field.dart';
-import 'package:accounting_app/ui/widgets/grid_menu_widget.dart';
+import 'package:hesab_ban/controllers/check_controller.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/ui/widgets/custom_text_field.dart';
+import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

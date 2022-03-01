@@ -1,5 +1,5 @@
-import 'package:accounting_app/models/customer_model.dart';
-import 'package:accounting_app/models/product_model.dart';
+import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/models/product_model.dart';
 import 'package:hive/hive.dart';
 
 part 'factor_model.g.dart';

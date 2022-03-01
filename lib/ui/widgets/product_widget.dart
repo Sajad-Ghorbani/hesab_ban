@@ -1,5 +1,5 @@
-import 'package:accounting_app/models/product_model.dart';
-import 'package:accounting_app/ui/theme/app_theme.dart';
+import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

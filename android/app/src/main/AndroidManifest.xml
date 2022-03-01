@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.accounting_app">
+    package="com.example.hesab_ban">
    <application
-        android:label="accounting_app"
+        android:label="hesab_ban"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

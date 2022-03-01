@@ -1,8 +1,8 @@
-import 'package:accounting_app/controllers/product_controller.dart';
-import 'package:accounting_app/ui/theme/app_colors.dart';
-import 'package:accounting_app/ui/theme/constants_app_styles.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
-import 'package:accounting_app/ui/widgets/custom_text_field.dart';
+import 'package:hesab_ban/controllers/product_controller.dart';
+import 'package:hesab_ban/ui/theme/app_colors.dart';
+import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/ui/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

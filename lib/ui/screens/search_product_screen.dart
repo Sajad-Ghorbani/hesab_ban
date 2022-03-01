@@ -1,9 +1,9 @@
-import 'package:accounting_app/controllers/search_controller.dart';
-import 'package:accounting_app/models/product_model.dart';
-import 'package:accounting_app/ui/widgets/category_widget.dart';
-import 'package:accounting_app/ui/widgets/box_container_widget.dart';
-import 'package:accounting_app/ui/widgets/product_widget.dart';
-import 'package:accounting_app/ui/widgets/search_container.dart';
+import 'package:hesab_ban/controllers/search_controller.dart';
+import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/ui/widgets/category_widget.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/product_widget.dart';
+import 'package:hesab_ban/ui/widgets/search_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

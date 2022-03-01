@@ -1,12 +1,12 @@
-import 'package:accounting_app/controllers/home_controller.dart';
-import 'package:accounting_app/routes/app_pages.dart';
-import 'package:accounting_app/ui/screens/search_customer_screen.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
-import 'package:accounting_app/ui/widgets/box_container_widget.dart';
-import 'package:accounting_app/ui/widgets/customers_container_widget.dart';
-import 'package:accounting_app/ui/widgets/grid_menu_widget.dart';
-import 'package:accounting_app/ui/widgets/scroll_to_up.dart';
-import 'package:accounting_app/ui/widgets/search_box_widget.dart';
+import 'package:hesab_ban/controllers/home_controller.dart';
+import 'package:hesab_ban/routes/app_pages.dart';
+import 'package:hesab_ban/ui/screens/search_customer_screen.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/customers_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
+import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
+import 'package:hesab_ban/ui/widgets/search_box_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

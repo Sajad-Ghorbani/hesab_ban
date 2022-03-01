@@ -1,4 +1,4 @@
-import 'package:accounting_app/models/category_model.dart';
+import 'package:hesab_ban/models/category_model.dart';
 import 'package:hive/hive.dart';
 
 part 'product_model.g.dart';

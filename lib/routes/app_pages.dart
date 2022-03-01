@@ -1,12 +1,12 @@
-import 'package:accounting_app/bindings/check_binding.dart';
-import 'package:accounting_app/bindings/customer_binding.dart';
-import 'package:accounting_app/bindings/home_binding.dart';
-import 'package:accounting_app/ui/screens/create_check_screen.dart';
-import 'package:accounting_app/ui/screens/create_customer_screen.dart';
-import 'package:accounting_app/ui/screens/customer_balance_screen.dart';
-import 'package:accounting_app/ui/screens/main_screen.dart';
-import 'package:accounting_app/ui/screens/product_screen.dart';
-import 'package:accounting_app/ui/screens/splash_screen.dart';
+import 'package:hesab_ban/bindings/check_binding.dart';
+import 'package:hesab_ban/bindings/customer_binding.dart';
+import 'package:hesab_ban/bindings/home_binding.dart';
+import 'package:hesab_ban/ui/screens/create_check_screen.dart';
+import 'package:hesab_ban/ui/screens/create_customer_screen.dart';
+import 'package:hesab_ban/ui/screens/customer_balance_screen.dart';
+import 'package:hesab_ban/ui/screens/main_screen.dart';
+import 'package:hesab_ban/ui/screens/product_screen.dart';
+import 'package:hesab_ban/ui/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
 part './app_routes.dart';

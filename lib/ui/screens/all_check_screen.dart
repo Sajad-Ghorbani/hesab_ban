@@ -1,10 +1,10 @@
-import 'package:accounting_app/controllers/home_controller.dart';
-import 'package:accounting_app/models/check_model.dart';
-import 'package:accounting_app/ui/screens/search_check_screen.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
-import 'package:accounting_app/ui/widgets/box_container_widget.dart';
-import 'package:accounting_app/ui/widgets/check_container_widget.dart';
-import 'package:accounting_app/ui/widgets/scroll_to_up.dart';
+import 'package:hesab_ban/controllers/home_controller.dart';
+import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/ui/screens/search_check_screen.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/check_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

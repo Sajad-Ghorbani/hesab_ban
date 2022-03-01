@@ -1,8 +1,8 @@
-import 'package:accounting_app/controllers/product_controller.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
-import 'package:accounting_app/ui/widgets/box_container_widget.dart';
-import 'package:accounting_app/ui/widgets/product_widget.dart';
-import 'package:accounting_app/ui/widgets/scroll_to_up.dart';
+import 'package:hesab_ban/controllers/product_controller.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/product_widget.dart';
+import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

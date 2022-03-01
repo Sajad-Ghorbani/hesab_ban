@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:accounting_app/ui/widgets/customers_container_widget.dart';
-import 'package:accounting_app/ui/widgets/search_container.dart';
+import 'package:hesab_ban/ui/widgets/customers_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/search_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

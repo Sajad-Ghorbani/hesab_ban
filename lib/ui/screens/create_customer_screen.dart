@@ -1,6 +1,6 @@
-import 'package:accounting_app/controllers/customer_controller.dart';
-import 'package:accounting_app/models/customer_model.dart';
-import 'package:accounting_app/ui/widgets/base_widget.dart';
+import 'package:hesab_ban/controllers/customer_controller.dart';
+import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

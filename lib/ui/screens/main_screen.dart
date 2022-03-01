@@ -1,5 +1,5 @@
-import 'package:accounting_app/ui/screens/home_screen.dart';
-import 'package:accounting_app/ui/screens/products_screen.dart';
+import 'package:hesab_ban/ui/screens/home_screen.dart';
+import 'package:hesab_ban/ui/screens/products_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

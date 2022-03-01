@@ -1,5 +1,5 @@
-import 'package:accounting_app/ui/theme/app_colors.dart';
-import 'package:accounting_app/ui/theme/app_text_theme.dart';
+import 'package:hesab_ban/ui/theme/app_colors.dart';
+import 'package:hesab_ban/ui/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
 class AppThemeData {

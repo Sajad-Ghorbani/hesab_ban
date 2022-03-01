@@ -1,6 +1,6 @@
-import 'package:accounting_app/constants.dart';
-import 'package:accounting_app/models/customer_model.dart';
-import 'package:accounting_app/ui/theme/app_colors.dart';
+import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
