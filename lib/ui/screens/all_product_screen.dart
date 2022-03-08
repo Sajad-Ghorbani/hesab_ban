@@ -22,43 +22,62 @@ class AllProductScreen extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    bool selectProduct = Get.arguments ?? false;
     return BaseWidget(
       title: 'کالاها',
+      appBarLeading: selectProduct
+          ? IconButton(
+              onPressed: () {
+                controller.backToHome(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+              splashRadius: 30,
+            )
+          : null,
       child: ScrollToUp(
         showFab: controller.showProductsFab,
         scrollController: controller.scrollController,
+        selectProductScreen: selectProduct,
         child: CustomScrollView(
           controller: controller.scrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GridMenuWidget(
-                        title: 'ساخت محصول جدید',
-                        onTap: () {
-                          Get.toNamed(Routes.productScreen);
-                        }),
-                    GridMenuWidget(
-                      title: 'ساخت پوشه جدید',
-                      onTap: () {
-                        StaticMethods.showFolderDialog(
-                          title: 'ساخت پوشه جدید',
-                          controller: controller.categoryNameController,
+            if (!selectProduct) ...[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GridMenuWidget(
+                          title: 'ساخت محصول جدید',
                           onTap: () {
-                            controller.addNewCategory();
-                            Get.back();
-                          },
-                        );
-                      },
-                    ),
-                  ],
+                            Get.toNamed(Routes.createProductScreen);
+                          }),
+                      GridMenuWidget(
+                        title: 'ساخت پوشه جدید',
+                        onTap: () {
+                          StaticMethods.showFolderDialog(
+                            title: 'ساخت پوشه جدید',
+                            controller: controller.categoryNameController,
+                            onTap: () {
+                              controller.addNewCategory();
+                              Get.back();
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ] else ...[
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
+                ),
+              )
+            ],
             SliverToBoxAdapter(
               child: SearchBoxWidget(
                 searchText: 'جست و جو',
@@ -82,6 +101,11 @@ class AllProductScreen extends GetView<ProductController> {
                           index: index,
                           category: category,
                           categoryList: list,
+                          selectProductScreen: selectProduct,
+                          openCategory: () {
+                            controller.navigateToCategorySelectProduct(
+                                category.name!);
+                          },
                         ),
                       );
                     },
@@ -106,6 +130,10 @@ class AllProductScreen extends GetView<ProductController> {
                       return ProductWidget(
                         product: product,
                         productList: list,
+                        selectProductScreen: selectProduct,
+                        selectProduct: () {
+                          Get.back(result: product);
+                        },
                       );
                     },
                     childCount: controller.mainProduct.value.length,

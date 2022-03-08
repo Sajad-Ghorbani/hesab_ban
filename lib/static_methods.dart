@@ -5,6 +5,8 @@ import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'models/product_model.dart';
+
 class StaticMethods {
   static void showSnackBar({
     required String title,
@@ -25,6 +27,85 @@ class StaticMethods {
       backgroundColor:
           color == null ? kRedColor.withOpacity(0.3) : color.withOpacity(0.3),
       duration: duration ?? const Duration(seconds: 3),
+    );
+  }
+
+  static void inputProductCount({
+    required Product product,
+    required VoidCallback onConfirm,
+    required TextEditingController productCountController,
+    required TextEditingController productPriceController,
+  }) {
+    Get.defaultDialog(
+      title: 'نام محصول: ${product.name!}',
+      onWillPop: ()async{
+        productPriceController.clear();
+        productCountController.clear();
+        return true;
+      },
+      confirm: GestureDetector(
+        onTap: onConfirm,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            color: kGreyColor,
+          ),
+          child: const Icon(Icons.check),
+        ),
+      ),
+      content: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('تعداد'),
+              const SizedBox(
+                width: 20,
+              ),
+              SizedBox(
+                height: 40,
+                width: 80,
+                child: TextField(
+                  controller: productCountController,
+                  autofocus: true,
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('قیمت'),
+              const SizedBox(
+                width: 20,
+              ),
+              SizedBox(
+                height: 40,
+                width: 80,
+                child: TextField(
+                  controller: productPriceController,
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              const Text(
+                'ریال',
+                style: kRialTextStyle,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -210,61 +291,59 @@ class StaticMethods {
     required VoidCallback onCustomerTap,
   }) async {
     await Get.bottomSheet(
-      Builder(
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
-                    width: Get.width - 80,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor.withOpacity(0.5),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+      Builder(builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                child: Container(
+                  width: Get.width - 80,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor.withOpacity(0.5),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'صادر کننده چک را انتخاب کنید.',
+                        ),
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        const Padding(
+                      const Divider(),
+                      GestureDetector(
+                        onTap: onMeTap,
+                        child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'صادر کننده چک را انتخاب کنید.',
-                          ),
+                          child: Text('خودم'),
                         ),
-                        const Divider(),
-                        GestureDetector(
-                          onTap: onMeTap,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('خودم'),
-                          ),
+                      ),
+                      const Divider(),
+                      GestureDetector(
+                        onTap: onCustomerTap,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('مشتری'),
                         ),
-                        const Divider(),
-                        GestureDetector(
-                          onTap: onCustomerTap,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('مشتری'),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          );
-        }
-      ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      }),
       isDismissible: false,
     );
   }
@@ -275,52 +354,50 @@ class StaticMethods {
     required ValueChanged<int?> onSelectCustomer,
   }) async {
     await Get.bottomSheet(
-      Builder(
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
-                    width: Get.width - 80,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor.withOpacity(0.5),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+      Builder(builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                child: Container(
+                  width: Get.width - 80,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor.withOpacity(0.5),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          title,
+                        ),
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            title,
-                          ),
-                        ),
-                        const Divider(),
-                        DropdownButtonFormField<int>(
-                          items: dropDownList,
-                          onChanged: onSelectCustomer,
-                          value: 0,
-                          decoration: kCustomInputDecoration,
-                        ),
-                      ],
-                    ),
+                      const Divider(),
+                      DropdownButtonFormField<int>(
+                        items: dropDownList,
+                        onChanged: onSelectCustomer,
+                        value: 0,
+                        decoration: kCustomInputDecoration,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
-          );
-        }
-      ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        );
+      }),
       isDismissible: false,
     );
   }

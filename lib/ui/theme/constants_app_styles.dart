@@ -20,6 +20,6 @@ const InputDecoration kCustomInputDecoration = InputDecoration(
   ),
 );
 
-const TextStyle rialTextStyle = TextStyle(
+const TextStyle kRialTextStyle = TextStyle(
   color: kOrangeColor,
 );

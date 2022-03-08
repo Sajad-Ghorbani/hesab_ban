@@ -4,6 +4,7 @@ import 'package:hesab_ban/models/category_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/models/factor_row.dart';
 import 'package:hesab_ban/models/product_model.dart';
 import 'package:hesab_ban/models/user_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
@@ -18,11 +19,13 @@ void main()async {
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(UnitAdapter());
   Hive.registerAdapter(FactorAdapter());
+  Hive.registerAdapter(FactorRowAdapter());
   Hive.registerAdapter(CustomerAdapter());
   Hive.registerAdapter(CheckAdapter());
   Hive.registerAdapter(BillAdapter());
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(TypeOfCheckAdapter());
+  Hive.registerAdapter(TypeOfFactorAdapter());
   runApp(const MyApp());
 }
 

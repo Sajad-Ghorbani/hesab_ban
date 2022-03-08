@@ -16,13 +16,31 @@ class HomeController extends GetxController {
   RxBool showCheckFab = true.obs;
   RxBool showCustomersFab = true.obs;
 
+  RxBool showBuyHelp = true.obs;
+  RxBool showSellHelp = true.obs;
+  RxBool showOneSellHelp = true.obs;
+
   @override
   void onInit() {
     super.onInit();
-    pageController = PersistentTabController(initialIndex: 2);
+    pageController = PersistentTabController();
     checkScreenScrollController = ScrollController();
     customerScreenScrollController = ScrollController();
     customerBox = Hive.box<Customer>(customersBox);
     homeChecksBox = Hive.box<Check>(checksBox);
+    getShowHelp('sellFactorHelp', showSellHelp);
+    getShowHelp('OneSellFactorHelp', showOneSellHelp);
+    getShowHelp('buyFactorHelp', showBuyHelp);
+  }
+  
+  changeShowHelp(String key,RxBool value)async{
+    var boxSetting = Hive.box(settingBox);
+    value.value = !value.value;
+    await boxSetting.put(key, value.value);
+  }
+  
+  getShowHelp(String key,RxBool showFactor)async{
+    var boxSetting = Hive.box(settingBox);
+    showFactor.value = await boxSetting.get(key);
   }
 }

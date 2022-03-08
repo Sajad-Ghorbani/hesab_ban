@@ -164,7 +164,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                       ),
                       const Text(
                         'ریال',
-                        style: rialTextStyle,
+                        style: kRialTextStyle,
                       ),
                     ],
                   ),

@@ -1,8 +1,9 @@
 import 'package:hesab_ban/ui/screens/home_screen.dart';
-import 'package:hesab_ban/ui/screens/products_screen.dart';
+import 'package:hesab_ban/ui/screens/all_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hesab_ban/ui/screens/select_factor_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../../controllers/home_controller.dart';
@@ -17,14 +18,19 @@ class MainScreen extends GetView<HomeController> {
       body: PersistentTabView(
         context,
         screens: const [
+          HomeScreen(),
           AllProductScreen(),
-          HomeScreen(),
-          HomeScreen(),
-          HomeScreen(),
+          SelectFactorScreen(),
           HomeScreen(),
         ],
         controller: controller.pageController,
         items: [
+          PersistentBottomNavBarItem(
+            icon: const Icon(FontAwesomeIcons.home),
+            activeColorPrimary: kBlueColor,
+            inactiveColorPrimary: kGreyColor,
+            title: 'صفحه اصلی',
+          ),
           PersistentBottomNavBarItem(
             icon: const Icon(FontAwesomeIcons.boxOpen),
             activeColorPrimary: kPurpleColor,
@@ -38,22 +44,10 @@ class MainScreen extends GetView<HomeController> {
             title: 'فاکتور',
           ),
           PersistentBottomNavBarItem(
-            icon: const Icon(FontAwesomeIcons.home),
-            activeColorPrimary: kBlueColor,
-            inactiveColorPrimary: kGreyColor,
-            title: 'صفحه اصلی',
-          ),
-          PersistentBottomNavBarItem(
             icon: const Icon(FontAwesomeIcons.cogs),
             activeColorPrimary: kRedColor,
             inactiveColorPrimary: kGreyColor,
             title: 'تنظیمات',
-          ),
-          PersistentBottomNavBarItem(
-            icon: const Icon(FontAwesomeIcons.chartPie),
-            activeColorPrimary: kGreenColor,
-            inactiveColorPrimary: kGreyColor,
-            title: 'گزارشات',
           ),
         ],
         confineInSafeArea: true,

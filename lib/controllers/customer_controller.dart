@@ -18,14 +18,12 @@ class CustomerController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     customerBox = Hive.box<Customer>(customersBox);
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     customerNameController.dispose();
     customerPhoneController.dispose();

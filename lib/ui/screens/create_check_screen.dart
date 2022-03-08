@@ -122,7 +122,7 @@ class CreateCheckScreen extends GetView<CheckController> {
                       ),
                       const Text(
                         'ریال',
-                        style: rialTextStyle,
+                        style: kRialTextStyle,
                       ),
                     ],
                   ),

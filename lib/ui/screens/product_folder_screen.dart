@@ -15,6 +15,7 @@ class ProductFolderScreen extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    bool selectProduct = Get.arguments ?? false;
     return BaseWidget(
       title: controller.productCategoryName,
       appBarLeading: IconButton(
@@ -27,21 +28,29 @@ class ProductFolderScreen extends GetView<ProductController> {
       child: ScrollToUp(
         showFab: controller.showCategoryProductsFab,
         scrollController: controller.scrollController,
+        selectProductScreen: selectProduct,
         child: CustomScrollView(
           controller: controller.scrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverToBoxAdapter(
-                child: GridMenuWidget(
-                  title: 'ساخت محصول جدید',
-                  onTap: () {
-                    Get.toNamed(Routes.productScreen);
-                  },
+            if (!selectProduct)
+              SliverPadding(
+                padding: const EdgeInsets.all(10),
+                sliver: SliverToBoxAdapter(
+                  child: GridMenuWidget(
+                    title: 'ساخت محصول جدید',
+                    onTap: () {
+                      Get.toNamed(Routes.createProductScreen);
+                    },
+                  ),
+                ),
+              )
+            else
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
                 ),
               ),
-            ),
             Obx(
               () => BoxContainerWidget(
                 child: SliverList(
@@ -52,6 +61,11 @@ class ProductFolderScreen extends GetView<ProductController> {
                       return ProductWidget(
                         product: product,
                         productList: controller.allProductCategory.value,
+                        selectProductScreen: selectProduct,
+                        selectProduct: () {
+                          Navigator.pop(context);
+                          Get.back(result: product);
+                        },
                       );
                     },
                     childCount: controller.allProductCategory.value.length,

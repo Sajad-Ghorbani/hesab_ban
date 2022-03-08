@@ -45,6 +45,8 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   sliver_tools: ^0.2.5
   persian_datetime_picker: ^2.4.0
+  flip_card: ^0.6.0
+  flutter_slidable: ^1.2.0
 
 dev_dependencies:
   flutter_test:

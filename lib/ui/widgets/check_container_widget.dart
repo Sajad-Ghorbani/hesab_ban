@@ -127,7 +127,7 @@ class CheckContainerWidget extends StatelessWidget {
                                     ),
                                     const Text(
                                       'ریال',
-                                      style: rialTextStyle,
+                                      style: kRialTextStyle,
                                     ),
                                   ],
                                 ),

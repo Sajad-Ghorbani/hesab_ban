@@ -10,11 +10,17 @@ import '../../static_methods.dart';
 import '../theme/app_colors.dart';
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget(
-      {Key? key, required this.product, required this.productList})
-      : super(key: key);
+  const ProductWidget({
+    Key? key,
+    required this.product,
+    required this.productList,
+    this.selectProductScreen = false,
+    this.selectProduct,
+  }) : super(key: key);
   final Product product;
   final List<Product> productList;
+  final bool selectProductScreen;
+  final VoidCallback? selectProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +28,8 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Theme(
         data: AppThemeData.darkTheme.copyWith(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent
-        ),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent),
         child: ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -47,29 +52,34 @@ class ProductWidget extends StatelessWidget {
               ],
             ),
           ),
-          onTap: () {
-            Get.toNamed(Routes.productScreen, arguments: product);
-          },
-          onLongPress: () {
-            StaticMethods.productBottomSheet(
-              context,
-              name: product.name!,
-              onEditTap: () {
-                Get.toNamed(Routes.productScreen, arguments: product);
-              },
-              onDeleteTap: () {
-                Get.back();
-                StaticMethods.deleteDialog(
-                  content: 'با حذف کالای "${product.name}" موافق هستید؟'
-                      ' این عملیات برگشت پذیر نیست.',
-                  onConfirm: () {
-                    Get.find<ProductController>().deleteProduct(product);
-                    Get.back();
-                  },
-                );
-              },
-            );
-          },
+          onTap: selectProductScreen
+              ? selectProduct
+              : () {
+                  Get.toNamed(Routes.createProductScreen, arguments: product);
+                },
+          onLongPress: selectProductScreen
+              ? null
+              : () {
+                  StaticMethods.productBottomSheet(
+                    context,
+                    name: product.name!,
+                    onEditTap: () {
+                      Get.toNamed(Routes.createProductScreen,
+                          arguments: product);
+                    },
+                    onDeleteTap: () {
+                      Get.back();
+                      StaticMethods.deleteDialog(
+                        content: 'با حذف کالای "${product.name}" موافق هستید؟'
+                            ' این عملیات برگشت پذیر نیست.',
+                        onConfirm: () {
+                          Get.find<ProductController>().deleteProduct(product);
+                          Get.back();
+                        },
+                      );
+                    },
+                  );
+                },
         ),
       ),
     );

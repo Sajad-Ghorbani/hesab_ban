@@ -1,5 +1,5 @@
 import 'package:hesab_ban/models/customer_model.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/models/factor_row.dart';
 import 'package:hive/hive.dart';
 
 part 'factor_model.g.dart';
@@ -16,24 +16,20 @@ class Factor extends HiveObject {
   DateTime? factorDate;
 
   @HiveField(3)
-  List<Product>? products;
+  List<FactorRow>? factorRows;
 
   @HiveField(4)
   int? factorSum;
 
   @HiveField(5)
-  String? factorStatus;
-
-  @HiveField(6)
   TypeOfFactor? typeOfFactor;
 
   Factor({
     this.id,
     this.customer,
     this.factorDate,
-    this.products,
+    this.factorRows,
     this.factorSum,
-    this.factorStatus,
     this.typeOfFactor,
   });
 
@@ -41,9 +37,8 @@ class Factor extends HiveObject {
     id = json['id'];
     customer = json['customer'];
     factorDate = json['factor_date'];
-    products = json['products'].cast<Product>();
+    factorRows = json['factor_rows'].cast<FactorRow>();
     factorSum = json['factor_sum'];
-    factorStatus = json['factor_status'];
     typeOfFactor = json['type_of_factor'];
   }
 
@@ -52,12 +47,21 @@ class Factor extends HiveObject {
     data['id'] = id;
     data['customer'] = customer;
     data['factor_date'] = factorDate;
-    data['products'] = products;
+    data['factor_rows'] = factorRows;
     data['factor_sum'] = factorSum;
-    data['factor_status'] = factorStatus;
     data['type_of_factor'] = typeOfFactor;
     return data;
   }
 }
 
-enum TypeOfFactor{sell,buy}
+@HiveType(typeId: 10)
+enum TypeOfFactor {
+  @HiveField(0)
+  sell,
+
+  @HiveField(1)
+  buy,
+
+  @HiveField(2)
+  oneSell,
+}

@@ -14,10 +14,14 @@ class CategoryWidget extends StatelessWidget {
     required this.index,
     required this.category,
     required this.categoryList,
+    this.selectProductScreen = false,
+    this.openCategory,
   }) : super(key: key);
   final int index;
   final Category category;
   final List<Category> categoryList;
+  final bool selectProductScreen;
+  final VoidCallback? openCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,7 @@ class CategoryWidget extends StatelessWidget {
       child: Theme(
         data: AppThemeData.darkTheme.copyWith(
             splashColor: Colors.transparent,
-            highlightColor: Colors.transparent
-        ),
+            highlightColor: Colors.transparent),
         child: ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -40,42 +43,48 @@ class CategoryWidget extends StatelessWidget {
             FontAwesomeIcons.solidFolder,
             color: kTealColor,
           ),
-          onTap: () {
-            Get.find<ProductController>().navigateToCategory(
-              context,
-              category.name!,
-            );
-          },
-          onLongPress: () {
-            StaticMethods.productBottomSheet(
-              context,
-              name: category.name!,
-              onEditTap: () {
-                Get.back();
-                StaticMethods.showFolderDialog(
-                  title: 'ویرایش ${category.name}',
-                  controller:
-                      Get.find<ProductController>().categoryNameController,
-                  onTap: () {
-                    Get.find<ProductController>().updateCategory(category);
-                    Get.back();
-                  },
-                );
-              },
-              onDeleteTap: () {
-                Get.back();
-                StaticMethods.deleteDialog(
-                  content:
-                      'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
-                      ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
-                  onConfirm: () {
-                    Get.find<ProductController>().deleteCategory(category);
-                    Get.back();
-                  },
-                );
-              },
-            );
-          },
+          onTap: selectProductScreen
+              ? openCategory
+              : () {
+                  Get.find<ProductController>().navigateToCategory(
+                    context,
+                    category.name!,
+                  );
+                },
+          onLongPress: selectProductScreen
+              ? null
+              : () {
+                  StaticMethods.productBottomSheet(
+                    context,
+                    name: category.name!,
+                    onEditTap: () {
+                      Get.back();
+                      StaticMethods.showFolderDialog(
+                        title: 'ویرایش ${category.name}',
+                        controller: Get.find<ProductController>()
+                            .categoryNameController,
+                        onTap: () {
+                          Get.find<ProductController>()
+                              .updateCategory(category);
+                          Get.back();
+                        },
+                      );
+                    },
+                    onDeleteTap: () {
+                      Get.back();
+                      StaticMethods.deleteDialog(
+                        content:
+                            'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
+                            ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
+                        onConfirm: () {
+                          Get.find<ProductController>()
+                              .deleteCategory(category);
+                          Get.back();
+                        },
+                      );
+                    },
+                  );
+                },
         ),
       ),
     );

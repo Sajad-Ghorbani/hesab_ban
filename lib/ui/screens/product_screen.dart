@@ -110,7 +110,7 @@ class ProductScreen extends GetView<ProductController> {
                         ),
                         const Text(
                           'ریال',
-                          style: rialTextStyle,
+                          style: kRialTextStyle,
                         ),
                       ],
                     ),
@@ -136,7 +136,7 @@ class ProductScreen extends GetView<ProductController> {
                         ),
                         const Text(
                           'ریال',
-                          style: rialTextStyle,
+                          style: kRialTextStyle,
                         ),
                       ],
                     ),
@@ -162,7 +162,7 @@ class ProductScreen extends GetView<ProductController> {
                         ),
                         const Text(
                           'ریال',
-                          style: rialTextStyle,
+                          style: kRialTextStyle,
                         ),
                       ],
                     ),
