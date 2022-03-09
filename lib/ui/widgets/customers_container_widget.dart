@@ -18,10 +18,14 @@ class CustomersContainerWidget extends StatelessWidget {
     this.miniDataTable = true,
     this.isBox = true,
     this.customerList,
+    this.selectCustomer = false,
+    this.fromSearch = false,
   }) : super(key: key);
   final bool miniDataTable;
   final bool isBox;
   final List<Customer>? customerList;
+  final bool selectCustomer;
+  final bool fromSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -101,20 +105,34 @@ class CustomersContainerWidget extends StatelessWidget {
                               ),
                             ],
                             onSelectChanged: (bool? selected) {
-                              Get.toNamed(Routes.customerBalanceScreen);
+                              if (selectCustomer) {
+                                if (fromSearch) {
+                                  Get.back();
+                                  Get.back(result: customer);
+                                } //
+                                else {
+                                  Get.back(result: customer);
+                                }
+                              } //
+                              else {
+                                Get.toNamed(Routes.customerBalanceScreen);
+                              }
                             },
                             onLongPress: () {
-                              StaticMethods.productBottomSheet(
-                                context,
-                                name: customer.name!,
-                                onEditTap: () {
-                                  Get.toNamed(
-                                    Routes.createCustomerScreen,
-                                    arguments: customer,
-                                  );
-                                },
-                                onDeleteTap: () {},
-                              );
+                              selectCustomer
+                                  ? null
+                                  : StaticMethods.productBottomSheet(
+                                      context,
+                                      name: customer.name!,
+                                      onEditTap: () {
+                                        Get.toNamed(
+                                          Routes.createCustomerScreen,
+                                          arguments: customer,
+                                        );
+                                      },
+                                      showDelete: false,
+                                      onDeleteTap: () {},
+                                    );
                             },
                           );
                         },

@@ -1,6 +1,5 @@
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/product_model.dart';
-import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
@@ -165,17 +164,11 @@ class ProductController extends GetxController {
     return list;
   }
 
-  void navigateToCategory(context, String categoryName) async {
+  void navigateToCategory(context, String categoryName,bool selectProduct,bool fromSearch) async {
     productCategoryName = categoryName;
     allProductCategory.value = getProductsOfCategory(productCategoryName);
-    await pushNewScreen(context, screen: const ProductFolderScreen());
+    await pushNewScreen(context, screen: ProductFolderScreen(selectProduct: selectProduct,fromSearch: fromSearch,));
     productCategoryName = defaultCategoryName;
-  }
-
-  void navigateToCategorySelectProduct(String categoryName) {
-    productCategoryName = categoryName;
-    allProductCategory.value = getProductsOfCategory(productCategoryName);
-    Get.toNamed(Routes.productFolderScreen,arguments: true);
   }
 
   void addNewCategory() async {

@@ -32,14 +32,14 @@ class HomeController extends GetxController {
     getShowHelp('OneSellFactorHelp', showOneSellHelp);
     getShowHelp('buyFactorHelp', showBuyHelp);
   }
-  
-  changeShowHelp(String key,RxBool value)async{
+
+  changeShowHelp(String key, RxBool value) async {
     var boxSetting = Hive.box(settingBox);
     value.value = !value.value;
     await boxSetting.put(key, value.value);
   }
-  
-  getShowHelp(String key,RxBool showFactor)async{
+
+  getShowHelp(String key, RxBool showFactor) async {
     var boxSetting = Hive.box(settingBox);
     showFactor.value = await boxSetting.get(key);
   }

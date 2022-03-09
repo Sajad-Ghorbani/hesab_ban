@@ -5,6 +5,8 @@ import 'package:hesab_ban/bindings/home_binding.dart';
 import 'package:hesab_ban/ui/screens/create_check_screen.dart';
 import 'package:hesab_ban/ui/screens/create_customer_screen.dart';
 import 'package:hesab_ban/ui/screens/customer_balance_screen.dart';
+import 'package:hesab_ban/ui/screens/customers_screen.dart';
+import 'package:hesab_ban/ui/screens/factor_screen.dart';
 import 'package:hesab_ban/ui/screens/main_screen.dart';
 import 'package:hesab_ban/ui/screens/one_sell_factor_screen.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
@@ -45,6 +47,10 @@ class AppPages {
       page: () => const CustomerBalanceScreen(),
     ),
     GetPage(
+      name: Routes.customersScreen,
+      page: () => const CustomersScreen(),
+    ),
+    GetPage(
       name: Routes.createCheckScreen,
       page: () => const CreateCheckScreen(),
       binding: CheckBinding(),
@@ -52,6 +58,11 @@ class AppPages {
     GetPage(
       name: Routes.oneSellFactorScreen,
       page: () => const OneSellFactorScreen(),
+      binding: FactorBinding(),
+    ),
+    GetPage(
+      name: Routes.factorScreen,
+      page: () => const FactorScreen(),
       binding: FactorBinding(),
     ),
   ];

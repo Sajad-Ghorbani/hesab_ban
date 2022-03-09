@@ -9,8 +9,9 @@ import '../../controllers/search_controller.dart';
 import '../widgets/box_container_widget.dart';
 
 class SearchCustomerScreen extends StatelessWidget {
-  SearchCustomerScreen({Key? key}) : super(key: key);
+  SearchCustomerScreen(this.selectCustomer,{Key? key}) : super(key: key);
   SearchController controller = Get.put(SearchController());
+  final bool selectCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,8 @@ class SearchCustomerScreen extends StatelessWidget {
                             isBox: false,
                             customerList: controller.customerList,
                             miniDataTable: false,
+                            selectCustomer: selectCustomer,
+                            fromSearch: true,
                           );
                         },
                       ),

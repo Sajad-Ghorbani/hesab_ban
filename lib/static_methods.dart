@@ -1,13 +1,38 @@
 import 'dart:ui';
 
+import 'package:flutter/services.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
+import 'models/bill_model.dart';
+import 'models/cash_model.dart';
+import 'models/category_model.dart';
+import 'models/check_model.dart';
+import 'models/customer_model.dart';
+import 'models/factor_model.dart';
+import 'models/factor_row.dart';
 import 'models/product_model.dart';
+import 'models/user_model.dart';
 
 class StaticMethods {
+  static void hiveAdapters() {
+    Hive.registerAdapter(UserAdapter());
+    Hive.registerAdapter(ProductAdapter());
+    Hive.registerAdapter(UnitAdapter());
+    Hive.registerAdapter(FactorAdapter());
+    Hive.registerAdapter(FactorRowAdapter());
+    Hive.registerAdapter(CustomerAdapter());
+    Hive.registerAdapter(CheckAdapter());
+    Hive.registerAdapter(BillAdapter());
+    Hive.registerAdapter(CategoryAdapter());
+    Hive.registerAdapter(TypeOfCheckAdapter());
+    Hive.registerAdapter(TypeOfFactorAdapter());
+    Hive.registerAdapter(CashAdapter());
+  }
+
   static void showSnackBar({
     required String title,
     required String description,
@@ -38,7 +63,7 @@ class StaticMethods {
   }) {
     Get.defaultDialog(
       title: 'نام محصول: ${product.name!}',
-      onWillPop: ()async{
+      onWillPop: () async {
         productPriceController.clear();
         productCountController.clear();
         return true;
@@ -109,6 +134,56 @@ class StaticMethods {
     );
   }
 
+  static void showCashPaymentDialog(
+    TextEditingController cashPaymentController,
+    VoidCallback onConfirmTap,
+  ) {
+    Get.defaultDialog(
+      title: 'ورود مبلغ',
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const Text('مبلغ'),
+          const SizedBox(
+            width: 10,
+          ),
+          SizedBox(
+            width: 120,
+            height: 30,
+            child: TextField(
+              controller: cashPaymentController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Text(
+            'ریال',
+            style: kRialTextStyle,
+          ),
+        ],
+      ),
+      confirm: GestureDetector(
+        onTap: onConfirmTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            color: kGreyColor,
+          ),
+          child: const Icon(Icons.check),
+        ),
+      ),
+    );
+  }
+
   static void showFolderDialog(
       {required String title,
       required TextEditingController controller,
@@ -161,6 +236,7 @@ class StaticMethods {
     required String name,
     required VoidCallback onEditTap,
     required VoidCallback onDeleteTap,
+    bool showDelete = true,
   }) async {
     await Get.bottomSheet(
       Column(
@@ -199,12 +275,19 @@ class StaticMethods {
                         child: Text('ویرایش'),
                       ),
                     ),
-                    const Divider(),
-                    GestureDetector(
-                      onTap: onDeleteTap,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('حذف'),
+                    Visibility(
+                      visible: showDelete,
+                      child: Column(
+                        children: [
+                          const Divider(),
+                          GestureDetector(
+                            onTap: onDeleteTap,
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('حذف'),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

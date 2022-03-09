@@ -8,12 +8,12 @@ class ScrollToUp extends StatelessWidget {
     required this.showFab,
     required this.scrollController,
     required this.child,
-    this.selectProductScreen = false,
+    this.hideBottomSheet = false,
   }) : super(key: key);
   final ScrollController scrollController;
   final Widget child;
   final RxBool showFab;
-  final bool selectProductScreen;
+  final bool hideBottomSheet;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ScrollToUp extends StatelessWidget {
           child: child,
         ),
         Positioned(
-          bottom: selectProductScreen ? 10 : 70,
+          bottom: hideBottomSheet ? 10 : 70,
           right: 10,
           child: Obx(
             () => AnimatedScale(

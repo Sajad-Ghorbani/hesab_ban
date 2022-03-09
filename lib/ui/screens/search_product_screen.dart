@@ -11,7 +11,9 @@ import '../../models/category_model.dart';
 
 // ignore: must_be_immutable
 class SearchProductScreen extends StatelessWidget {
-  SearchProductScreen({Key? key}) : super(key: key);
+  SearchProductScreen({Key? key, required this.selectProduct})
+      : super(key: key);
+  final bool selectProduct;
   SearchController controller = Get.put(SearchController());
 
   @override
@@ -47,6 +49,8 @@ class SearchProductScreen extends StatelessWidget {
                                     index: index,
                                     category: category,
                                     categoryList: controller.categoryList,
+                                    selectProductScreen: selectProduct,
+                                    fromSearch: true,
                                   );
                                 },
                                 childCount: controller.categoryList.length,
@@ -66,11 +70,15 @@ class SearchProductScreen extends StatelessWidget {
                           return SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                Product product =
-                                    controller.productList[index];
+                                Product product = controller.productList[index];
                                 return ProductWidget(
                                   product: product,
                                   productList: controller.productList,
+                                  selectProductScreen: selectProduct,
+                                  selectProduct: () {
+                                    Get.back();
+                                    Get.back(result: product);
+                                  },
                                 );
                               },
                               childCount: controller.productList.length,

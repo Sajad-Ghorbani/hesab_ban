@@ -17,6 +17,7 @@ class CustomersScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    bool selectCustomer = Get.arguments ?? false;
     return BaseWidget(
       title: 'لیست مشتریان',
       appBarLeading: IconButton(
@@ -29,39 +30,46 @@ class CustomersScreen extends GetView<HomeController> {
       child: ScrollToUp(
         showFab: controller.showCustomersFab,
         scrollController: controller.customerScreenScrollController,
+        hideBottomSheet: selectCustomer,
         child: CustomScrollView(
           controller: controller.customerScreenScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverToBoxAdapter(
-                child: GridMenuWidget(
-                  title: 'ایجاد حساب جدید',
-                  onTap: () {
-                    Get.toNamed(Routes.createCustomerScreen);
-                  },
+            if (selectCustomer)
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
+                ),
+              )
+            else
+              SliverPadding(
+                padding: const EdgeInsets.all(10),
+                sliver: SliverToBoxAdapter(
+                  child: GridMenuWidget(
+                    title: 'ایجاد حساب جدید',
+                    onTap: () {
+                      Get.toNamed(Routes.createCustomerScreen);
+                    },
+                  ),
                 ),
               ),
-            ),
             SliverToBoxAdapter(
               child: SearchBoxWidget(
                 searchText: 'جست و جو',
-                openBuilderWidget: SearchCustomerScreen(),
+                openBuilderWidget: SearchCustomerScreen(selectCustomer),
                 onClosed: (value) {
                   Get.find<SearchController>().clearScreen();
                 },
               ),
             ),
-            GetBuilder<HomeController>(
-              builder: (myController) {
-                return const BoxContainerWidget(
-                  child: CustomersContainerWidget(
-                    miniDataTable: false,
-                  ),
-                );
-              }
-            ),
+            GetBuilder<HomeController>(builder: (myController) {
+              return BoxContainerWidget(
+                child: CustomersContainerWidget(
+                  miniDataTable: false,
+                  selectCustomer: selectCustomer,
+                ),
+              );
+            }),
             const SliverToBoxAdapter(
               child: SizedBox(
                 height: 75,

@@ -11,11 +11,16 @@ import '../../routes/app_pages.dart';
 import '../widgets/grid_menu_widget.dart';
 
 class ProductFolderScreen extends GetView<ProductController> {
-  const ProductFolderScreen({Key? key}) : super(key: key);
+  const ProductFolderScreen({
+    Key? key,
+    this.selectProduct = false,
+    this.fromSearch = false,
+  }) : super(key: key);
+  final bool selectProduct;
+  final bool fromSearch;
 
   @override
   Widget build(BuildContext context) {
-    bool selectProduct = Get.arguments ?? false;
     return BaseWidget(
       title: controller.productCategoryName,
       appBarLeading: IconButton(
@@ -28,7 +33,7 @@ class ProductFolderScreen extends GetView<ProductController> {
       child: ScrollToUp(
         showFab: controller.showCategoryProductsFab,
         scrollController: controller.scrollController,
-        selectProductScreen: selectProduct,
+        hideBottomSheet: selectProduct,
         child: CustomScrollView(
           controller: controller.scrollController,
           physics: const BouncingScrollPhysics(),
@@ -63,6 +68,7 @@ class ProductFolderScreen extends GetView<ProductController> {
                         productList: controller.allProductCategory.value,
                         selectProductScreen: selectProduct,
                         selectProduct: () {
+                          if (fromSearch) Navigator.pop(context);
                           Navigator.pop(context);
                           Get.back(result: product);
                         },

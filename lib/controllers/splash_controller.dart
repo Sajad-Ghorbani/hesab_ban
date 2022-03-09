@@ -1,4 +1,5 @@
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/bill_model.dart';
 import 'package:hesab_ban/models/category_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
@@ -26,6 +27,7 @@ class SplashController extends GetxController {
     await Hive.openBox<Factor>(buyFactorBox);
     await Hive.openBox<Factor>(sellFactorBox);
     await Hive.openBox<Factor>(oneSellFactorBox);
+    await Hive.openBox<Bill>(billsBox);
     var boxSetting = await Hive.openBox(settingBox);
     if(boxSetting.isEmpty){
       boxSetting.put('sellFactorHelp', true);

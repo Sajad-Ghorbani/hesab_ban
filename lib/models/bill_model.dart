@@ -1,3 +1,4 @@
+import 'package:hesab_ban/models/cash_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
 import 'customer_model.dart';
@@ -20,16 +21,40 @@ class Bill extends HiveObject {
   List<Check>? check;
 
   @HiveField(4)
-  int? cashPayment;
+  List<Cash>? cash;
 
-  Bill({this.id, this.customer, this.factor, this.check, this.cashPayment});
+  @HiveField(5)
+  int _cashPayment = 0;
+
+  int? get cashPayment {
+    _cashPayment = customer!.initialAccountBalance!;
+    if (factor != null) {
+      for (var item in factor!) {
+        _cashPayment = _cashPayment + item.factorSum!;
+      }
+    }
+    if (check != null) {
+      for (var item in check!) {
+        _cashPayment = _cashPayment + item.checkAmount!;
+      }
+    }
+    if (cash != null) {
+      for (var item in cash!) {
+        _cashPayment = _cashPayment + item.cashAmount!;
+      }
+    }
+    return _cashPayment;
+  }
+
+  Bill({this.id, this.customer, this.factor, this.check, this.cash});
 
   Bill.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     customer = json['customer'];
     factor = json['factor'].cast<Factor>();
     check = json['check'].cast<Check>();
-    cashPayment = json['cash_payment'];
+    cash = json['cash'].cast<Cash>();
+    _cashPayment = json['cash_payment'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +63,8 @@ class Bill extends HiveObject {
     data['customer'] = customer;
     data['factor'] = factor;
     data['check'] = check;
-    data['cash_payment'] = cashPayment;
+    data['cash'] = cash;
+    data['cash_payment'] = _cashPayment;
     return data;
   }
 }

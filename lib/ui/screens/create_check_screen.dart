@@ -25,7 +25,7 @@ class CreateCheckScreen extends GetView<CheckController> {
           controller.check!.checkDeliveryDate.toString();
     }
     return BaseWidget(
-      title: 'ایجاد حساب جدید',
+      title: 'ورود چک',
       resizeToAvoidBottomInset: false,
       appBarLeading: IconButton(
         onPressed: () {

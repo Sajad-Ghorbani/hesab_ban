@@ -1,11 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/factor_controller.dart';
-import 'package:hesab_ban/models/factor_row.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/factor_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -24,7 +25,7 @@ class OneSellFactorScreen extends GetView<FactorController> {
         title: 'فاکتور خرده فروشی',
         appBarLeading: IconButton(
           onPressed: () {
-            Get.back();
+            if (controller.willPop()) Get.back();
           },
           icon: const Icon(Icons.arrow_back_ios),
           splashRadius: 30,
@@ -32,7 +33,7 @@ class OneSellFactorScreen extends GetView<FactorController> {
         appBarActions: [
           IconButton(
             onPressed: () {
-              controller.saveFactor(context);
+              controller.saveFactor();
             },
             icon: const Icon(FontAwesomeIcons.solidSave),
             splashRadius: 30,
@@ -51,7 +52,16 @@ class OneSellFactorScreen extends GetView<FactorController> {
                       Container(
                         height: 80,
                         padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(color: kGreyColor),
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                kBlueColor,
+                                kDarkGreyColor,
+                              ],
+                              begin: Alignment.centerRight,
+                              end: Alignment.centerLeft,
+                              stops: [0, 0.7]),
+                        ),
                         child: Row(
                           children: [
                             const Text('شماره فاکتور:'),
@@ -88,105 +98,7 @@ class OneSellFactorScreen extends GetView<FactorController> {
                     ],
                   ),
                 ),
-                BoxContainerWidget(
-                  child: SliverPadding(
-                    padding: const EdgeInsets.all(10),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Obx(
-                              () => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: DataTable(
-                                  columnSpacing: 30,
-                                  showCheckboxColumn: false,
-                                  columns: [
-                                    const DataColumn(
-                                      label: Text('ردیف'),
-                                      numeric: true,
-                                    ),
-                                    const DataColumn(
-                                      label: Text('شرح کالا'),
-                                    ),
-                                    const DataColumn(
-                                      label: Text('تعداد'),
-                                    ),
-                                    DataColumn(
-                                      label: Row(
-                                        children: const [
-                                          Text('قیمت'),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            '(ریال)',
-                                            style: kRialTextStyle,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Row(
-                                        children: const [
-                                          Text('قیمت کل'),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            '(ریال)',
-                                            style: kRialTextStyle,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                  rows: List.generate(
-                                    controller.listFactorRow.length,
-                                    (index) {
-                                      FactorRow row =
-                                          controller.listFactorRow[index];
-                                      return DataRow(
-                                        onSelectChanged: (selected){
-                                          controller.onRowTapped(row,index);
-                                        },
-                                        onLongPress: (){
-                                          controller.onRowLongPressed(context, row, index);
-                                        },
-                                        cells: [
-                                          DataCell(
-                                            Text('${index + 1}'),
-                                          ),
-                                          DataCell(
-                                            Text(row.productName),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                                '${row.productCount.toString().seRagham()} ${row.productUnit}'),
-                                          ),
-                                          DataCell(
-                                            Text('${row.productPrice}'
-                                                .seRagham()),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                                '${row.productSum}'.seRagham()),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                const FactorContainerWidget(),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: 75,
@@ -201,31 +113,39 @@ class OneSellFactorScreen extends GetView<FactorController> {
                       bottom: 10,
                       right: 10,
                       left: 10,
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: const BoxDecoration(
-                          color: kGreyColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
-                          ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(15),
                         ),
-                        child: Row(
-                          children: [
-                            const Text('#'),
-                            const SizedBox(
-                              width: 5,
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: kGreyColor.withOpacity(0.3),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(15),
+                              ),
                             ),
-                            const Text('جمع کل'),
-                            const Spacer(),
-                            Text(controller.factorSum.value.seRagham()),
-                            const SizedBox(
-                              width: 5,
+                            child: Row(
+                              children: [
+                                const Text('#'),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text('جمع کل'),
+                                const Spacer(),
+                                Text(controller.factorSum.value.seRagham()),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                const Text(
+                                  'ریال',
+                                  style: kRialTextStyle,
+                                ),
+                              ],
                             ),
-                            const Text(
-                              'ریال',
-                              style: kRialTextStyle,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),

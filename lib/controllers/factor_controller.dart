@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/bill_model.dart';
+import 'package:hesab_ban/models/cash_model.dart';
+import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
 import 'package:hesab_ban/models/factor_row.dart';
 import 'package:hesab_ban/static_methods.dart';
@@ -14,14 +18,30 @@ class FactorController extends GetxController {
   TypeOfFactor typeOfFactor = Get.arguments;
   RxList<FactorRow> listFactorRow = <FactorRow>[].obs;
   RxString factorSum = '-1'.obs;
+  RxInt cashAmount = 0.obs;
+  RxInt checkAmount = 0.obs;
+  Check check = Check();
   TextEditingController productCountController = TextEditingController();
   TextEditingController productPriceController = TextEditingController();
+  TextEditingController cashPaymentController = TextEditingController();
   String factorNumber = '-1';
+
+  RxBool customerSelected = false.obs;
+  Rx<Customer> customer = Customer().obs;
+  Factor? newFactor;
 
   @override
   void onInit() {
     super.onInit();
     getFactorNumber();
+  }
+
+  @override
+  onClose() {
+    super.onClose();
+    productCountController.dispose();
+    productPriceController.dispose();
+    cashPaymentController.dispose();
   }
 
   getFactorNumber() {
@@ -45,22 +65,22 @@ class FactorController extends GetxController {
     }
   }
 
-  void saveFactor(BuildContext context) {
-    switch (typeOfFactor) {
-      case TypeOfFactor.oneSell:
-        saveOneSellFactor();
-        break;
-      case TypeOfFactor.buy:
-      case TypeOfFactor.sell:
-    }
-  }
-
   void selectProduct(context) async {
     Product product = await Get.toNamed(
       Routes.allProductScreen,
       arguments: true,
     );
-    productPriceController.text = product.priceOfOneSell.toString();
+    switch (typeOfFactor) {
+      case TypeOfFactor.oneSell:
+        productPriceController.text = product.priceOfOneSell.toString();
+        break;
+      case TypeOfFactor.buy:
+        productPriceController.text = product.priceOfBuy.toString();
+        break;
+      case TypeOfFactor.sell:
+        productPriceController.text = product.priceOfMajorSell.toString();
+        break;
+    }
     StaticMethods.inputProductCount(
       product: product,
       onConfirm: () {
@@ -133,59 +153,6 @@ class FactorController extends GetxController {
     }
   }
 
-  void saveOneSellFactor() async {
-    var factorBox = Hive.box<Factor>(oneSellFactorBox);
-    var productsBox = Hive.box<Product>(allProductBox);
-    bool saveFactor = false;
-    for (var item in listFactorRow) {
-      for (var product in productsBox.values) {
-        if (item.productName == product.name!) {
-          if (product.count! - item.productCount < 0) {
-            StaticMethods.showSnackBar(
-              title: 'خطا',
-              description:
-                  'موجودی محصول ${product.name} کمتر از مقداری ایست که در فاکتور وارد کرده اید.\n'
-                  'لطفا مقدار وارد شده در فاکتور را تصحیح کنید.',
-              duration: const Duration(seconds: 5),
-            );
-            saveFactor = false;
-            return;
-          } //
-          else {
-            saveFactor = true;
-          }
-        }
-      }
-    }
-    if (saveFactor) {
-      for (var item in listFactorRow) {
-        for (var product in productsBox.values) {
-          if (item.productName == product.name!) {
-            product.count = product.count! - item.productCount;
-            product.save();
-          }
-        }
-      }
-      Factor oneSellFactor = Factor(
-        factorDate: DateTime.now(),
-        factorRows: listFactorRow,
-        factorSum: int.parse(factorSum.value),
-        typeOfFactor: typeOfFactor,
-      );
-      int index = await factorBox.add(oneSellFactor);
-      oneSellFactor.id = index;
-      oneSellFactor.save();
-      listFactorRow.clear();
-      factorSum.value = '-1';
-      Get.back();
-      StaticMethods.showSnackBar(
-        title: 'تبریک!',
-        description: 'فاکتور شما با موفقیت ثبت شد.',
-        color: kLightGreenColor,
-      );
-    }
-  }
-
   onRowTapped(FactorRow row, int index) {
     updateRow(row, index);
   }
@@ -235,5 +202,200 @@ class FactorController extends GetxController {
       productCountController: productCountController,
       productPriceController: productPriceController,
     );
+  }
+
+  void selectCustomer() async {
+    customer.value = await Get.toNamed(
+      Routes.customersScreen,
+      arguments: true,
+    );
+    if (customer.value != null) {
+      customerSelected.value = true;
+    }
+  }
+
+  Future<bool> saveFactor() async {
+    Box<Factor>? factorBox;
+    switch (typeOfFactor) {
+      case TypeOfFactor.oneSell:
+        factorBox = Hive.box<Factor>(oneSellFactorBox);
+        break;
+      case TypeOfFactor.buy:
+        factorBox = Hive.box<Factor>(buyFactorBox);
+        break;
+      case TypeOfFactor.sell:
+        factorBox = Hive.box<Factor>(sellFactorBox);
+        break;
+    }
+    if (typeOfFactor != TypeOfFactor.oneSell) {
+      if (customer.value.name == null) {
+        StaticMethods.showSnackBar(
+          title: 'خطا',
+          description: typeOfFactor == TypeOfFactor.buy
+              ? 'فروشنده نمی تواند خالی باشد.\nفروشنده را انتخاب کنید.'
+              : 'خریدار نمی تواند خالی باشد.\nخریدار را انتخاب کنید.',
+        );
+        return false;
+      }
+    }
+    var productsBox = Hive.box<Product>(allProductBox);
+    bool saveFactor = false;
+    if (typeOfFactor == TypeOfFactor.buy) {
+      saveFactor = true;
+    } //
+    else {
+      for (var item in listFactorRow) {
+        for (var product in productsBox.values) {
+          if (item.productName == product.name!) {
+            if (product.count! - item.productCount < 0) {
+              StaticMethods.showSnackBar(
+                title: 'خطا',
+                description:
+                    'موجودی محصول ${product.name} کمتر از مقداری ایست که در فاکتور وارد کرده اید.\n'
+                    'لطفا مقدار وارد شده در فاکتور را تصحیح کنید.',
+                duration: const Duration(seconds: 5),
+              );
+              saveFactor = false;
+              return false;
+            } //
+            else {
+              saveFactor = true;
+            }
+          }
+        }
+      }
+    }
+    if (saveFactor) {
+      for (var item in listFactorRow) {
+        for (var product in productsBox.values) {
+          if (item.productName == product.name!) {
+            if (typeOfFactor == TypeOfFactor.buy) {
+              product.count = product.count! + item.productCount;
+              product.priceOfBuy = item.productPrice;
+            } //
+            else {
+              product.count = product.count! - item.productCount;
+            }
+            product.save();
+          }
+        }
+      }
+      newFactor = Factor(
+        factorDate: DateTime.now(),
+        factorRows: listFactorRow,
+        factorSum: typeOfFactor == TypeOfFactor.buy
+            ? int.parse(factorSum.value)
+            : -int.parse(factorSum.value),
+        typeOfFactor: typeOfFactor,
+        customer: customer.value,
+      );
+      int index = await factorBox.add(newFactor!);
+      newFactor!.id = index;
+      await newFactor!.save();
+      listFactorRow.clear();
+      factorSum.value = '-1';
+      Get.back();
+      StaticMethods.showSnackBar(
+        title: 'تبریک!',
+        description: 'فاکتور شما با موفقیت ثبت شد.',
+        color: kLightGreenColor,
+      );
+      return true;
+    }
+    return false;
+  }
+
+  void saveBill() async {
+    bool status = await saveFactor();
+    if (status) {
+      await saveCheck();
+      var billBox = Hive.box<Bill>(billsBox);
+      Cash cash = Cash(
+        cashAmount: typeOfFactor == TypeOfFactor.buy
+            ? cashAmount.value
+            : -cashAmount.value,
+        cashDate: DateTime.now(),
+      );
+      bool billExist = billBox.keys.any((key) => key == customer.value.id);
+      if (billExist) {
+        Bill newBill =
+            billBox.values.firstWhere((bill) => bill.id == customer.value.id);
+        newBill.factor!.add(newFactor!);
+        if (checkAmount.value != 0) {
+          newBill.check!.add(check);
+        }
+        if (cashAmount.value != 0) {
+          newBill.cash!.add(cash);
+        }
+        await newBill.save();
+      } //
+      else {
+        Bill newBill = Bill(
+          id: customer.value.id,
+          customer: customer.value,
+          factor: [newFactor!],
+          check: checkAmount.value != 0 ? [check] : [],
+          cash: cashAmount.value != 0 ? [cash] : [],
+        );
+        await billBox.put(customer.value.id, newBill);
+      }
+      billBox.values.forEach((element) {
+        print('-----------*********-----------');
+        print(element.id);
+        print(element.customer!.name);
+        print(element.cashPayment);
+        if (element.check != null) {
+          element.check!.forEach((element) {
+            print(element.checkAmount);
+            print(element.customerCheck!.name);
+          });
+        }
+      });
+    }
+  }
+
+  void cashPaymentTapped() {
+    cashPaymentController.text = cashAmount.value.toString();
+    StaticMethods.showCashPaymentDialog(
+      cashPaymentController,
+      () {
+        Get.back();
+        cashAmount.value = int.parse(cashPaymentController.text);
+        cashPaymentController.clear();
+      },
+    );
+  }
+
+  void checkPaymentTapped() async {
+    String typeOfCheck = typeOfFactor == TypeOfFactor.buy ? 'send' : 'received';
+    if (customer.value.id == null) {
+      StaticMethods.showSnackBar(
+        title: 'خطا',
+        description: 'لطفا طرف حساب را انتخاب کنید.',
+      );
+    } //
+    else {
+      check = await Get.toNamed(
+        Routes.createCheckScreen,
+        parameters: {
+          'from_factor': 'true',
+          'customer_id': customer.value.id.toString(),
+          'type_of_check': typeOfCheck,
+        },
+      );
+      checkAmount.value =
+          check.checkAmount! < 0 ? -check.checkAmount! : check.checkAmount!;
+      print('////////////********//////////////');
+      print(check.customerCheck!.name);
+    }
+  }
+
+  Future<void> saveCheck() async {
+    var checkBox = Hive.box<Check>(checksBox);
+    int index = await checkBox.add(check);
+    check.id = index;
+    await check.save();
+    print('//////////////////////////');
+    print('check saved');
   }
 }

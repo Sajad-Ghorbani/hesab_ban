@@ -15,13 +15,13 @@ class CategoryWidget extends StatelessWidget {
     required this.category,
     required this.categoryList,
     this.selectProductScreen = false,
-    this.openCategory,
+    this.fromSearch = false,
   }) : super(key: key);
   final int index;
   final Category category;
   final List<Category> categoryList;
   final bool selectProductScreen;
-  final VoidCallback? openCategory;
+  final bool fromSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +43,14 @@ class CategoryWidget extends StatelessWidget {
             FontAwesomeIcons.solidFolder,
             color: kTealColor,
           ),
-          onTap: selectProductScreen
-              ? openCategory
-              : () {
-                  Get.find<ProductController>().navigateToCategory(
-                    context,
-                    category.name!,
-                  );
-                },
+          onTap: () {
+            Get.find<ProductController>().navigateToCategory(
+              context,
+              category.name!,
+              selectProductScreen,
+              fromSearch,
+            );
+          },
           onLongPress: selectProductScreen
               ? null
               : () {

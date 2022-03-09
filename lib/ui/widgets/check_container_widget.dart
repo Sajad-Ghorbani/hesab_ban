@@ -29,7 +29,12 @@ class CheckContainerWidget extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: Hive.box<Check>(checksBox).listenable(),
       builder: (context, Box<Check> box, _) {
-        if (box.isEmpty) {
+        List<Check> list = isBox
+            ? box.values
+                .where((element) => element.typeOfCheck == typeOfCheck)
+                .toList()
+            : checkList!;
+        if (list.isEmpty) {
           return SliverToBoxAdapter(
             child: Column(
               children: const [
@@ -45,11 +50,6 @@ class CheckContainerWidget extends StatelessWidget {
           );
         } //
         else {
-          List<Check> list = isBox
-              ? box.values
-                  .where((element) => element.typeOfCheck == typeOfCheck)
-                  .toList()
-              : checkList!;
           list.sort((a, b) {
             return a.checkDeliveryDate!.compareTo(b.checkDeliveryDate!);
           });
@@ -119,9 +119,10 @@ class CheckContainerWidget extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('${check.checkAmount}'
-                                        .toPersianDigit()
-                                        .seRagham()),
+                                    Text(
+                                        '${check.checkAmount! < 0 ? -check.checkAmount! : check.checkAmount}'
+                                            .toPersianDigit()
+                                            .seRagham()),
                                     const SizedBox(
                                       width: 5,
                                     ),
@@ -165,9 +166,9 @@ class CheckContainerWidget extends StatelessWidget {
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: const BoxDecoration(
-                                  color: kGreyColor,
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                  ),
+                                      color: kGreyColor,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
                                   child: const Text('مشاهده همه'),
                                 ),
                               ),

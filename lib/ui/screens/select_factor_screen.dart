@@ -40,7 +40,12 @@ class SelectFactorScreen extends GetView<HomeController> {
                     'فاکتور سربرگ دار',
                   ],
                   showHelp: controller.showSellHelp.value,
-                  onFactorTap: () {},
+                  onFactorTap: () {
+                    Get.toNamed(
+                      Routes.factorScreen,
+                      arguments: TypeOfFactor.sell,
+                    );
+                  },
                   showChanged: (value) {
                     controller.changeShowHelp(
                         'sellFactorHelp', controller.showSellHelp);
@@ -57,7 +62,12 @@ class SelectFactorScreen extends GetView<HomeController> {
                     'فاکتور سربرگ دار',
                   ],
                   showHelp: controller.showBuyHelp.value,
-                  onFactorTap: () {},
+                  onFactorTap: () {
+                    Get.toNamed(
+                      Routes.factorScreen,
+                      arguments: TypeOfFactor.buy,
+                    );
+                  },
                   showChanged: (value) {
                     controller.changeShowHelp(
                         'buyFactorHelp', controller.showBuyHelp);

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+import '../models/bill_model.dart';
+
 class CheckController extends GetxController {
   TextEditingController checkBankNameController = TextEditingController();
   TextEditingController checkNumberController = TextEditingController();
@@ -21,15 +23,37 @@ class CheckController extends GetxController {
   Customer? checkCustomer;
 
   Check? check = Get.arguments;
+  String? fromFactor = Get.parameters['from_factor'];
 
   @override
-  onInit(){
+  onInit() {
     super.onInit();
-    showSelectCustomerBottomSheets();
+    if (fromFactor == null) {
+      showSelectCustomerBottomSheets();
+    } //
+    else {
+      setCheckDetailFromFactor();
+    }
+  }
+
+  setCheckDetailFromFactor() {
+    var customerBox = Hive.box<Customer>(customersBox);
+    String type = Get.parameters['type_of_check']!;
+    String customerId = Get.parameters['customer_id']!;
+    for (var item in TypeOfCheck.values) {
+      if (item.name == type) {
+        typeOfCheck = item;
+      }
+    }
+    for (var item in customerBox.values) {
+      if (item.id == int.parse(customerId)) {
+        checkCustomer = item;
+      }
+    }
   }
 
   @override
-  onClose(){
+  onClose() {
     super.onClose();
     checkBankNameController.dispose();
     checkNumberController.dispose();
@@ -45,7 +69,6 @@ class CheckController extends GetxController {
     }
     Get.back();
   }
-
 
   List<DropdownMenuItem<int>> setCustomerList() {
     var customerBox = Hive.box<Customer>(customersBox);
@@ -98,7 +121,7 @@ class CheckController extends GetxController {
     else if (checkCustomer == null) {
       StaticMethods.showSnackBar(
           title: 'خطا', description: 'گیرنده چک را مشخص نکردید.');
-      Future.delayed(const Duration(seconds: 2),(){
+      Future.delayed(const Duration(seconds: 2), () {
         StaticMethods.selectCustomerCheck(
           title: typeOfCheck == TypeOfCheck.send
               ? 'گیرنده چک را انتخاب کنید'
@@ -125,7 +148,9 @@ class CheckController extends GetxController {
       });
     } //
     else {
-      int amount = int.parse(checkAmountController.text.trim());
+      int amount = typeOfCheck == TypeOfCheck.received
+          ? int.parse(checkAmountController.text.trim())
+          : -int.parse(checkAmountController.text.trim());
       var checkBox = Hive.box<Check>(checksBox);
       Check newCheck = Check(
         bankName: bankName,
@@ -136,15 +161,20 @@ class CheckController extends GetxController {
         customerCheck: checkCustomer,
         typeOfCheck: typeOfCheck,
       );
+      if (fromFactor != null) {
+        Get.back(result: newCheck);
+        return;
+      }
       int index = await checkBox.add(newCheck);
       newCheck.id = index;
-      newCheck.save();
+      await newCheck.save();
+      await addToCustomerBill(newCheck);
+      resetCheckScreen(context);
       StaticMethods.showSnackBar(
         title: 'تبریک!',
         description: 'ثبت چک با موفقیت انجام شد.',
         color: kLightGreenColor,
       );
-      resetCheckScreen(context);
     }
   }
 
@@ -166,7 +196,7 @@ class CheckController extends GetxController {
   void showSelectCustomerBottomSheets() {
     Future.delayed(
       const Duration(milliseconds: 200),
-          () async {
+      () async {
         await StaticMethods.selectCheckDetails(
           onMeTap: () {
             setTypeOfCheck(true);
@@ -177,7 +207,7 @@ class CheckController extends GetxController {
         );
         Future.delayed(
           const Duration(milliseconds: 200),
-              () async {
+          () async {
             await StaticMethods.selectCustomerCheck(
               title: typeOfCheck == TypeOfCheck.send
                   ? 'گیرنده چک را انتخاب کنید'
@@ -191,5 +221,24 @@ class CheckController extends GetxController {
         );
       },
     );
+  }
+
+  addToCustomerBill(Check check) async {
+    var billBox = Hive.box<Bill>(billsBox);
+    bool billExist = billBox.keys.any((key) => key == checkCustomer!.id);
+    if (billExist) {
+      Bill newBill =
+          billBox.values.firstWhere((bill) => bill.id == checkCustomer!.id);
+      newBill.check!.add(check);
+      await newBill.save();
+    } //
+    else {
+      Bill newBill = Bill(
+        id: checkCustomer!.id,
+        customer: checkCustomer!,
+        check: [check],
+      );
+      await billBox.put(checkCustomer!.id, newBill);
+    }
   }
 }

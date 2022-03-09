@@ -37,7 +37,7 @@ class AllProductScreen extends GetView<ProductController> {
       child: ScrollToUp(
         showFab: controller.showProductsFab,
         scrollController: controller.scrollController,
-        selectProductScreen: selectProduct,
+        hideBottomSheet: selectProduct,
         child: CustomScrollView(
           controller: controller.scrollController,
           physics: const BouncingScrollPhysics(),
@@ -81,7 +81,7 @@ class AllProductScreen extends GetView<ProductController> {
             SliverToBoxAdapter(
               child: SearchBoxWidget(
                 searchText: 'جست و جو',
-                openBuilderWidget: SearchProductScreen(),
+                openBuilderWidget: SearchProductScreen(selectProduct: selectProduct),
                 onClosed: (value) {
                   Get.find<SearchController>().clearScreen();
                 },
@@ -102,10 +102,6 @@ class AllProductScreen extends GetView<ProductController> {
                           category: category,
                           categoryList: list,
                           selectProductScreen: selectProduct,
-                          openCategory: () {
-                            controller.navigateToCategorySelectProduct(
-                                category.name!);
-                          },
                         ),
                       );
                     },

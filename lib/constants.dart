@@ -6,5 +6,6 @@ const String settingBox = 'setting';
 const String sellFactorBox = 'sellFactor';
 const String buyFactorBox = 'buyFactor';
 const String oneSellFactorBox = 'oneSellFactor';
+const String billsBox = 'bills';
 
 const String defaultCategoryName = 'allProduct';
