@@ -45,23 +45,12 @@ class FactorController extends GetxController {
   }
 
   getFactorNumber() {
-    Box<Factor>? box;
-    switch (typeOfFactor) {
-      case TypeOfFactor.oneSell:
-        box = Hive.box<Factor>(oneSellFactorBox);
-        break;
-      case TypeOfFactor.buy:
-        box = Hive.box<Factor>(buyFactorBox);
-        break;
-      case TypeOfFactor.sell:
-        box = Hive.box<Factor>(sellFactorBox);
-        break;
-    }
+    var box = Hive.lazyBox<Factor>(factorBox);
     if (box.isEmpty) {
       factorNumber = '1';
     } //
     else {
-      factorNumber = (box.values.last.id! + 1).toString();
+      factorNumber = (box.keys.last + 1).toString();
     }
   }
 
@@ -215,18 +204,7 @@ class FactorController extends GetxController {
   }
 
   Future<bool> saveFactor() async {
-    Box<Factor>? factorBox;
-    switch (typeOfFactor) {
-      case TypeOfFactor.oneSell:
-        factorBox = Hive.box<Factor>(oneSellFactorBox);
-        break;
-      case TypeOfFactor.buy:
-        factorBox = Hive.box<Factor>(buyFactorBox);
-        break;
-      case TypeOfFactor.sell:
-        factorBox = Hive.box<Factor>(sellFactorBox);
-        break;
-    }
+    var factorsBox = Hive.lazyBox<Factor>(factorBox);
     if (typeOfFactor != TypeOfFactor.oneSell) {
       if (customer.value.name == null) {
         StaticMethods.showSnackBar(
@@ -289,7 +267,7 @@ class FactorController extends GetxController {
         typeOfFactor: typeOfFactor,
         customer: customer.value,
       );
-      int index = await factorBox.add(newFactor!);
+      int index = await factorsBox.add(newFactor!);
       newFactor!.id = index;
       await newFactor!.save();
       listFactorRow.clear();
@@ -309,48 +287,23 @@ class FactorController extends GetxController {
     bool status = await saveFactor();
     if (status) {
       await saveCheck();
-      var billBox = Hive.box<Bill>(billsBox);
+      var billBox = Hive.lazyBox<Bill>(billsBox);
       Cash cash = Cash(
         cashAmount: typeOfFactor == TypeOfFactor.buy
-            ? cashAmount.value
-            : -cashAmount.value,
+            ? -cashAmount.value
+            : cashAmount.value,
         cashDate: DateTime.now(),
       );
-      bool billExist = billBox.keys.any((key) => key == customer.value.id);
-      if (billExist) {
-        Bill newBill =
-            billBox.values.firstWhere((bill) => bill.id == customer.value.id);
-        newBill.factor!.add(newFactor!);
-        if (checkAmount.value != 0) {
-          newBill.check!.add(check);
-        }
-        if (cashAmount.value != 0) {
-          newBill.cash!.add(cash);
-        }
-        await newBill.save();
-      } //
-      else {
-        Bill newBill = Bill(
-          id: customer.value.id,
-          customer: customer.value,
-          factor: [newFactor!],
-          check: checkAmount.value != 0 ? [check] : [],
-          cash: cashAmount.value != 0 ? [cash] : [],
-        );
-        await billBox.put(customer.value.id, newBill);
+      int key = billBox.keys.firstWhere((key) => key == customer.value.id);
+      Bill? newBill = await billBox.get(key);
+      newBill!.factor!.add(newFactor!);
+      if (checkAmount.value != 0) {
+        newBill.check!.add(check);
       }
-      billBox.values.forEach((element) {
-        print('-----------*********-----------');
-        print(element.id);
-        print(element.customer!.name);
-        print(element.cashPayment);
-        if (element.check != null) {
-          element.check!.forEach((element) {
-            print(element.checkAmount);
-            print(element.customerCheck!.name);
-          });
-        }
-      });
+      if (cashAmount.value != 0) {
+        newBill.cash!.add(cash);
+      }
+      await newBill.save();
     }
   }
 
@@ -385,8 +338,6 @@ class FactorController extends GetxController {
       );
       checkAmount.value =
           check.checkAmount! < 0 ? -check.checkAmount! : check.checkAmount!;
-      print('////////////********//////////////');
-      print(check.customerCheck!.name);
     }
   }
 
@@ -395,7 +346,5 @@ class FactorController extends GetxController {
     int index = await checkBox.add(check);
     check.id = index;
     await check.save();
-    print('//////////////////////////');
-    print('check saved');
   }
 }

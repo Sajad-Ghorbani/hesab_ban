@@ -224,21 +224,10 @@ class CheckController extends GetxController {
   }
 
   addToCustomerBill(Check check) async {
-    var billBox = Hive.box<Bill>(billsBox);
-    bool billExist = billBox.keys.any((key) => key == checkCustomer!.id);
-    if (billExist) {
-      Bill newBill =
-          billBox.values.firstWhere((bill) => bill.id == checkCustomer!.id);
-      newBill.check!.add(check);
-      await newBill.save();
-    } //
-    else {
-      Bill newBill = Bill(
-        id: checkCustomer!.id,
-        customer: checkCustomer!,
-        check: [check],
-      );
-      await billBox.put(checkCustomer!.id, newBill);
-    }
+    var billBox = Hive.lazyBox<Bill>(billsBox);
+    int key = billBox.keys.firstWhere((key) => key == checkCustomer!.id);
+    Bill? newBill = await billBox.get(key);
+    newBill!.check!.add(check);
+    await newBill.save();
   }
 }

@@ -24,10 +24,8 @@ class SplashController extends GetxController {
     await Hive.openBox<Product>(allProductBox);
     await Hive.openBox<Customer>(customersBox);
     await Hive.openBox<Check>(checksBox);
-    await Hive.openBox<Factor>(buyFactorBox);
-    await Hive.openBox<Factor>(sellFactorBox);
-    await Hive.openBox<Factor>(oneSellFactorBox);
-    await Hive.openBox<Bill>(billsBox);
+    await Hive.openLazyBox<Factor>(factorBox);
+    await Hive.openLazyBox<Bill>(billsBox);
     var boxSetting = await Hive.openBox(settingBox);
     if(boxSetting.isEmpty){
       boxSetting.put('sellFactorHelp', true);

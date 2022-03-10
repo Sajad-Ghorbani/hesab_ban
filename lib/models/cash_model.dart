@@ -4,7 +4,7 @@ part 'cash_model.g.dart';
 
 @HiveType(typeId: 12)
 class Cash extends HiveObject {
-    @HiveField(0)
+  @HiveField(0)
   int? cashAmount;
 
   @HiveField(1)

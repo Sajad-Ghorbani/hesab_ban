@@ -1,0 +1,38 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:hesab_ban/ui/theme/app_colors.dart';
+
+class BillBoxContainer extends StatelessWidget {
+  const BillBoxContainer({Key? key, required this.child}) : super(key: key);
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kGreyColor.withOpacity(0.2),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        child
+      ],
+    );
+  }
+}

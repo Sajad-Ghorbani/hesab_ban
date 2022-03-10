@@ -19,7 +19,10 @@ part './app_routes.dart';
 
 class AppPages {
   static List<GetPage> pages = [
-    GetPage(name: Routes.initial, page: () => const SplashScreen()),
+    GetPage(
+      name: Routes.initial,
+      page: () => const SplashScreen(),
+    ),
     GetPage(
       name: Routes.mainScreen,
       page: () => const MainScreen(),
@@ -45,6 +48,7 @@ class AppPages {
     GetPage(
       name: Routes.customerBalanceScreen,
       page: () => const CustomerBalanceScreen(),
+      binding: CustomerBinding(),
     ),
     GetPage(
       name: Routes.customersScreen,

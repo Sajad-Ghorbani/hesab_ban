@@ -115,7 +115,7 @@ class CustomersContainerWidget extends StatelessWidget {
                                 }
                               } //
                               else {
-                                Get.toNamed(Routes.customerBalanceScreen);
+                                Get.toNamed(Routes.customerBalanceScreen,arguments: customer);
                               }
                             },
                             onLongPress: () {
