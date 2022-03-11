@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+import 'controllers/home_controller.dart';
 import 'models/bill_model.dart';
 import 'models/cash_model.dart';
 import 'models/category_model.dart';
@@ -123,8 +124,8 @@ class StaticMethods {
               const SizedBox(
                 width: 5,
               ),
-              const Text(
-                'ریال',
+              Text(
+                Get.find<HomeController>().moneyUnit.value,
                 style: kRialTextStyle,
               ),
             ],
@@ -162,8 +163,8 @@ class StaticMethods {
           const SizedBox(
             width: 10,
           ),
-          const Text(
-            'ریال',
+          Text(
+            Get.find<HomeController>().moneyUnit.value,
             style: kRialTextStyle,
           ),
         ],

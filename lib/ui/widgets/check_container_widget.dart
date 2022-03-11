@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../controllers/home_controller.dart';
 import '../theme/constants_app_styles.dart';
 
 class CheckContainerWidget extends StatelessWidget {
@@ -126,8 +128,8 @@ class CheckContainerWidget extends StatelessWidget {
                                     const SizedBox(
                                       width: 5,
                                     ),
-                                    const Text(
-                                      'ریال',
+                                    Text(
+                                      Get.find<HomeController>().moneyUnit.value,
                                       style: kRialTextStyle,
                                     ),
                                   ],

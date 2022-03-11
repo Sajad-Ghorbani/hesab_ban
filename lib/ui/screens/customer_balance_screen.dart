@@ -12,6 +12,7 @@ import 'package:hesab_ban/ui/widgets/bill_box_container.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../controllers/home_controller.dart';
 import '../../models/check_model.dart';
 
 class CustomerBalanceScreen extends GetView<CustomerController> {
@@ -135,8 +136,8 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              const Text(
-                                                'ریال',
+                                              Text(
+                                                Get.find<HomeController>().moneyUnit.value,
                                                 style: kRialTextStyle,
                                               ),
                                             ],
@@ -258,8 +259,8 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                 const SizedBox(
                                                   width: 5,
                                                 ),
-                                                const Text(
-                                                  'ریال',
+                                                Text(
+                                                  Get.find<HomeController>().moneyUnit.value,
                                                   style: kRialTextStyle,
                                                 ),
                                               ],
@@ -335,8 +336,8 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                 const SizedBox(
                                                   width: 5,
                                                 ),
-                                                const Text(
-                                                  'ریال',
+                                                Text(
+                                                  Get.find<HomeController>().moneyUnit.value,
                                                   style: kRialTextStyle,
                                                 ),
                                               ],
@@ -417,8 +418,8 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                 const SizedBox(
                                                   width: 5,
                                                 ),
-                                                const Text(
-                                                  'ریال',
+                                                Text(
+                                                  Get.find<HomeController>().moneyUnit.value,
                                                   style: kRialTextStyle,
                                                 ),
                                               ],

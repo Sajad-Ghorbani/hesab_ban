@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/constants_app_styles.dart';
 import '../widgets/custom_text_field.dart';
@@ -162,8 +163,8 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                       const SizedBox(
                         width: 10,
                       ),
-                      const Text(
-                        'ریال',
+                      Text(
+                        Get.find<HomeController>().moneyUnit.value,
                         style: kRialTextStyle,
                       ),
                     ],

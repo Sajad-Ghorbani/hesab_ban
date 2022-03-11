@@ -10,6 +10,7 @@ import 'package:hesab_ban/ui/widgets/factor_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
 
 class OneSellFactorScreen extends GetView<FactorController> {
@@ -139,8 +140,8 @@ class OneSellFactorScreen extends GetView<FactorController> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                const Text(
-                                  'ریال',
+                                Text(
+                                  Get.find<HomeController>().moneyUnit.value,
                                   style: kRialTextStyle,
                                 ),
                               ],

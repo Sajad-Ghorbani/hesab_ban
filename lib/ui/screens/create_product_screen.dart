@@ -1,3 +1,4 @@
+import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/controllers/product_controller.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
@@ -9,8 +10,8 @@ import 'package:get/get.dart';
 
 import '../../models/product_model.dart';
 
-class ProductScreen extends GetView<ProductController> {
-  const ProductScreen({Key? key}) : super(key: key);
+class CreateProductScreen extends GetView<ProductController> {
+  const CreateProductScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +109,8 @@ class ProductScreen extends GetView<ProductController> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
-                          'ریال',
+                        Text(
+                          Get.find<HomeController>().moneyUnit.value,
                           style: kRialTextStyle,
                         ),
                       ],
@@ -134,8 +135,8 @@ class ProductScreen extends GetView<ProductController> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
-                          'ریال',
+                        Text(
+                          Get.find<HomeController>().moneyUnit.value,
                           style: kRialTextStyle,
                         ),
                       ],
@@ -160,8 +161,8 @@ class ProductScreen extends GetView<ProductController> {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
-                          'ریال',
+                        Text(
+                          Get.find<HomeController>().moneyUnit.value,
                           style: kRialTextStyle,
                         ),
                       ],
@@ -173,7 +174,7 @@ class ProductScreen extends GetView<ProductController> {
                     ),
                     Row(
                       children: [
-                        const Text('واحد اصلی'),
+                        const Text('واحد کالا'),
                         const SizedBox(
                           width: 10,
                         ),
@@ -190,63 +191,63 @@ class ProductScreen extends GetView<ProductController> {
                         ),
                       ],
                     ),
-                    const Divider(
-                      color: kDarkGreyColor,
-                      height: 10,
-                      thickness: 1.2,
-                    ),
-                    Row(
-                      children: [
-                        const Text('واحد فرعی'),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: DropdownButtonFormField(
-                            items: controller.productUnitList,
-                            hint: const Text('یک گزینه را انتخاب کنید.'),
-                            value: product != null &&
-                                    product.subCountingUnit != null
-                                ? product.subCountingUnit!.index
-                                : null,
-                            onChanged: (int? value) {
-                              controller.productSubCountingUnit = value;
-                            },
-                            decoration: kCustomInputDecoration,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text('هر مقدار از واحد اصلی برابر با'),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          SizedBox(
-                            width: 50,
-                            child: SizedBox(
-                              height: 30,
-                              child: TextField(
-                                controller:
-                                    controller.productUnitRatioController,
-                                maxLength: 5,
-                                keyboardType: TextInputType.number,
-                                decoration:
-                                    const InputDecoration(counterText: ''),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text('از واحد اصلی می باشد.'),
-                        ],
-                      ),
-                    ),
+                    // const Divider(
+                    //   color: kDarkGreyColor,
+                    //   height: 10,
+                    //   thickness: 1.2,
+                    // ),
+                    // Row(
+                    //   children: [
+                    //     const Text('واحد فرعی'),
+                    //     const SizedBox(
+                    //       width: 10,
+                    //     ),
+                    //     Expanded(
+                    //       child: DropdownButtonFormField(
+                    //         items: controller.productUnitList,
+                    //         hint: const Text('یک گزینه را انتخاب کنید.'),
+                    //         value: product != null &&
+                    //                 product.subCountingUnit != null
+                    //             ? product.subCountingUnit!.index
+                    //             : null,
+                    //         onChanged: (int? value) {
+                    //           controller.productSubCountingUnit = value;
+                    //         },
+                    //         decoration: kCustomInputDecoration,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SingleChildScrollView(
+                    //   scrollDirection: Axis.horizontal,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.end,
+                    //     children: [
+                    //       const Text('هر مقدار از واحد اصلی برابر با'),
+                    //       const SizedBox(
+                    //         width: 5,
+                    //       ),
+                    //       SizedBox(
+                    //         width: 50,
+                    //         child: SizedBox(
+                    //           height: 30,
+                    //           child: TextField(
+                    //             controller:
+                    //                 controller.productUnitRatioController,
+                    //             maxLength: 5,
+                    //             keyboardType: TextInputType.number,
+                    //             decoration:
+                    //                 const InputDecoration(counterText: ''),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 5,
+                    //       ),
+                    //       const Text('از واحد اصلی می باشد.'),
+                    //     ],
+                    //   ),
+                    // ),
                     const Divider(
                       color: kDarkGreyColor,
                       height: 10,

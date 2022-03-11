@@ -14,7 +14,7 @@ class SelectFactorScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      title: 'حساب بان',
+      title: 'فاکتور',
       child: Column(
         children: [
           const SizedBox(

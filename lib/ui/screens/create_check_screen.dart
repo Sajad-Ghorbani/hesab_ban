@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/constants_app_styles.dart';
 
@@ -120,8 +121,8 @@ class CreateCheckScreen extends GetView<CheckController> {
                       const SizedBox(
                         width: 10,
                       ),
-                      const Text(
-                        'ریال',
+                      Text(
+                        Get.find<HomeController>().moneyUnit.value,
                         style: kRialTextStyle,
                       ),
                     ],

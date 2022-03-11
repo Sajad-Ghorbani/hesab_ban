@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/ui/screens/select_factor_screen.dart';
+import 'package:hesab_ban/ui/screens/setting_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../../controllers/home_controller.dart';
@@ -21,7 +22,7 @@ class MainScreen extends GetView<HomeController> {
           HomeScreen(),
           AllProductScreen(),
           SelectFactorScreen(),
-          HomeScreen(),
+          SettingScreen(),
         ],
         controller: controller.pageController,
         items: [

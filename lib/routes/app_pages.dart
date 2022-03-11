@@ -10,7 +10,7 @@ import 'package:hesab_ban/ui/screens/factor_screen.dart';
 import 'package:hesab_ban/ui/screens/main_screen.dart';
 import 'package:hesab_ban/ui/screens/one_sell_factor_screen.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
-import 'package:hesab_ban/ui/screens/product_screen.dart';
+import 'package:hesab_ban/ui/screens/create_product_screen.dart';
 import 'package:hesab_ban/ui/screens/all_product_screen.dart';
 import 'package:hesab_ban/ui/screens/splash_screen.dart';
 import 'package:get/get.dart';
@@ -30,7 +30,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.createProductScreen,
-      page: () => const ProductScreen(),
+      page: () => const CreateProductScreen(),
     ),
     GetPage(
       name: Routes.allProductScreen,

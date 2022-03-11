@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/factor_controller.dart';
+import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../models/factor_row.dart';
@@ -39,13 +40,13 @@ class FactorContainerWidget extends GetView<FactorController> {
                         ),
                         DataColumn(
                           label: Row(
-                            children: const [
-                              Text('قیمت'),
-                              SizedBox(
+                            children: [
+                              const Text('قیمت'),
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                '(ریال)',
+                                '(${Get.find<HomeController>().moneyUnit.value})',
                                 style: kRialTextStyle,
                               ),
                             ],
@@ -53,13 +54,13 @@ class FactorContainerWidget extends GetView<FactorController> {
                         ),
                         DataColumn(
                           label: Row(
-                            children: const [
-                              Text('قیمت کل'),
-                              SizedBox(
+                            children: [
+                              const Text('قیمت کل'),
+                              const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                '(ریال)',
+                                '(${Get.find<HomeController>().moneyUnit.value})',
                                 style: kRialTextStyle,
                               ),
                             ],
