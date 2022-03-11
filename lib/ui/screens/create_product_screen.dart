@@ -29,8 +29,6 @@ class CreateProductScreen extends GetView<ProductController> {
               : product.priceOfMajorSell.toString();
       controller.productCountController.text =
           product.count == null ? '' : product.count.toString();
-      controller.productUnitRatioController.text =
-          product.unitRatio == null ? '' : product.unitRatio.toString();
     }
     return BaseWidget(
       title: product == null ? 'کالای جدید' : 'ویرایش ${product.name}',

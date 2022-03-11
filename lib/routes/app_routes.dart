@@ -5,7 +5,6 @@ abstract class Routes{
   static const String mainScreen = '/main';
   static const String createProductScreen = '/createProduct';
   static const String allProductScreen = '/allProduct';
-  static const String productFolderScreen = '/productFolder';
   static const String createCustomerScreen = '/createCustomer';
   static const String customersScreen = '/customers';
   static const String customerBalanceScreen = '/customerBalance';

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/product_controller.dart';
 import '../../routes/app_pages.dart';
 import '../../static_methods.dart';
 import '../theme/app_colors.dart';
@@ -73,7 +72,7 @@ class ProductWidget extends StatelessWidget {
                         content: 'با حذف کالای "${product.name}" موافق هستید؟'
                             ' این عملیات برگشت پذیر نیست.',
                         onConfirm: () {
-                          Get.find<ProductController>().deleteProduct(product);
+                          product.delete();
                           Get.back();
                         },
                       );

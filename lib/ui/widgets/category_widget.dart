@@ -1,4 +1,4 @@
-import 'package:hesab_ban/controllers/product_controller.dart';
+import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,7 +44,7 @@ class CategoryWidget extends StatelessWidget {
             color: kTealColor,
           ),
           onTap: () {
-            Get.find<ProductController>().navigateToCategory(
+            Get.find<HomeController>().navigateToCategory(
               context,
               category.name!,
               selectProductScreen,
@@ -61,10 +61,10 @@ class CategoryWidget extends StatelessWidget {
                       Get.back();
                       StaticMethods.showFolderDialog(
                         title: 'ویرایش ${category.name}',
-                        controller: Get.find<ProductController>()
+                        controller: Get.find<HomeController>()
                             .categoryNameController,
                         onTap: () {
-                          Get.find<ProductController>()
+                          Get.find<HomeController>()
                               .updateCategory(category);
                           Get.back();
                         },
@@ -77,7 +77,7 @@ class CategoryWidget extends StatelessWidget {
                             'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
                             ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
                         onConfirm: () {
-                          Get.find<ProductController>()
+                          Get.find<HomeController>()
                               .deleteCategory(category);
                           Get.back();
                         },

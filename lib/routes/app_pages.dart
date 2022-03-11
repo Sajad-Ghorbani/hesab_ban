@@ -2,6 +2,7 @@ import 'package:hesab_ban/bindings/check_binding.dart';
 import 'package:hesab_ban/bindings/customer_binding.dart';
 import 'package:hesab_ban/bindings/factor_binding.dart';
 import 'package:hesab_ban/bindings/home_binding.dart';
+import 'package:hesab_ban/bindings/product_binding.dart';
 import 'package:hesab_ban/ui/screens/create_check_screen.dart';
 import 'package:hesab_ban/ui/screens/create_customer_screen.dart';
 import 'package:hesab_ban/ui/screens/customer_balance_screen.dart';
@@ -9,7 +10,6 @@ import 'package:hesab_ban/ui/screens/customers_screen.dart';
 import 'package:hesab_ban/ui/screens/factor_screen.dart';
 import 'package:hesab_ban/ui/screens/main_screen.dart';
 import 'package:hesab_ban/ui/screens/one_sell_factor_screen.dart';
-import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
 import 'package:hesab_ban/ui/screens/create_product_screen.dart';
 import 'package:hesab_ban/ui/screens/all_product_screen.dart';
 import 'package:hesab_ban/ui/screens/splash_screen.dart';
@@ -31,14 +31,11 @@ class AppPages {
     GetPage(
       name: Routes.createProductScreen,
       page: () => const CreateProductScreen(),
+      binding: ProductBinding(),
     ),
     GetPage(
       name: Routes.allProductScreen,
       page: () => const AllProductScreen(),
-    ),
-    GetPage(
-      name: Routes.productFolderScreen,
-      page: () => const ProductFolderScreen(),
     ),
     GetPage(
       name: Routes.createCustomerScreen,
