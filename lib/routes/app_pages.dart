@@ -12,6 +12,7 @@ import 'package:hesab_ban/ui/screens/main_screen.dart';
 import 'package:hesab_ban/ui/screens/one_sell_factor_screen.dart';
 import 'package:hesab_ban/ui/screens/create_product_screen.dart';
 import 'package:hesab_ban/ui/screens/all_product_screen.dart';
+import 'package:hesab_ban/ui/screens/privacy_and_policy_screen.dart';
 import 'package:hesab_ban/ui/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -65,6 +66,10 @@ class AppPages {
       name: Routes.factorScreen,
       page: () => const FactorScreen(),
       binding: FactorBinding(),
+    ),
+    GetPage(
+      name: Routes.privacyAndPolicyScreen,
+      page: () => const PrivacyAndPolicyScreen(),
     ),
   ];
 }

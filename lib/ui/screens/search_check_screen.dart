@@ -4,7 +4,7 @@ import 'package:hesab_ban/ui/widgets/check_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../widgets/box_container_widget.dart';
+import '../widgets/sliver_box_container_widget.dart';
 import '../widgets/search_container.dart';
 
 // ignore: must_be_immutable
@@ -32,7 +32,7 @@ class SearchCheckScreen extends StatelessWidget {
                         child: Text('هیچ موردی پیدا نشد...'),
                       ),
                     )
-                  : BoxContainerWidget(
+                  : SliverBoxContainerWidget(
                       child: GetBuilder<SearchController>(
                         builder: (controller) {
                           return CheckContainerWidget(

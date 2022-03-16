@@ -6,14 +6,14 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../models/factor_row.dart';
 import '../theme/constants_app_styles.dart';
-import 'box_container_widget.dart';
+import 'sliver_box_container_widget.dart';
 
 class FactorContainerWidget extends GetView<FactorController> {
   const FactorContainerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BoxContainerWidget(
+    return SliverBoxContainerWidget(
       child: SliverPadding(
         padding: const EdgeInsets.all(10),
         sliver: SliverList(

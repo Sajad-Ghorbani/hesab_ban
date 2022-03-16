@@ -1,6 +1,6 @@
 import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/product_widget.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,7 @@ class ProductFolderScreen extends GetView<HomeController> {
                   height: 10,
                 ),
               ),
-            BoxContainerWidget(
+            SliverBoxContainerWidget(
               child: ValueListenableBuilder(
                 valueListenable: controller.productBox.listenable(),
                 builder: (context, box, _) {
@@ -76,6 +76,7 @@ class ProductFolderScreen extends GetView<HomeController> {
                         Product product = productList[index];
                         return ProductWidget(
                           product: product,
+                          categoryName: categoryName,
                           productList: productList,
                           selectProductScreen: selectProduct,
                           selectProduct: () {

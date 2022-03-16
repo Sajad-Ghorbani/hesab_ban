@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
+import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
-import 'package:hesab_ban/ui/widgets/bill_box_container.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
 
 class SettingScreen extends GetView<HomeController> {
   const SettingScreen({Key? key}) : super(key: key);
@@ -24,13 +26,15 @@ class SettingScreen extends GetView<HomeController> {
               width: 200,
             ),
           ),
-          BillBoxContainer(
+          BoxContainerWidget(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 children: [
                   Row(
                     children: [
+                      const Icon(FontAwesomeIcons.dollarSign,size: 24,),
+                      const SizedBox(width: 7,),
                       const Text('واحد پول'),
                       const Spacer(),
                       const Text('تومان'),
@@ -51,6 +55,8 @@ class SettingScreen extends GetView<HomeController> {
                   ),
                   Row(
                     children: const [
+                      Icon(Icons.color_lens_rounded),
+                      SizedBox(width: 10,),
                       Text('تغییر تم برنامه'),
                       Spacer(),
                       Text('دارک'),
@@ -61,11 +67,26 @@ class SettingScreen extends GetView<HomeController> {
                       Text('لایت'),
                     ],
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: GestureDetector(
+                      onTap: (){
+                        Get.toNamed(Routes.privacyAndPolicyScreen);
+                      },
+                      child: Row(
+                        children: const [
+                          Icon(Icons.privacy_tip_rounded),
+                          SizedBox(width: 10,),
+                          Text('حریم خصوصی'),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          BillBoxContainer(
+          BoxContainerWidget(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(

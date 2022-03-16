@@ -2,7 +2,7 @@ import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/screens/search_customer_screen.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/customers_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
@@ -63,7 +63,7 @@ class CustomersScreen extends GetView<HomeController> {
               ),
             ),
             GetBuilder<HomeController>(builder: (myController) {
-              return BoxContainerWidget(
+              return SliverBoxContainerWidget(
                 child: CustomersContainerWidget(
                   miniDataTable: false,
                   selectCustomer: selectCustomer,

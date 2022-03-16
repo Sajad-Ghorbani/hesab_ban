@@ -1,6 +1,7 @@
+import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/services.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,23 @@ class StaticMethods {
     Hive.registerAdapter(TypeOfCheckAdapter());
     Hive.registerAdapter(TypeOfFactorAdapter());
     Hive.registerAdapter(CashAdapter());
+  }
+
+  static removeSeparatorFromNumber(TextEditingController controller,
+      {bool toDouble = false}) {
+    String text = controller.text.trim().replaceAll(',', '');
+    if (toDouble) {
+      double number = double.parse(text);
+      return number;
+    }//
+    else{
+      int number = int.parse(text);
+      return number;
+    }
+  }
+
+  static double roundDouble(double value){
+    return ((value * 100).round().toDouble() / 100);
   }
 
   static void showSnackBar({
@@ -119,6 +137,12 @@ class StaticMethods {
                 child: TextField(
                   controller: productPriceController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    CurrencyTextInputFormatter(
+                      decimalDigits: 0,
+                      symbol: '',
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -135,11 +159,11 @@ class StaticMethods {
     );
   }
 
-  static void showCashPaymentDialog(
+  static Future<void> showCashPaymentDialog(
     TextEditingController cashPaymentController,
     VoidCallback onConfirmTap,
-  ) {
-    Get.defaultDialog(
+  ) async {
+    await Get.defaultDialog(
       title: 'ورود مبلغ',
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +180,10 @@ class StaticMethods {
               controller: cashPaymentController,
               keyboardType: TextInputType.number,
               inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
+                CurrencyTextInputFormatter(
+                  decimalDigits: 0,
+                  symbol: '',
+                ),
               ],
             ),
           ),
@@ -370,7 +397,8 @@ class StaticMethods {
     );
   }
 
-  static Future<void> selectCheckDetails({
+  static Future<void> selectDetails({
+    required String title,
     required VoidCallback onMeTap,
     required VoidCallback onCustomerTap,
   }) async {
@@ -395,10 +423,10 @@ class StaticMethods {
                   alignment: Alignment.center,
                   child: Column(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'صادر کننده چک را انتخاب کنید.',
+                          title,
                         ),
                       ),
                       const Divider(),
@@ -432,7 +460,7 @@ class StaticMethods {
     );
   }
 
-  static Future<void> selectCustomerCheck({
+  static Future<void> selectCustomer({
     required String title,
     required List<DropdownMenuItem<int>> dropDownList,
     required ValueChanged<int?> onSelectCustomer,

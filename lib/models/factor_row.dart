@@ -8,7 +8,7 @@ class FactorRow {
   late String productName;
 
   @HiveField(1)
-  late int productCount;
+  late double productCount;
 
   @HiveField(2)
   late int productPrice;
@@ -20,7 +20,7 @@ class FactorRow {
   late String productUnit;
 
   int get productSum {
-    _productSum = productCount * productPrice;
+    _productSum = (productCount * productPrice.toDouble()).toInt();
     return _productSum;
   }
 

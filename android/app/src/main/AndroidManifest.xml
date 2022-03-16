@@ -1,10 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nahal1401.hesab_ban">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
    <application
-        android:label="hesab_ban"
+        android:label="Hesab Ban"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

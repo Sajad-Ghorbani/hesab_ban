@@ -1,3 +1,4 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/controllers/product_controller.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
@@ -7,6 +8,7 @@ import 'package:hesab_ban/ui/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../models/product_model.dart';
 
@@ -18,17 +20,18 @@ class CreateProductScreen extends GetView<ProductController> {
     Product? product = Get.arguments;
     if (product != null) {
       controller.productNameController.text = product.name!;
-      controller.productBuyController.text =
-          product.priceOfBuy == null ? '' : product.priceOfBuy.toString();
+      controller.productBuyController.text = product.priceOfBuy == null
+          ? ''
+          : product.priceOfBuy.toString().seRagham();
       controller.productOneSellController.text = product.priceOfOneSell == null
           ? ''
-          : product.priceOfOneSell.toString();
+          : product.priceOfOneSell.toString().seRagham();
       controller.productMajorSellController.text =
           product.priceOfMajorSell == null
               ? ''
-              : product.priceOfMajorSell.toString();
+              : product.priceOfMajorSell.toString().seRagham();
       controller.productCountController.text =
-          product.count == null ? '' : product.count.toString();
+          product.count == null ? '' : product.count.toString().seRagham();
     }
     return BaseWidget(
       title: product == null ? 'کالای جدید' : 'ویرایش ${product.name}',
@@ -48,11 +51,9 @@ class CreateProductScreen extends GetView<ProductController> {
             } //
             else {
               controller.updateProduct(context, product);
-              Get.back();
-              controller.resetProductScreen(context);
             }
           },
-          icon: const Icon(FontAwesomeIcons.solidSave),
+          icon: const Icon(FontAwesomeIcons.check),
           splashRadius: 30,
           color: kGreenColor,
         ),
@@ -102,6 +103,12 @@ class CreateProductScreen extends GetView<ProductController> {
                           child: CustomTextField(
                             controller: controller.productBuyController,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              CurrencyTextInputFormatter(
+                                decimalDigits: 0,
+                                symbol: '',
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(
@@ -128,6 +135,12 @@ class CreateProductScreen extends GetView<ProductController> {
                           child: CustomTextField(
                             controller: controller.productOneSellController,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              CurrencyTextInputFormatter(
+                                decimalDigits: 0,
+                                symbol: '',
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(
@@ -154,6 +167,12 @@ class CreateProductScreen extends GetView<ProductController> {
                           child: CustomTextField(
                             controller: controller.productMajorSellController,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              CurrencyTextInputFormatter(
+                                decimalDigits: 0,
+                                symbol: '',
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(
@@ -260,7 +279,8 @@ class CreateProductScreen extends GetView<ProductController> {
                         Expanded(
                           child: CustomTextField(
                             controller: controller.productCountController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: const TextInputType.numberWithOptions(),
+
                           ),
                         ),
                       ],

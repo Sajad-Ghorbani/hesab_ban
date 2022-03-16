@@ -36,7 +36,7 @@ class OneSellFactorScreen extends GetView<FactorController> {
             onPressed: () {
               controller.saveFactor();
             },
-            icon: const Icon(FontAwesomeIcons.solidSave),
+            icon: const Icon(FontAwesomeIcons.check),
             splashRadius: 30,
             color: kGreenColor,
           ),

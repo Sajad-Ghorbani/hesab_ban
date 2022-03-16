@@ -6,7 +6,7 @@ import 'package:hesab_ban/ui/screens/search_product_screen.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:hesab_ban/ui/widgets/category_widget.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/product_widget.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +66,7 @@ class AllProductScreen extends GetView<HomeController> {
                             title: 'ساخت پوشه جدید',
                             controller: controller.categoryNameController,
                             onTap: () {
-                              // controller.addNewCategory();
-                              // Get.back();
+                              controller.addNewCategory();
                             },
                           );
                         },
@@ -93,7 +92,7 @@ class AllProductScreen extends GetView<HomeController> {
                 },
               ),
             ),
-            BoxContainerWidget(
+            SliverBoxContainerWidget(
               child: ValueListenableBuilder(
                 valueListenable: controller.categoryBox.listenable(),
                 builder: (context, Box<Category> box, _) {
@@ -124,7 +123,7 @@ class AllProductScreen extends GetView<HomeController> {
                 height: 10,
               ),
             ),
-            BoxContainerWidget(
+            SliverBoxContainerWidget(
               child: ValueListenableBuilder(
                 valueListenable: controller.productBox.listenable(),
                 builder: (context, Box<Product> box, _) {
@@ -143,6 +142,7 @@ class AllProductScreen extends GetView<HomeController> {
                           selectProduct: () {
                             Get.back(result: product);
                           },
+                          categoryName: defaultCategoryName,
                         );
                       },
                       childCount: list.length,

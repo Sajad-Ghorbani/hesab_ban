@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'حساب بان',
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.initial,
       getPages: AppPages.pages,

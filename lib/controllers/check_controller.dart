@@ -122,7 +122,7 @@ class CheckController extends GetxController {
       StaticMethods.showSnackBar(
           title: 'خطا', description: 'گیرنده چک را مشخص نکردید.');
       Future.delayed(const Duration(seconds: 2), () {
-        StaticMethods.selectCustomerCheck(
+        StaticMethods.selectCustomer(
           title: typeOfCheck == TypeOfCheck.send
               ? 'گیرنده چک را انتخاب کنید'
               : 'مشتری را انتخاب کنید',
@@ -137,7 +137,8 @@ class CheckController extends GetxController {
       StaticMethods.showSnackBar(
           title: 'خطا', description: 'صادر کننده چک را مشخص نکردید.');
       Future.delayed(const Duration(seconds: 2), () {
-        StaticMethods.selectCheckDetails(
+        StaticMethods.selectDetails(
+          title: 'صادر کننده چک را انتخاب کنید.',
           onMeTap: () {
             setTypeOfCheck(true);
           },
@@ -149,8 +150,8 @@ class CheckController extends GetxController {
     } //
     else {
       int amount = typeOfCheck == TypeOfCheck.received
-          ? int.parse(checkAmountController.text.trim())
-          : -int.parse(checkAmountController.text.trim());
+          ? StaticMethods.removeSeparatorFromNumber(checkAmountController)
+          : -StaticMethods.removeSeparatorFromNumber(checkAmountController);
       var checkBox = Hive.box<Check>(checksBox);
       Check newCheck = Check(
         bankName: bankName,
@@ -197,7 +198,8 @@ class CheckController extends GetxController {
     Future.delayed(
       const Duration(milliseconds: 200),
       () async {
-        await StaticMethods.selectCheckDetails(
+        await StaticMethods.selectDetails(
+          title: 'صادر کننده چک را انتخاب کنید.',
           onMeTap: () {
             setTypeOfCheck(true);
           },
@@ -208,7 +210,7 @@ class CheckController extends GetxController {
         Future.delayed(
           const Duration(milliseconds: 200),
           () async {
-            await StaticMethods.selectCustomerCheck(
+            await StaticMethods.selectCustomer(
               title: typeOfCheck == TypeOfCheck.send
                   ? 'گیرنده چک را انتخاب کنید'
                   : 'مشتری را انتخاب کنید',

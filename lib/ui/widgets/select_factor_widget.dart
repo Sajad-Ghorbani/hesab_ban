@@ -18,28 +18,27 @@ class SelectFactorWidget extends StatelessWidget {
   final List<String> detailList;
   final bool showHelp;
   final VoidCallback onFactorTap;
-  final ValueChanged<bool?> showChanged;
+  final VoidCallback showChanged;
   final Color cardColor;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
-      color: showHelp?Colors.transparent:cardColor,
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      color: showHelp ? Colors.transparent : cardColor,
       child: InkWell(
         onTap: showHelp ? null : onFactorTap,
         borderRadius: const BorderRadius.all(Radius.circular(15)),
         child: FlipCard(
-          fill: Fill.fillBack,
+          fill: Fill.fillFront,
           direction: FlipDirection.HORIZONTAL,
           flipOnTouch: showHelp,
           front: Container(
-            width: Get.width / 2 - 20,
-            height: 210,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(15)),
-              color:showHelp? cardColor:Colors.transparent,
+              color: showHelp ? cardColor : Colors.transparent,
             ),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Center(
               child: Text(
                 'فاکتور $factorName',
@@ -49,6 +48,7 @@ class SelectFactorWidget extends StatelessWidget {
             ),
           ),
           back: Container(
+            width: Get.width / 2 - 20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: kBlueColor,
@@ -80,38 +80,46 @@ class SelectFactorWidget extends StatelessWidget {
                       height: 10,
                     ),
                   ],
-                  Row(
-                    children: [
-                      Transform.scale(
-                        scale: 0.7,
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: !showHelp,
-                            onChanged: showChanged,
-                            fillColor: MaterialStateProperty.all(kDarkGreyColor),
+                  InkWell(
+                    onTap: showChanged,
+                    child: Row(
+                      children: [
+                        Transform.scale(
+                          scale: 0.7,
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: Checkbox(
+                              value: !showHelp,
+                              onChanged: (value){
+                                showChanged();
+                              },
+                              fillColor:
+                                  MaterialStateProperty.all(kDarkGreyColor),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      SizedBox(
-                        width: Get.width / 2 - 55,
-                        child: Text(
-                          'متوجه شدم، دیگه نمایش نده.',
-                          style: Theme.of(context).textTheme.bodySmall,
+                        const SizedBox(
+                          width: 5,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: Get.width / 2 - 55,
+                          child: Text(
+                            'متوجه شدم، دیگه نمایش نده.',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const Spacer(),
+                  const SizedBox(
+                    height: 40,
+                  ),
                   InkWell(
                     onTap: onFactorTap,
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 7, horizontal: 15),
                       decoration: const BoxDecoration(
                           color: kBackgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(10))),

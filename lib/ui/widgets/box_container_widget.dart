@@ -1,21 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:sliver_tools/sliver_tools.dart';
-
-import '../theme/app_colors.dart';
+import 'package:hesab_ban/ui/theme/app_colors.dart';
 
 class BoxContainerWidget extends StatelessWidget {
   const BoxContainerWidget({Key? key, required this.child}) : super(key: key);
   final Widget child;
-
   @override
   Widget build(BuildContext context) {
-    return SliverStack(
+    return Stack(
       children: [
-        SliverPositioned.fill(
+        Positioned.fill(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.all(10),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
@@ -34,7 +31,7 @@ class BoxContainerWidget extends StatelessWidget {
             ),
           ),
         ),
-        child,
+        child
       ],
     );
   }

@@ -1,18 +1,21 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:hesab_ban/ui/theme/app_colors.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
-class BillBoxContainer extends StatelessWidget {
-  const BillBoxContainer({Key? key, required this.child}) : super(key: key);
+import '../theme/app_colors.dart';
+
+class SliverBoxContainerWidget extends StatelessWidget {
+  const SliverBoxContainerWidget({Key? key, required this.child}) : super(key: key);
   final Widget child;
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return SliverStack(
       children: [
-        Positioned.fill(
+        SliverPositioned.fill(
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
@@ -31,7 +34,7 @@ class BillBoxContainer extends StatelessWidget {
             ),
           ),
         ),
-        child
+        child,
       ],
     );
   }

@@ -79,6 +79,9 @@ class MainScreen extends GetView<HomeController> {
         navBarStyle: NavBarStyle.style6,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         navBarHeight: 60,
+        onWillPop: (context) async {
+          return controller.willPop();
+        },
       ),
     );
   }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/search_controller.dart';
-import '../widgets/box_container_widget.dart';
+import '../widgets/sliver_box_container_widget.dart';
 
 class SearchCustomerScreen extends StatelessWidget {
   SearchCustomerScreen(this.selectCustomer,{Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class SearchCustomerScreen extends StatelessWidget {
                         child: Text('هیچ موردی پیدا نشد...'),
                       ),
                     )
-                  : BoxContainerWidget(
+                  : SliverBoxContainerWidget(
                       child: GetBuilder<SearchController>(
                         builder: (controller) {
                           return CustomersContainerWidget(

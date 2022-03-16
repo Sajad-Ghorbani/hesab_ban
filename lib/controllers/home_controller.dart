@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/bill_model.dart';
+import 'package:hesab_ban/models/cash_model.dart';
 import 'package:hesab_ban/models/category_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
@@ -17,6 +19,7 @@ import '../ui/theme/app_colors.dart';
 
 class HomeController extends GetxController {
   TextEditingController categoryNameController = TextEditingController();
+  TextEditingController cashPaymentController = TextEditingController();
 
   late PersistentTabController pageController;
   late ScrollController checkScreenScrollController;
@@ -40,6 +43,11 @@ class HomeController extends GetxController {
   RxBool moneyUnitChange = true.obs;
   RxString moneyUnit = ''.obs;
 
+  Customer? cashCustomer;
+  String typeOfCash = '';
+
+  bool exitApp = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -54,12 +62,14 @@ class HomeController extends GetxController {
   }
 
   @override
-  onClose(){
+  onClose() {
     super.onClose();
     pageController.dispose();
     checkScreenScrollController.dispose();
     customerScreenScrollController.dispose();
     productScreenScrollController.dispose();
+    categoryNameController.dispose();
+    cashPaymentController.dispose();
     Hive.close();
   }
 
@@ -86,9 +96,11 @@ class HomeController extends GetxController {
 
   void openWhatsApp() async {
     var whatsapp = "+989351679934";
-    var whatsappUrlAndroid =
-        "whatsapp://send?phone=" + whatsapp + "&text=سلام. من برای برنامه حساب بان نظری داشتم.";
-    var whatsappUrlIOS = "https://wa.me/$whatsapp?text=${Uri.parse("سلام. من برای برنامه حساب بان نظری داشتم.")}";
+    var whatsappUrlAndroid = "whatsapp://send?phone=" +
+        whatsapp +
+        "&text=سلام. من برای برنامه حساب بان نظری داشتم.";
+    var whatsappUrlIOS =
+        "https://wa.me/$whatsapp?text=${Uri.parse("سلام. من برای برنامه حساب بان نظری داشتم.")}";
     if (Platform.isIOS) {
       if (await canLaunch(whatsappUrlIOS)) {
         await launch(whatsappUrlIOS, forceSafariVC: false);
@@ -111,11 +123,11 @@ class HomeController extends GetxController {
   }
 
   void navigateToCategory(
-      context,
-      String categoryName,
-      bool selectProduct,
-      bool fromSearch,
-      ) async {
+    context,
+    String categoryName,
+    bool selectProduct,
+    bool fromSearch,
+  ) async {
     pushNewScreen(
       context,
       screen: ProductFolderScreen(
@@ -131,7 +143,7 @@ class HomeController extends GetxController {
     if (categoryName.isEmpty) {
       Future.delayed(
         const Duration(milliseconds: 300),
-            () {
+        () {
           StaticMethods.showSnackBar(
               title: 'خطا', description: 'لطفا نام را وارد کنید.');
         },
@@ -147,6 +159,7 @@ class HomeController extends GetxController {
         newCategory.id = index;
         newCategory.save();
       }
+      Get.back();
       StaticMethods.showSnackBar(
         title: 'تبریک!',
         description: 'دسته جدید با موفقیت ثبت شد.',
@@ -159,10 +172,13 @@ class HomeController extends GetxController {
   void updateCategory(Category category) async {
     String categoryName = categoryNameController.text.trim();
     if (categoryName.isEmpty) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        StaticMethods.showSnackBar(
-            title: 'خطا', description: 'لطفا نام را وارد کنید.');
-      });
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () {
+          StaticMethods.showSnackBar(
+              title: 'خطا', description: 'لطفا نام را وارد کنید.');
+        },
+      );
     } //
     else {
       category.name = categoryName;
@@ -183,5 +199,96 @@ class HomeController extends GetxController {
       }
     }
     await category.delete();
+  }
+
+  void inputCash() async {
+    await StaticMethods.selectDetails(
+      title: 'پرداخت وجه نقد از طرف',
+      onMeTap: () {
+        typeOfCash = 'me';
+        Get.back();
+      },
+      onCustomerTap: () {
+        typeOfCash = 'customer';
+        Get.back();
+      },
+    );
+    await StaticMethods.selectCustomer(
+      title: 'مشتری را انتخاب کنید',
+      dropDownList: setCustomerList(),
+      onSelectCustomer: (int? value) {
+        for (var item in customerBox.values) {
+          if (item.id == value) {
+            cashCustomer = item;
+          }
+        }
+        Get.back();
+      },
+    );
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () async {
+        await StaticMethods.showCashPaymentDialog(
+          cashPaymentController,
+          () {
+            saveCashToCustomerBill();
+            Get.back();
+            cashPaymentController.clear();
+          },
+        );
+      },
+    );
+  }
+
+  List<DropdownMenuItem<int>> setCustomerList() {
+    List<DropdownMenuItem<int>> list = [];
+    for (var item in customerBox.values) {
+      list.add(
+        DropdownMenuItem(
+          child: Text(item.name!),
+          value: item.id,
+        ),
+      );
+    }
+    return list;
+  }
+
+  void saveCashToCustomerBill() async {
+    if (cashPaymentController.text.trim().isNotEmpty) {
+      int cashAmount = int.parse(cashPaymentController.text.trim());
+      var billBox = Hive.lazyBox<Bill>(billsBox);
+      Cash cash = Cash(
+        cashAmount: typeOfCash == 'me' ? -cashAmount : cashAmount,
+        cashDate: DateTime.now(),
+      );
+      int key = billBox.keys.firstWhere((key) => key == cashCustomer!.id);
+      Bill? newBill = await billBox.get(key);
+      newBill!.cash!.add(cash);
+      await newBill.save();
+      StaticMethods.showSnackBar(
+        title: 'تبریک',
+        description: 'پرداخت وجه نقد با موفقیت ثبت شد.',
+        color: kLightGreenColor,
+      );
+    }
+  }
+
+  bool willPop() {
+    if (!exitApp) {
+      Get.snackbar('خروج', 'برای خروج یکبار دیگر دکمه بازگشت را بزنید.',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10));
+      exitApp = true;
+      Future.delayed(
+        const Duration(seconds: 3),
+        () {
+          exitApp = false;
+        },
+      );
+      return false;
+    } //
+    else {
+      return true;
+    }
   }
 }

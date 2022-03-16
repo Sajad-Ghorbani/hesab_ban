@@ -1,8 +1,8 @@
 import 'package:hesab_ban/models/product_model.dart';
-import 'package:hesab_ban/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../routes/app_pages.dart';
 import '../../static_methods.dart';
@@ -15,70 +15,106 @@ class ProductWidget extends StatelessWidget {
     required this.productList,
     this.selectProductScreen = false,
     this.selectProduct,
+    required this.categoryName,
   }) : super(key: key);
   final Product product;
   final List<Product> productList;
   final bool selectProductScreen;
   final VoidCallback? selectProduct;
+  final String categoryName;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: Theme(
-        data: AppThemeData.darkTheme.copyWith(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent),
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(product == productList.first ? 15 : 0),
-              bottom: Radius.circular(product == productList.last ? 15 : 0),
+      padding: const EdgeInsets.all(10),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: selectProductScreen
+            ? selectProduct
+            : () {
+          Get.toNamed(
+            Routes.createProductScreen,
+            arguments: product,
+            parameters: {'categoryName': categoryName},
+          );
+        },
+        onLongPress: selectProductScreen
+            ? null
+            : () {
+          StaticMethods.productBottomSheet(
+            context,
+            name: product.name!,
+            onEditTap: () {
+              Get.toNamed(Routes.createProductScreen,
+                  arguments: product);
+            },
+            onDeleteTap: () {
+              Get.back();
+              StaticMethods.deleteDialog(
+                content: 'با حذف کالای "${product.name}" موافق هستید؟'
+                    ' این عملیات برگشت پذیر نیست.',
+                onConfirm: () {
+                  product.delete();
+                  Get.back();
+                },
+              );
+            },
+          );
+        },
+        child: Row(
+          children: [
+            const FaIcon(
+              FontAwesomeIcons.boxOpen,
+              color: kLightPurpleColor,
             ),
-          ),
-          title: Text(product.name!),
-          leading: const FaIcon(
-            FontAwesomeIcons.boxOpen,
-            color: kLightPurpleColor,
-          ),
-          trailing: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.27,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('موجودی'),
-                Text('${product.count}'),
+                Text(product.name!),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'قیمت خرید: ' + '${product.priceOfBuy}'.seRagham(),
+                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'قیمت فروش: ' + '${product.priceOfMajorSell}'.seRagham(),
+                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'قیمت خرده فروشی: ' + '${product.priceOfOneSell}'.seRagham(),
+                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                ),
               ],
             ),
-          ),
-          onTap: selectProductScreen
-              ? selectProduct
-              : () {
-                  Get.toNamed(Routes.createProductScreen, arguments: product);
-                },
-          onLongPress: selectProductScreen
-              ? null
-              : () {
-                  StaticMethods.productBottomSheet(
-                    context,
-                    name: product.name!,
-                    onEditTap: () {
-                      Get.toNamed(Routes.createProductScreen,
-                          arguments: product);
-                    },
-                    onDeleteTap: () {
-                      Get.back();
-                      StaticMethods.deleteDialog(
-                        content: 'با حذف کالای "${product.name}" موافق هستید؟'
-                            ' این عملیات برگشت پذیر نیست.',
-                        onConfirm: () {
-                          product.delete();
-                          Get.back();
-                        },
-                      );
-                    },
-                  );
-                },
+            const Spacer(),
+            Column(
+              children: [
+                const Text('موجودی'),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  ('${product.count}'.split('.')[1] == '0'
+                          ? '${product.count}'.split('.')[0]
+                          : '${product.count}')
+                      .seRagham(),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

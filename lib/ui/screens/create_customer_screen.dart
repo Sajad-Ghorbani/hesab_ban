@@ -1,5 +1,8 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/gestures.dart';
 import 'package:hesab_ban/controllers/customer_controller.dart';
 import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -53,7 +56,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
               controller.resetCustomerScreen(context);
             }
           },
-          icon: const Icon(FontAwesomeIcons.solidSave),
+          icon: const Icon(FontAwesomeIcons.check),
           splashRadius: 30,
           color: kGreenColor,
         ),
@@ -158,6 +161,12 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                         child: CustomTextField(
                           controller: controller.customerBalanceController,
                           keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            CurrencyTextInputFormatter(
+                              decimalDigits: 0,
+                              symbol: '',
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(
@@ -172,6 +181,28 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                 ],
               ),
             ),
+          ),
+          const Spacer(),
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontFamily: 'Yekan', fontSize: 12),
+              children: [
+                const TextSpan(text: 'شرایط استفاده از خدمات و '),
+                TextSpan(
+                  text: 'حریم خصوصی',
+                  style: const TextStyle(
+                    color: kBackgroundColor,
+                  ),
+                  recognizer: TapGestureRecognizer()..onTap = (){
+                    Get.toNamed(Routes.privacyAndPolicyScreen);
+                  },
+                ),
+                const TextSpan(text: ' را میپذیرم.'),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),

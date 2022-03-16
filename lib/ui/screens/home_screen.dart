@@ -3,7 +3,7 @@ import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/ui/screens/all_check_screen.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/check_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/customers_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -24,48 +24,60 @@ class HomeScreen extends GetView<HomeController> {
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.all(10.0),
-            sliver: SliverList(
+            SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GridMenuWidget(
-                        title: 'ایجاد حساب جدید',
-                        onTap: () {
-                          Get.toNamed(Routes.createCustomerScreen);
-                        },
-                      ),
-                      GridMenuWidget(
-                        title: 'ورود چک',
-                        onTap: () {
-                          Get.toNamed(Routes.createCheckScreen);
-                        },
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        GridMenuWidget(
+                          title: 'ایجاد حساب جدید',
+                          onTap: () {
+                            Get.toNamed(Routes.createCustomerScreen);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GridMenuWidget(
+                          title: 'ورود چک',
+                          onTap: () {
+                            Get.toNamed(Routes.createCheckScreen);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GridMenuWidget(
+                          title: 'ورود وجه نقد',
+                          onTap: () {
+                            controller.inputCash();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: const [
-                      FaIcon(
-                        FontAwesomeIcons.moneyCheck,
-                        color: kDarkGreenColor,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('لیست چک های دریافتی'),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: const [
+                        FaIcon(
+                          FontAwesomeIcons.moneyCheck,
+                          color: kDarkGreenColor,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('لیست چک های دریافتی'),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          BoxContainerWidget(
+          SliverBoxContainerWidget(
             child: CheckContainerWidget(
               typeOfCheck: TypeOfCheck.received,
               onRowTapped: (bool? selected) {},
@@ -101,7 +113,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
-          BoxContainerWidget(
+          SliverBoxContainerWidget(
             child: CheckContainerWidget(
               typeOfCheck: TypeOfCheck.send,
               onRowTapped: (bool? selected) {},
@@ -137,7 +149,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
-          const BoxContainerWidget(
+          const SliverBoxContainerWidget(
             child: CustomersContainerWidget(),
           ),
           const SliverToBoxAdapter(

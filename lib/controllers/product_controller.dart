@@ -79,16 +79,16 @@ class ProductController extends GetxController {
         name: productNameController.text.trim(),
         count: productCountController.text.isEmpty
             ? 0
-            : int.parse(productCountController.text.trim()),
+            : StaticMethods.removeSeparatorFromNumber(productCountController,toDouble: true),
         priceOfBuy: productBuyController.text.isEmpty
             ? 0
-            : int.parse(productBuyController.text.trim()),
+            : StaticMethods.removeSeparatorFromNumber(productBuyController),
         priceOfOneSell: productOneSellController.text.isEmpty
             ? 0
-            : int.parse(productOneSellController.text.trim()),
+            : StaticMethods.removeSeparatorFromNumber(productOneSellController),
         priceOfMajorSell: productMajorSellController.text.isEmpty
             ? 0
-            : int.parse(productMajorSellController.text.trim()),
+            : StaticMethods.removeSeparatorFromNumber(productMajorSellController),
         mainUnit: Unit.values[productMainUnit],
         category: getCurrentCategory(productCategoryName),
       );
@@ -128,18 +128,19 @@ class ProductController extends GetxController {
       product.name = productNameController.text.trim();
       product.count = productCountController.text.isEmpty
           ? null
-          : int.parse(productCountController.text.trim());
+          : StaticMethods.removeSeparatorFromNumber(productCountController,toDouble: true);
       product.priceOfBuy = productBuyController.text.isEmpty
           ? null
-          : int.parse(productBuyController.text.trim());
+          : StaticMethods.removeSeparatorFromNumber(productBuyController);
       product.priceOfOneSell = productOneSellController.text.isEmpty
           ? null
-          : int.parse(productOneSellController.text.trim());
+          : StaticMethods.removeSeparatorFromNumber(productOneSellController);
       product.priceOfMajorSell = productMajorSellController.text.isEmpty
           ? null
-          : int.parse(productMajorSellController.text.trim());
+          : StaticMethods.removeSeparatorFromNumber(productMajorSellController);
       product.mainUnit = Unit.values[productMainUnit];
       product.save();
+      Get.back();
       resetProductScreen(context);
       StaticMethods.showSnackBar(
         title: 'تبریک!',

@@ -1,3 +1,4 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:hesab_ban/controllers/check_controller.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:hesab_ban/ui/widgets/custom_text_field.dart';
@@ -48,7 +49,7 @@ class CreateCheckScreen extends GetView<CheckController> {
               controller.resetCheckScreen(context);
             }
           },
-          icon: const Icon(FontAwesomeIcons.solidSave),
+          icon: const Icon(FontAwesomeIcons.check),
           splashRadius: 30,
           color: kGreenColor,
         ),
@@ -116,6 +117,12 @@ class CreateCheckScreen extends GetView<CheckController> {
                         child: CustomTextField(
                           controller: controller.checkAmountController,
                           keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            CurrencyTextInputFormatter(
+                              decimalDigits: 0,
+                              symbol: '',
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(

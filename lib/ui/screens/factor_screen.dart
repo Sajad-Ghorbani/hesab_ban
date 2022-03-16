@@ -39,7 +39,7 @@ class FactorScreen extends GetView<FactorController> {
             onPressed: () {
               controller.saveBill();
             },
-            icon: const Icon(FontAwesomeIcons.solidSave),
+            icon: const Icon(FontAwesomeIcons.check),
             splashRadius: 30,
             color: kGreenColor,
           ),

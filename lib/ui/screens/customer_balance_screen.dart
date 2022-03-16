@@ -8,7 +8,7 @@ import 'package:hesab_ban/ui/theme/app_text_theme.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:hesab_ban/ui/widgets/bill_box_container.dart';
+import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -206,7 +206,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                     else {
                       return TabBarView(
                         children: [
-                          BillBoxContainer(
+                          BoxContainerWidget(
                             child: Padding(
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
@@ -233,6 +233,10 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                           ? 'خرید'
                                           : 'فروش';
                                       return DataRow(
+                                        onSelectChanged: (selected){
+                                          controller.showFactor(factor,type,);
+                                          print(factor.factorRows!.length);
+                                        },
                                         cells: [
                                           DataCell(
                                             Text(
@@ -274,7 +278,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                               ),
                             ),
                           ),
-                          BillBoxContainer(
+                          BoxContainerWidget(
                             child: Padding(
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
@@ -360,7 +364,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                               ),
                             ),
                           ),
-                          BillBoxContainer(
+                          BoxContainerWidget(
                             child: Padding(
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
@@ -382,9 +386,9 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                     (index) {
                                       Cash cash =
                                           controller.customerBill!.cash![index];
-                                      String type = cash.cashAmount! > 0
-                                          ? 'پرداخت'
-                                          : 'دریافت';
+                                      String cashDescription = cash.cashAmount! < 0
+                                          ? 'پرداخت وجه نقد به ${controller.customer!.name}'
+                                          : 'دریافت وجه نقد از ${controller.customer!.name}';
                                       return DataRow(
                                         cells: [
                                           DataCell(
@@ -404,7 +408,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                             ),
                                           ),
                                           DataCell(
-                                            Text('$type وجه نقد'),
+                                            Text(cashDescription),
                                           ),
                                           DataCell(
                                             Row(

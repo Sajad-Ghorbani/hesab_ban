@@ -11,4 +11,5 @@ abstract class Routes{
   static const String createCheckScreen = '/createCheck';
   static const String factorScreen = '/factor';
   static const String oneSellFactorScreen = '/oneSellFactor';
+  static const String privacyAndPolicyScreen = '/privacyAndPolicy';
 }

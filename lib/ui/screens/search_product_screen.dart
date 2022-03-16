@@ -1,7 +1,7 @@
 import 'package:hesab_ban/controllers/search_controller.dart';
 import 'package:hesab_ban/models/product_model.dart';
 import 'package:hesab_ban/ui/widgets/category_widget.dart';
-import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/product_widget.dart';
 import 'package:hesab_ban/ui/widgets/search_container.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class SearchProductScreen extends StatelessWidget {
                     )
                   : SliverPadding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      sliver: BoxContainerWidget(
+                      sliver: SliverBoxContainerWidget(
                         child: GetBuilder<SearchController>(
                           builder: (controller) {
                             return SliverList(
@@ -64,7 +64,7 @@ class SearchProductScreen extends StatelessWidget {
             Obx(
               () => controller.searchEmpty.value
                   ? const SliverToBoxAdapter()
-                  : BoxContainerWidget(
+                  : SliverBoxContainerWidget(
                       child: GetBuilder<SearchController>(
                         builder: (controller) {
                           return SliverList(
@@ -73,6 +73,7 @@ class SearchProductScreen extends StatelessWidget {
                                 Product product = controller.productList[index];
                                 return ProductWidget(
                                   product: product,
+                                  categoryName: product.category!.name!,
                                   productList: controller.productList,
                                   selectProductScreen: selectProduct,
                                   selectProduct: () {

@@ -9,6 +9,7 @@ import 'package:hesab_ban/models/factor_model.dart';
 import 'package:hesab_ban/models/factor_row.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hive/hive.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../models/product_model.dart';
 import '../routes/app_pages.dart';
@@ -61,13 +62,13 @@ class FactorController extends GetxController {
     );
     switch (typeOfFactor) {
       case TypeOfFactor.oneSell:
-        productPriceController.text = product.priceOfOneSell.toString();
+        productPriceController.text = '${product.priceOfOneSell}'.seRagham();
         break;
       case TypeOfFactor.buy:
-        productPriceController.text = product.priceOfBuy.toString();
+        productPriceController.text = '${product.priceOfBuy}'.seRagham();
         break;
       case TypeOfFactor.sell:
-        productPriceController.text = product.priceOfMajorSell.toString();
+        productPriceController.text = '${product.priceOfMajorSell}'.seRagham();
         break;
     }
     StaticMethods.inputProductCount(
@@ -75,8 +76,9 @@ class FactorController extends GetxController {
       onConfirm: () {
         addProductToFactor(
           product,
-          int.parse(productCountController.text),
-          int.parse(productPriceController.text),
+          StaticMethods.removeSeparatorFromNumber(productCountController,
+              toDouble: true),
+          StaticMethods.removeSeparatorFromNumber(productPriceController),
         );
       },
       productCountController: productCountController,
@@ -84,7 +86,7 @@ class FactorController extends GetxController {
     );
   }
 
-  void addProductToFactor(Product product, int count, int price) {
+  void addProductToFactor(Product product, double count, int price) {
     Get.back();
     productCountController.clear();
     productPriceController.clear();
@@ -170,8 +172,12 @@ class FactorController extends GetxController {
     StaticMethods.inputProductCount(
       product: product,
       onConfirm: () {
-        int count = int.parse(productCountController.text);
-        int price = int.parse(productPriceController.text);
+        double count = StaticMethods.removeSeparatorFromNumber(
+          productCountController,
+          toDouble: true,
+        );
+        int price =
+            StaticMethods.removeSeparatorFromNumber(productPriceController);
         Get.back();
         productCountController.clear();
         productPriceController.clear();
@@ -248,11 +254,13 @@ class FactorController extends GetxController {
         for (var product in productsBox.values) {
           if (item.productName == product.name!) {
             if (typeOfFactor == TypeOfFactor.buy) {
-              product.count = product.count! + item.productCount;
+              product.count =
+                  StaticMethods.roundDouble(product.count! + item.productCount);
               product.priceOfBuy = item.productPrice;
             } //
             else {
-              product.count = product.count! - item.productCount;
+              product.count =
+                  StaticMethods.roundDouble(product.count! - item.productCount);
             }
             product.save();
           }
@@ -260,13 +268,14 @@ class FactorController extends GetxController {
       }
       newFactor = Factor(
         factorDate: DateTime.now(),
-        factorRows: listFactorRow,
+        factorRows: [],
         factorSum: typeOfFactor == TypeOfFactor.buy
             ? int.parse(factorSum.value)
             : -int.parse(factorSum.value),
         typeOfFactor: typeOfFactor,
         customer: customer.value,
       );
+      newFactor!.factorRows!.addAll(listFactorRow.value);
       int index = await factorsBox.add(newFactor!);
       newFactor!.id = index;
       await newFactor!.save();

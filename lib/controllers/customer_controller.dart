@@ -1,12 +1,17 @@
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/bill_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/models/factor_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:hive/hive.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../models/factor_row.dart';
 import '../static_methods.dart';
+import 'home_controller.dart';
 
 class CustomerController extends GetxController {
   TextEditingController customerNameController = TextEditingController();
@@ -39,7 +44,7 @@ class CustomerController extends GetxController {
     customerBalanceController.dispose();
   }
 
-  saveBill(Customer customer)async{
+  saveBill(Customer customer) async {
     var billBox = Hive.lazyBox<Bill>(billsBox);
     Bill newBill = Bill(
       id: customer.id,
@@ -65,7 +70,7 @@ class CustomerController extends GetxController {
         address: customerAddressController.text.trim(),
         initialAccountBalance: customerBalanceController.text.trim().isEmpty
             ? 0
-            : int.parse(customerBalanceController.text.trim()),
+            : StaticMethods.removeSeparatorFromNumber(customerBalanceController),
       );
       final int key = await customerBox.add(newCustomer);
       newCustomer.id = key;
@@ -95,7 +100,7 @@ class CustomerController extends GetxController {
       customer.initialAccountBalance =
           customerBalanceController.text.trim().isEmpty
               ? 0
-              : int.parse(customerBalanceController.text.trim());
+              : StaticMethods.removeSeparatorFromNumber(customerBalanceController);
       customer.save();
       resetCustomerScreen(context);
     }
@@ -119,5 +124,91 @@ class CustomerController extends GetxController {
       customerBill = await billBox.get(key);
     }
     update();
+  }
+
+  void showFactor(
+    Factor factor,
+    String typeFactor,
+  ) {
+    Get.defaultDialog(
+      title: 'فاکتور $typeFactor',
+      content: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Obx(
+          () => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: DataTable(
+              columnSpacing: 20,
+              columns: [
+                const DataColumn(
+                  label: Text('ردیف'),
+                  numeric: true,
+                ),
+                const DataColumn(
+                  label: Text('شرح کالا'),
+                ),
+                const DataColumn(
+                  label: Text('تعداد'),
+                ),
+                DataColumn(
+                  label: Row(
+                    children: [
+                      const Text('قیمت'),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '(${Get.find<HomeController>().moneyUnit.value})',
+                        style: kRialTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+                DataColumn(
+                  label: Row(
+                    children: [
+                      const Text('قیمت کل'),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '(${Get.find<HomeController>().moneyUnit.value})',
+                        style: kRialTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              rows: List.generate(
+                factor.factorRows!.length,
+                (index) {
+                  FactorRow row = factor.factorRows![index];
+                  return DataRow(
+                    cells: [
+                      DataCell(
+                        Text('${index + 1}'),
+                      ),
+                      DataCell(
+                        Text(row.productName),
+                      ),
+                      DataCell(
+                        Text(
+                            '${row.productCount.toString().seRagham()} ${row.productUnit}'),
+                      ),
+                      DataCell(
+                        Text('${row.productPrice}'.seRagham()),
+                      ),
+                      DataCell(
+                        Text('${row.productSum}'.seRagham()),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -27,7 +27,7 @@ class Product extends HiveObject {
   Unit? subCountingUnit;
 
   @HiveField(7)
-  int? count;
+  double? count;
 
   @HiveField(8)
   double? unitRatio;
