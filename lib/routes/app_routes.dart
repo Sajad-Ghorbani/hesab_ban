@@ -10,6 +10,6 @@ abstract class Routes{
   static const String customerBalanceScreen = '/customerBalance';
   static const String createCheckScreen = '/createCheck';
   static const String factorScreen = '/factor';
-  static const String oneSellFactorScreen = '/oneSellFactor';
+  static const String oneSaleFactorScreen = '/oneSaleFactor';
   static const String privacyAndPolicyScreen = '/privacyAndPolicy';
 }

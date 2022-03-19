@@ -57,11 +57,17 @@ class Factor extends HiveObject {
 @HiveType(typeId: 10)
 enum TypeOfFactor {
   @HiveField(0)
-  sell,
+  sale,
 
   @HiveField(1)
   buy,
 
   @HiveField(2)
-  oneSell,
+  oneSale,
+
+  @HiveField(3)
+  returnOfBuy,
+
+  @HiveField(4)
+  returnOfSale,
 }

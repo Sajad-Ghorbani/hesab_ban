@@ -15,10 +15,10 @@ class Product extends HiveObject {
   int? priceOfBuy;
 
   @HiveField(3)
-  int? priceOfOneSell;
+  int? priceOfOneSale;
 
   @HiveField(4)
-  int? priceOfMajorSell;
+  int? priceOfMajorSale;
 
   @HiveField(5)
   Unit? mainUnit;
@@ -39,8 +39,8 @@ class Product extends HiveObject {
     this.id,
     this.name,
     this.priceOfBuy,
-    this.priceOfOneSell,
-    this.priceOfMajorSell,
+    this.priceOfOneSale,
+    this.priceOfMajorSale,
     this.mainUnit,
     this.subCountingUnit,
     this.count,
@@ -52,8 +52,8 @@ class Product extends HiveObject {
     id = json['id'];
     name = json['name'];
     priceOfBuy = json['price_of_buy'];
-    priceOfOneSell = json['price_of_one_sell'];
-    priceOfMajorSell = json['price_of_major_sell'];
+    priceOfOneSale = json['price_of_one_sale'];
+    priceOfMajorSale = json['price_of_major_sale'];
     mainUnit = json['unit'];
     subCountingUnit = json['sub_counting_unit'];
     count = json['count'];
@@ -66,8 +66,8 @@ class Product extends HiveObject {
     data['id'] = id;
     data['name'] = name;
     data['price_of_buy'] = priceOfBuy;
-    data['price_of_one_sell'] = priceOfOneSell;
-    data['price_of_major_sell'] = priceOfMajorSell;
+    data['price_of_one_sale'] = priceOfOneSale;
+    data['price_of_major_sale'] = priceOfMajorSale;
     data['unit'] = mainUnit;
     data['sub_counting_unit'] = subCountingUnit;
     data['count'] = count;

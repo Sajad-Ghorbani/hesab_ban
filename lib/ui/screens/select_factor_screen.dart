@@ -16,94 +16,91 @@ class SelectFactorScreen extends GetView<HomeController> {
     return BaseWidget(
       title: 'فاکتور',
       child: SingleChildScrollView(
-        child: Column(
+        padding: const EdgeInsets.only(top: 10,bottom: 75),
+        child:Wrap(
+          alignment: WrapAlignment.spaceEvenly,
+          crossAxisAlignment: WrapCrossAlignment.end,
+          runSpacing: 10,
           children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              'لطفا فاکتور خود را انتحاب کنید.',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Obx(
-                  () => SelectFactorWidget(
-                    factorName: 'فروش',
-                    cardColor: kSurfaceColor,
-                    detailList: const [
-                      'ایجاد فاکتور فروش با طرف حساب',
-                      'قابلیت پرداخت نقدی و مدت دار',
-                      'فاکتور سربرگ دار',
-                    ],
-                    showHelp: controller.showSellHelp.value,
-                    onFactorTap: () {
-                      Get.toNamed(
-                        Routes.factorScreen,
-                        arguments: TypeOfFactor.sell,
-                      );
-                    },
-                    showChanged: (){
-                      controller.changeShowHelp(
-                          'sellFactorHelp', controller.showSellHelp);
-                    },
-                  ),
-                ),
-                Obx(
-                  () => SelectFactorWidget(
-                    factorName: 'خرید',
-                    cardColor: kDarkGreyColor,
-                    detailList: const [
-                      'ایجاد فاکتور خرید با طرف حساب',
-                      'قابلیت پرداخت نقدی و مدت دار',
-                      'فاکتور سربرگ دار',
-                    ],
-                    showHelp: controller.showBuyHelp.value,
-                    onFactorTap: () {
-                      Get.toNamed(
-                        Routes.factorScreen,
-                        arguments: TypeOfFactor.buy,
-                      );
-                    },
-                    showChanged: () {
-                      controller.changeShowHelp(
-                          'buyFactorHelp', controller.showBuyHelp);
-                    },
-                  ),
-                ),
+            SelectFactorWidget(
+              factorName: 'فروش',
+              lottieAddress: 'assets/images/saleLottie.json',
+              cardColor: kSurfaceColor,
+              detailList: const [
+                'ایجاد فاکتور فروش با طرف حساب',
+                'قابلیت پرداخت نقدی و مدت دار',
+                'فاکتور سربرگ دار',
               ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.factorScreen,
+                  arguments: TypeOfFactor.sale,
+                );
+              },
             ),
-            const SizedBox(
-              height: 10,
+            SelectFactorWidget(
+              factorName: 'خرید',
+              lottieAddress: 'assets/images/buyLottie.json',
+              cardColor: kDarkGreyColor,
+              detailList: const [
+                'ایجاد فاکتور خرید با طرف حساب',
+                'قابلیت پرداخت نقدی و مدت دار',
+                'فاکتور سربرگ دار',
+              ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.factorScreen,
+                  arguments: TypeOfFactor.buy,
+                );
+              },
             ),
-            Obx(
-              () => SelectFactorWidget(
-                factorName: 'خرده فروشی',
-                cardColor: kGreyColor,
-                detailList: const [
-                  'ایجاد فاکتور فروش بدون طرف حساب',
-                  'پرداخت فقط بصورت نقدی',
-                  'استفاده برای فروش سریع',
-                ],
-                showHelp: controller.showOneSellHelp.value,
-                onFactorTap: () {
-                  Get.toNamed(
-                    Routes.oneSellFactorScreen,
-                    arguments: TypeOfFactor.oneSell,
-                  );
-                },
-                showChanged: () {
-                  controller.changeShowHelp(
-                      'OneSellFactorHelp', controller.showOneSellHelp);
-                },
-              ),
+            SelectFactorWidget(
+              factorName: 'برگشت از خرید',
+              lottieAddress: 'assets/images/buyLottie.json',
+              cardColor: kDarkGreyColor,
+              detailList: const [
+                'ایجاد فاکتور برگشت از خرید',
+                'قابلیت پرداخت نقدی و مدت دار',
+                'فاکتور سربرگ دار',
+              ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.factorScreen,
+                  arguments: TypeOfFactor.returnOfBuy,
+                );
+              },
             ),
-            const SizedBox(
-              height: 75,
+            SelectFactorWidget(
+              factorName: 'برگشت از فروش',
+              lottieAddress: 'assets/images/saleLottie.json',
+              cardColor: kSurfaceColor,
+              detailList: const [
+                'ایجاد فاکتور برگشت از فروش',
+                'قابلیت پرداخت نقدی و مدت دار',
+                'فاکتور سربرگ دار',
+              ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.factorScreen,
+                  arguments: TypeOfFactor.returnOfSale,
+                );
+              },
+            ),
+            SelectFactorWidget(
+              factorName: 'خرده فروشی',
+              lottieAddress: 'assets/images/saleLottie.json',
+              cardColor: kGreyColor,
+              detailList: const [
+                'ایجاد فاکتور فروش بدون طرف حساب',
+                'پرداخت فقط بصورت نقدی',
+                'استفاده برای فروش سریع',
+              ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.oneSaleFactorScreen,
+                  arguments: TypeOfFactor.oneSale,
+                );
+              },
             ),
           ],
         ),

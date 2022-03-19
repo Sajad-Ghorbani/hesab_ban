@@ -9,7 +9,7 @@ import 'package:hesab_ban/ui/screens/customer_balance_screen.dart';
 import 'package:hesab_ban/ui/screens/customers_screen.dart';
 import 'package:hesab_ban/ui/screens/factor_screen.dart';
 import 'package:hesab_ban/ui/screens/main_screen.dart';
-import 'package:hesab_ban/ui/screens/one_sell_factor_screen.dart';
+import 'package:hesab_ban/ui/screens/one_sale_factor_screen.dart';
 import 'package:hesab_ban/ui/screens/create_product_screen.dart';
 import 'package:hesab_ban/ui/screens/all_product_screen.dart';
 import 'package:hesab_ban/ui/screens/privacy_and_policy_screen.dart';
@@ -58,8 +58,8 @@ class AppPages {
       binding: CheckBinding(),
     ),
     GetPage(
-      name: Routes.oneSellFactorScreen,
-      page: () => const OneSellFactorScreen(),
+      name: Routes.oneSaleFactorScreen,
+      page: () => const OneSaleFactorScreen(),
       binding: FactorBinding(),
     ),
     GetPage(

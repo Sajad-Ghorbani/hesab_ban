@@ -25,11 +25,13 @@ class CustomerController extends GetxController {
   Bill? customerBill;
   Customer? customer = Get.arguments;
   RxBool showFab = true.obs;
+  late final LazyBox billBox;
 
   @override
   void onInit() {
     super.onInit();
     customerBox = Hive.box<Customer>(customersBox);
+    billBox = Hive.lazyBox<Bill>(billsBox);
     scrollController = ScrollController();
     getCustomerBill();
   }
@@ -45,7 +47,6 @@ class CustomerController extends GetxController {
   }
 
   saveBill(Customer customer) async {
-    var billBox = Hive.lazyBox<Bill>(billsBox);
     Bill newBill = Bill(
       id: customer.id,
       customer: customer,
@@ -54,6 +55,12 @@ class CustomerController extends GetxController {
       cash: [],
     );
     await billBox.put(customer.id, newBill);
+  }
+
+  updateBill(Customer customer) async {
+    Bill? newBill = await billBox.get(customer.id);
+    newBill!.customer = customer;
+    await newBill.save();
   }
 
   void saveCustomer(BuildContext context) async {
@@ -70,7 +77,8 @@ class CustomerController extends GetxController {
         address: customerAddressController.text.trim(),
         initialAccountBalance: customerBalanceController.text.trim().isEmpty
             ? 0
-            : StaticMethods.removeSeparatorFromNumber(customerBalanceController),
+            : StaticMethods.removeSeparatorFromNumber(
+                customerBalanceController),
       );
       final int key = await customerBox.add(newCustomer);
       newCustomer.id = key;
@@ -97,11 +105,19 @@ class CustomerController extends GetxController {
       customer.phoneNumber1 = customerPhoneController.text.trim();
       customer.phoneNumber2 = customerPhone2Controller.text.trim();
       customer.address = customerAddressController.text.trim();
-      customer.initialAccountBalance =
-          customerBalanceController.text.trim().isEmpty
-              ? 0
-              : StaticMethods.removeSeparatorFromNumber(customerBalanceController);
-      customer.save();
+      customer.initialAccountBalance = customerBalanceController.text
+              .trim()
+              .isEmpty
+          ? 0
+          : StaticMethods.removeSeparatorFromNumber(customerBalanceController);
+      await customer.save();
+      await updateBill(customer);
+      Get.back();
+      StaticMethods.showSnackBar(
+        title: 'تبریک',
+        description: 'کاربر ${customer.name} با موفقیت ویرایش شد.',
+        color: kLightGreenColor,
+      );
       resetCustomerScreen(context);
     }
 

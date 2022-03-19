@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/customer_controller.dart';
 import 'package:hesab_ban/models/cash_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/app_text_theme.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
@@ -122,7 +123,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                           Row(
                                             children: [
                                               Text(
-                                                '${myController.customerBill!.cashPayment! < 0 ? -myController.customerBill!.cashPayment! : myController.customerBill!.cashPayment}'
+                                                '${myController.customerBill!.cashPayment!.abs()}'
                                                     .seRagham(),
                                                 style: kBodyMedium.copyWith(
                                                   color: myController
@@ -228,14 +229,10 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                     (index) {
                                       Factor factor = controller
                                           .customerBill!.factor![index];
-                                      String type = factor.typeOfFactor ==
-                                              TypeOfFactor.buy
-                                          ? 'خرید'
-                                          : 'فروش';
+                                      String type = StaticMethods.setTypeFactorString(factor.typeOfFactor!);
                                       return DataRow(
                                         onSelectChanged: (selected){
                                           controller.showFactor(factor,type,);
-                                          print(factor.factorRows!.length);
                                         },
                                         cells: [
                                           DataCell(
@@ -252,13 +249,13 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                           ),
                                           DataCell(
                                             Text(
-                                                'فاکتور $type به شماره فاکتور "${factor.id}"'),
+                                                '$type به شماره فاکتور "${factor.id}"'),
                                           ),
                                           DataCell(
                                             Row(
                                               children: [
                                                 Text(
-                                                    '${factor.factorSum! < 0 ? -factor.factorSum! : factor.factorSum}'
+                                                    '${factor.factorSum!.abs()}'
                                                         .seRagham()),
                                                 const SizedBox(
                                                   width: 5,
@@ -334,7 +331,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                    '${check.checkAmount! < 0 ? -check.checkAmount! : check.checkAmount}'
+                                                    '${check.checkAmount!.abs()}'
                                                         .toPersianDigit()
                                                         .seRagham()),
                                                 const SizedBox(
@@ -417,7 +414,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                    '${cash.cashAmount! < 0 ? -cash.cashAmount! : cash.cashAmount}'
+                                                    '${cash.cashAmount!.abs()}'
                                                         .seRagham()),
                                                 const SizedBox(
                                                   width: 5,

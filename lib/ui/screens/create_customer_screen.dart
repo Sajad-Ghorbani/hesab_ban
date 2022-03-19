@@ -31,7 +31,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
       controller.customerBalanceController.text =
           customer.initialAccountBalance == null
               ? ''
-              : customer.initialAccountBalance.toString();
+              : customer.initialAccountBalance.toString().seRagham();
     }
     return BaseWidget(
       title: 'ایجاد حساب جدید',
@@ -52,8 +52,6 @@ class CreateCustomerScreen extends GetView<CustomerController> {
             } //
             else {
               controller.updateCustomer(context, customer);
-              Get.back();
-              controller.resetCustomerScreen(context);
             }
           },
           icon: const Icon(FontAwesomeIcons.check),

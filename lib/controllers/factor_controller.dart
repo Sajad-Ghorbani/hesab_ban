@@ -61,14 +61,20 @@ class FactorController extends GetxController {
       arguments: true,
     );
     switch (typeOfFactor) {
-      case TypeOfFactor.oneSell:
-        productPriceController.text = '${product.priceOfOneSell}'.seRagham();
+      case TypeOfFactor.oneSale:
+        productPriceController.text = '${product.priceOfOneSale}'.seRagham();
         break;
       case TypeOfFactor.buy:
         productPriceController.text = '${product.priceOfBuy}'.seRagham();
         break;
-      case TypeOfFactor.sell:
-        productPriceController.text = '${product.priceOfMajorSell}'.seRagham();
+      case TypeOfFactor.sale:
+        productPriceController.text = '${product.priceOfMajorSale}'.seRagham();
+        break;
+      case TypeOfFactor.returnOfSale:
+        productPriceController.text = '${product.priceOfMajorSale}'.seRagham();
+        break;
+      case TypeOfFactor.returnOfBuy:
+        productPriceController.text = '${product.priceOfBuy}'.seRagham();
         break;
     }
     StaticMethods.inputProductCount(
@@ -211,11 +217,12 @@ class FactorController extends GetxController {
 
   Future<bool> saveFactor() async {
     var factorsBox = Hive.lazyBox<Factor>(factorBox);
-    if (typeOfFactor != TypeOfFactor.oneSell) {
+    if (typeOfFactor != TypeOfFactor.oneSale) {
       if (customer.value.name == null) {
         StaticMethods.showSnackBar(
           title: 'خطا',
-          description: typeOfFactor == TypeOfFactor.buy
+          description: typeOfFactor == TypeOfFactor.buy ||
+                  typeOfFactor == TypeOfFactor.returnOfBuy
               ? 'فروشنده نمی تواند خالی باشد.\nفروشنده را انتخاب کنید.'
               : 'خریدار نمی تواند خالی باشد.\nخریدار را انتخاب کنید.',
         );
@@ -224,7 +231,8 @@ class FactorController extends GetxController {
     }
     var productsBox = Hive.box<Product>(allProductBox);
     bool saveFactor = false;
-    if (typeOfFactor == TypeOfFactor.buy) {
+    if (typeOfFactor == TypeOfFactor.buy ||
+        typeOfFactor == TypeOfFactor.returnOfSale) {
       saveFactor = true;
     } //
     else {
@@ -253,10 +261,13 @@ class FactorController extends GetxController {
       for (var item in listFactorRow) {
         for (var product in productsBox.values) {
           if (item.productName == product.name!) {
-            if (typeOfFactor == TypeOfFactor.buy) {
+            if (typeOfFactor == TypeOfFactor.buy ||
+                typeOfFactor == TypeOfFactor.returnOfSale) {
               product.count =
                   StaticMethods.roundDouble(product.count! + item.productCount);
-              product.priceOfBuy = item.productPrice;
+              if (typeOfFactor == TypeOfFactor.buy) {
+                product.priceOfBuy = item.productPrice;
+              }
             } //
             else {
               product.count =
@@ -269,7 +280,8 @@ class FactorController extends GetxController {
       newFactor = Factor(
         factorDate: DateTime.now(),
         factorRows: [],
-        factorSum: typeOfFactor == TypeOfFactor.buy
+        factorSum: typeOfFactor == TypeOfFactor.buy ||
+                typeOfFactor == TypeOfFactor.returnOfSale
             ? int.parse(factorSum.value)
             : -int.parse(factorSum.value),
         typeOfFactor: typeOfFactor,
@@ -292,13 +304,14 @@ class FactorController extends GetxController {
     return false;
   }
 
-  void saveBill() async {
+  void saveToBill() async {
     bool status = await saveFactor();
     if (status) {
       await saveCheck();
       var billBox = Hive.lazyBox<Bill>(billsBox);
       Cash cash = Cash(
-        cashAmount: typeOfFactor == TypeOfFactor.buy
+        cashAmount: typeOfFactor == TypeOfFactor.buy ||
+                typeOfFactor == TypeOfFactor.returnOfSale
             ? -cashAmount.value
             : cashAmount.value,
         cashDate: DateTime.now(),
@@ -322,14 +335,18 @@ class FactorController extends GetxController {
       cashPaymentController,
       () {
         Get.back();
-        cashAmount.value = int.parse(cashPaymentController.text);
+        cashAmount.value =
+            StaticMethods.removeSeparatorFromNumber(cashPaymentController);
         cashPaymentController.clear();
       },
     );
   }
 
   void checkPaymentTapped() async {
-    String typeOfCheck = typeOfFactor == TypeOfFactor.buy ? 'send' : 'received';
+    String typeOfCheck = typeOfFactor == TypeOfFactor.buy ||
+            typeOfFactor == TypeOfFactor.returnOfSale
+        ? 'send'
+        : 'received';
     if (customer.value.id == null) {
       StaticMethods.showSnackBar(
         title: 'خطا',
@@ -345,8 +362,7 @@ class FactorController extends GetxController {
           'type_of_check': typeOfCheck,
         },
       );
-      checkAmount.value =
-          check.checkAmount! < 0 ? -check.checkAmount! : check.checkAmount!;
+      checkAmount.value = check.checkAmount!.abs();
     }
   }
 

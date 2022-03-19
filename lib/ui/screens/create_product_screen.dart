@@ -23,13 +23,13 @@ class CreateProductScreen extends GetView<ProductController> {
       controller.productBuyController.text = product.priceOfBuy == null
           ? ''
           : product.priceOfBuy.toString().seRagham();
-      controller.productOneSellController.text = product.priceOfOneSell == null
+      controller.productOneSaleController.text = product.priceOfOneSale == null
           ? ''
-          : product.priceOfOneSell.toString().seRagham();
-      controller.productMajorSellController.text =
-          product.priceOfMajorSell == null
+          : product.priceOfOneSale.toString().seRagham();
+      controller.productMajorSaleController.text =
+          product.priceOfMajorSale == null
               ? ''
-              : product.priceOfMajorSell.toString().seRagham();
+              : product.priceOfMajorSale.toString().seRagham();
       controller.productCountController.text =
           product.count == null ? '' : product.count.toString().seRagham();
     }
@@ -133,7 +133,7 @@ class CreateProductScreen extends GetView<ProductController> {
                         ),
                         Expanded(
                           child: CustomTextField(
-                            controller: controller.productOneSellController,
+                            controller: controller.productOneSaleController,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               CurrencyTextInputFormatter(
@@ -165,7 +165,7 @@ class CreateProductScreen extends GetView<ProductController> {
                         ),
                         Expanded(
                           child: CustomTextField(
-                            controller: controller.productMajorSellController,
+                            controller: controller.productMajorSaleController,
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               CurrencyTextInputFormatter(
@@ -279,8 +279,8 @@ class CreateProductScreen extends GetView<ProductController> {
                         Expanded(
                           child: CustomTextField(
                             controller: controller.productCountController,
-                            keyboardType: const TextInputType.numberWithOptions(),
-
+                            keyboardType:
+                                const TextInputType.numberWithOptions(),
                           ),
                         ),
                       ],

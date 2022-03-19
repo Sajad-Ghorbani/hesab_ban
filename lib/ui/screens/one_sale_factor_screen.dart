@@ -13,8 +13,8 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
 
-class OneSellFactorScreen extends GetView<FactorController> {
-  const OneSellFactorScreen({Key? key}) : super(key: key);
+class OneSaleFactorScreen extends GetView<FactorController> {
+  const OneSaleFactorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

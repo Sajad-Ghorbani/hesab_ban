@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
@@ -512,5 +511,22 @@ class StaticMethods {
       }),
       isDismissible: false,
     );
+  }
+
+  static String setTypeFactorString(TypeOfFactor typeOfFactor) {
+    switch (typeOfFactor) {
+      case TypeOfFactor.buy:
+        return 'فاکتور خرید';
+      case TypeOfFactor.sale:
+        return 'فاکتور فروش';
+      case TypeOfFactor.oneSale:
+        return 'فاکتور خرده فروشی';
+      case TypeOfFactor.returnOfBuy:
+        return 'فاکتور برگشت از خرید';
+      case TypeOfFactor.returnOfSale:
+        return 'فاکتور برگشت از فروش';
+      default:
+        return '';
+    }
   }
 }

@@ -13,10 +13,9 @@ class ProductController extends GetxController {
 
   TextEditingController productNameController = TextEditingController();
   TextEditingController productBuyController = TextEditingController();
-  TextEditingController productOneSellController = TextEditingController();
-  TextEditingController productMajorSellController = TextEditingController();
+  TextEditingController productOneSaleController = TextEditingController();
+  TextEditingController productMajorSaleController = TextEditingController();
   TextEditingController productCountController = TextEditingController();
-
 
   int productMainUnit = 0;
   String productCategoryName = Get.parameters['categoryName']!;
@@ -79,16 +78,18 @@ class ProductController extends GetxController {
         name: productNameController.text.trim(),
         count: productCountController.text.isEmpty
             ? 0
-            : StaticMethods.removeSeparatorFromNumber(productCountController,toDouble: true),
+            : StaticMethods.removeSeparatorFromNumber(productCountController,
+                toDouble: true),
         priceOfBuy: productBuyController.text.isEmpty
             ? 0
             : StaticMethods.removeSeparatorFromNumber(productBuyController),
-        priceOfOneSell: productOneSellController.text.isEmpty
+        priceOfOneSale: productOneSaleController.text.isEmpty
             ? 0
-            : StaticMethods.removeSeparatorFromNumber(productOneSellController),
-        priceOfMajorSell: productMajorSellController.text.isEmpty
+            : StaticMethods.removeSeparatorFromNumber(productOneSaleController),
+        priceOfMajorSale: productMajorSaleController.text.isEmpty
             ? 0
-            : StaticMethods.removeSeparatorFromNumber(productMajorSellController),
+            : StaticMethods.removeSeparatorFromNumber(
+                productMajorSaleController),
         mainUnit: Unit.values[productMainUnit],
         category: getCurrentCategory(productCategoryName),
       );
@@ -114,8 +115,8 @@ class ProductController extends GetxController {
     FocusScope.of(context).unfocus();
     productNameController.clear();
     productBuyController.clear();
-    productOneSellController.clear();
-    productMajorSellController.clear();
+    productOneSaleController.clear();
+    productMajorSaleController.clear();
     productCountController.clear();
   }
 
@@ -128,16 +129,17 @@ class ProductController extends GetxController {
       product.name = productNameController.text.trim();
       product.count = productCountController.text.isEmpty
           ? null
-          : StaticMethods.removeSeparatorFromNumber(productCountController,toDouble: true);
+          : StaticMethods.removeSeparatorFromNumber(productCountController,
+              toDouble: true);
       product.priceOfBuy = productBuyController.text.isEmpty
           ? null
           : StaticMethods.removeSeparatorFromNumber(productBuyController);
-      product.priceOfOneSell = productOneSellController.text.isEmpty
+      product.priceOfOneSale = productOneSaleController.text.isEmpty
           ? null
-          : StaticMethods.removeSeparatorFromNumber(productOneSellController);
-      product.priceOfMajorSell = productMajorSellController.text.isEmpty
+          : StaticMethods.removeSeparatorFromNumber(productOneSaleController);
+      product.priceOfMajorSale = productMajorSaleController.text.isEmpty
           ? null
-          : StaticMethods.removeSeparatorFromNumber(productMajorSellController);
+          : StaticMethods.removeSeparatorFromNumber(productMajorSaleController);
       product.mainUnit = Unit.values[productMainUnit];
       product.save();
       Get.back();

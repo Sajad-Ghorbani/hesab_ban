@@ -31,6 +31,8 @@ class SplashController extends GetxController {
       boxSetting.put('sellFactorHelp', true);
       boxSetting.put('OneSellFactorHelp', true);
       boxSetting.put('buyFactorHelp', true);
+      boxSetting.put('returnOfBuyFactorHelp', true);
+      boxSetting.put('returnOfSellFactorHelp', true);
       boxSetting.put('moneyUnitRial',true);
       boxSetting.put('moneyUnit','ریال');
     }

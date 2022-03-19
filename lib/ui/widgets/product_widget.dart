@@ -87,14 +87,14 @@ class ProductWidget extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'قیمت فروش: ' + '${product.priceOfMajorSell}'.seRagham(),
+                  'قیمت فروش: ' + '${product.priceOfMajorSale}'.seRagham(),
                   style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  'قیمت خرده فروشی: ' + '${product.priceOfOneSell}'.seRagham(),
+                  'قیمت خرده فروشی: ' + '${product.priceOfOneSale}'.seRagham(),
                   style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
                 ),
               ],

@@ -40,6 +40,8 @@ class HomeController extends GetxController {
   RxBool showBuyHelp = true.obs;
   RxBool showSellHelp = true.obs;
   RxBool showOneSellHelp = true.obs;
+  RxBool showReturnOfSellHelp = true.obs;
+  RxBool showReturnOfBuyHelp = true.obs;
   RxBool moneyUnitChange = true.obs;
   RxString moneyUnit = ''.obs;
 
@@ -58,6 +60,8 @@ class HomeController extends GetxController {
     getShowHelp('sellFactorHelp', showSellHelp);
     getShowHelp('OneSellFactorHelp', showOneSellHelp);
     getShowHelp('buyFactorHelp', showBuyHelp);
+    getShowHelp('returnOfBuyFactorHelp', showBuyHelp);
+    getShowHelp('returnOfSellFactorHelp', showBuyHelp);
     getMoneyUnit();
   }
 
@@ -255,7 +259,7 @@ class HomeController extends GetxController {
 
   void saveCashToCustomerBill() async {
     if (cashPaymentController.text.trim().isNotEmpty) {
-      int cashAmount = int.parse(cashPaymentController.text.trim());
+      int cashAmount = StaticMethods.removeSeparatorFromNumber(cashPaymentController);
       var billBox = Hive.lazyBox<Bill>(billsBox);
       Cash cash = Cash(
         cashAmount: typeOfCash == 'me' ? -cashAmount : cashAmount,

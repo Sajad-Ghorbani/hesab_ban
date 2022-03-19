@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/factor_controller.dart';
 import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -24,9 +25,7 @@ class FactorScreen extends GetView<FactorController> {
         return controller.willPop();
       },
       child: BaseWidget(
-        title: controller.typeOfFactor == TypeOfFactor.buy
-            ? 'فاکتور خرید'
-            : 'فاکتور فروش',
+        title: StaticMethods.setTypeFactorString(controller.typeOfFactor),
         appBarLeading: IconButton(
           onPressed: () {
             if (controller.willPop()) Get.back();
@@ -37,7 +36,7 @@ class FactorScreen extends GetView<FactorController> {
         appBarActions: [
           IconButton(
             onPressed: () {
-              controller.saveBill();
+              controller.saveToBill();
             },
             icon: const Icon(FontAwesomeIcons.check),
             splashRadius: 30,
@@ -60,7 +59,9 @@ class FactorScreen extends GetView<FactorController> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                               colors: [
-                                controller.typeOfFactor == TypeOfFactor.buy
+                                controller.typeOfFactor == TypeOfFactor.buy ||
+                                        controller.typeOfFactor ==
+                                            TypeOfFactor.returnOfSale
                                     ? kRedColor
                                     : kDarkGreenColor,
                                 kDarkGreyColor,
@@ -92,7 +93,10 @@ class FactorScreen extends GetView<FactorController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(controller.typeOfFactor == TypeOfFactor.buy
+                                Text(controller.typeOfFactor ==
+                                            TypeOfFactor.buy ||
+                                        controller.typeOfFactor ==
+                                            TypeOfFactor.returnOfBuy
                                     ? 'فروشنده:'
                                     : 'خریدار:'),
                                 Obx(
@@ -187,7 +191,9 @@ class FactorScreen extends GetView<FactorController> {
                                       width: 5,
                                     ),
                                     Text(
-                                      Get.find<HomeController>().moneyUnit.value,
+                                      Get.find<HomeController>()
+                                          .moneyUnit
+                                          .value,
                                       style: kRialTextStyle,
                                     ),
                                   ],
@@ -228,7 +234,9 @@ class FactorScreen extends GetView<FactorController> {
                                       width: 5,
                                     ),
                                     Text(
-                                      Get.find<HomeController>().moneyUnit.value,
+                                      Get.find<HomeController>()
+                                          .moneyUnit
+                                          .value,
                                       style: kRialTextStyle,
                                     ),
                                   ],
@@ -269,7 +277,9 @@ class FactorScreen extends GetView<FactorController> {
                                       width: 5,
                                     ),
                                     Text(
-                                      Get.find<HomeController>().moneyUnit.value,
+                                      Get.find<HomeController>()
+                                          .moneyUnit
+                                          .value,
                                       style: kRialTextStyle,
                                     ),
                                   ],
