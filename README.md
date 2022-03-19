@@ -1,16 +1,17 @@
-# hesab_ban
+# Hesab Ban
 
-A new Flutter project.
+The Hesab Ban application is suitable for people who do not have access to a computer or laptop and can invoice, check and check the customer's account with a mobile phone.
 
-## Getting Started
+## The most important features of the app
 
-This project is a starting point for a Flutter application.
+- Enter invoice for purchase, sale, retail
 
-A few resources to get you started if this is your first Flutter project:
+- Registration of goods with inventory
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Create folders to categorize goods
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Creating an account for the customer with the ability to receive checks and cash
+
+- Ability to view customer invoices with full description
+
+- Ability to search all parts of the program
