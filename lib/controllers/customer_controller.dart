@@ -1,4 +1,5 @@
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/controllers/print_controller.dart';
 import 'package:hesab_ban/models/bill_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
@@ -6,6 +7,7 @@ import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
+import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -147,7 +149,7 @@ class CustomerController extends GetxController {
     String typeFactor,
   ) {
     Get.defaultDialog(
-      title: 'فاکتور $typeFactor',
+      title: typeFactor,
       content: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Obx(
@@ -225,6 +227,29 @@ class CustomerController extends GetxController {
           ),
         ),
       ),
+      confirm: GridMenuWidget(
+        title: 'اشتراک گذاری',
+        onTap: () {
+          shareFactor(factor);
+        },
+      ),
     );
+  }
+
+  void shareFactor(Factor factor) async {
+    var box = Hive.lazyBox(settingBox);
+    String storeName = await box.get('storeName',defaultValue: '');
+    String storeAddress = await box.get('storeAddress',defaultValue: '');
+    if (storeName == '' || storeAddress == '') {
+      StaticMethods.showSnackBar(
+        title: 'توجه',
+        description:
+            'برای ارسال فاکتور اطلاعات فروشگاه در تنظیمات برنامه را تکمیل کنید.',
+      );
+    } //
+    else {
+      await Get.find<PrintController>()
+          .generate(factor, customerBill!.cashPayment!);
+    }
   }
 }

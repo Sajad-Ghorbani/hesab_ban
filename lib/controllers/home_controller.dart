@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:hesab_ban/models/product_model.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,8 +20,10 @@ import '../static_methods.dart';
 import '../ui/theme/app_colors.dart';
 
 class HomeController extends GetxController {
-  TextEditingController categoryNameController = TextEditingController();
-  TextEditingController cashPaymentController = TextEditingController();
+  late TextEditingController categoryNameController;
+  late TextEditingController cashPaymentController;
+  late TextEditingController storeNameController;
+  late TextEditingController storeAddressController;
 
   late PersistentTabController pageController;
   late ScrollController checkScreenScrollController;
@@ -44,6 +48,9 @@ class HomeController extends GetxController {
   RxBool showReturnOfBuyHelp = true.obs;
   RxBool moneyUnitChange = true.obs;
   RxString moneyUnit = ''.obs;
+  RxString storeName = ''.obs;
+  RxString storeAddress = ''.obs;
+  Rx<File> storeLogo = File('-1').obs;
 
   Customer? cashCustomer;
   String typeOfCash = '';
@@ -53,16 +60,16 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    categoryNameController = TextEditingController();
+    cashPaymentController = TextEditingController();
+    storeNameController = TextEditingController();
+    storeAddressController = TextEditingController();
     pageController = PersistentTabController();
     checkScreenScrollController = ScrollController();
     customerScreenScrollController = ScrollController();
     productScreenScrollController = ScrollController();
-    getShowHelp('sellFactorHelp', showSellHelp);
-    getShowHelp('OneSellFactorHelp', showOneSellHelp);
-    getShowHelp('buyFactorHelp', showBuyHelp);
-    getShowHelp('returnOfBuyFactorHelp', showBuyHelp);
-    getShowHelp('returnOfSellFactorHelp', showBuyHelp);
     getMoneyUnit();
+    getUserInfo();
   }
 
   @override
@@ -77,15 +84,6 @@ class HomeController extends GetxController {
     Hive.close();
   }
 
-  changeShowHelp(String key, RxBool value) async {
-    value.value = !value.value;
-    await boxSetting.put(key, value.value);
-  }
-
-  getShowHelp(String key, RxBool showFactor) async {
-    showFactor.value = await boxSetting.get(key);
-  }
-
   void changeMoneyUnit(bool value) {
     moneyUnitChange.value = value;
     moneyUnit.value = value ? 'ریال' : 'تومان';
@@ -96,6 +94,122 @@ class HomeController extends GetxController {
   void getMoneyUnit() async {
     moneyUnitChange.value = await boxSetting.get('moneyUnitRial');
     moneyUnit.value = await boxSetting.get('moneyUnit');
+  }
+
+  void getUserInfo() async {
+    storeName.value = await boxSetting.get('storeName');
+    storeAddress.value = await boxSetting.get('storeAddress');
+    storeLogo.value = File(await boxSetting.get('storeLogo'));
+  }
+
+  void setUserInfo({bool? isName, bool? isAddress, bool? isLogo}) {
+    if (isName == true) {
+      setStoreName();
+    } //
+    else if (isAddress == true) {
+      setStoreAddress();
+    } //
+    else {
+      setStoreLogo();
+    }
+  }
+
+  setStoreName() async {
+    storeNameController.text = storeName.value;
+    Get.defaultDialog(
+      title: 'نام فروشگاه',
+      content: TextField(
+        controller: storeNameController,
+        autofocus: true,
+      ),
+      confirm: GestureDetector(
+        onTap: () async {
+          storeName.value = storeNameController.text.trim();
+          await boxSetting.put('storeName', storeName.value);
+          Get.back();
+          storeNameController.clear();
+
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            color: kGreyColor,
+          ),
+          child: const Icon(Icons.check),
+        ),
+      ),
+    );
+  }
+
+  setStoreAddress() async {
+    storeAddressController.text = storeAddress.value;
+    Get.defaultDialog(
+      title: 'آدرس فروشگاه',
+      content: TextField(
+        controller: storeAddressController,
+        autofocus: true,
+      ),
+      confirm: GestureDetector(
+        onTap: () async {
+          storeAddress.value = storeAddressController.text.trim();
+          await boxSetting.put('storeAddress', storeAddress.value);
+          Get.back();
+          storeAddressController.clear();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            color: kGreyColor,
+          ),
+          child: const Icon(Icons.check),
+        ),
+      ),
+    );
+  }
+
+  setStoreLogo() async {
+    XFile pickedFile = (await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    )) as XFile;
+    storeLogo.value = File(pickedFile.path);
+    File? croppedFile = await ImageCropper().cropImage(
+        sourcePath: storeLogo.value.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: const AndroidUiSettings(
+            toolbarColor: kBlueColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: const IOSUiSettings(
+          aspectRatioLockEnabled: false,
+        ));
+    if (croppedFile != null) {
+      storeLogo.value = croppedFile;
+      await boxSetting.put('storeLogo', storeLogo.value.path);
+    }
   }
 
   void openWhatsApp() async {
@@ -259,7 +373,8 @@ class HomeController extends GetxController {
 
   void saveCashToCustomerBill() async {
     if (cashPaymentController.text.trim().isNotEmpty) {
-      int cashAmount = StaticMethods.removeSeparatorFromNumber(cashPaymentController);
+      int cashAmount =
+          StaticMethods.removeSeparatorFromNumber(cashPaymentController);
       var billBox = Hive.lazyBox<Bill>(billsBox);
       Cash cash = Cash(
         cashAmount: typeOfCash == 'me' ? -cashAmount : cashAmount,

@@ -28,13 +28,11 @@ class SplashController extends GetxController {
     await Hive.openLazyBox<Bill>(billsBox);
     var boxSetting = await Hive.openLazyBox(settingBox);
     if(boxSetting.isEmpty){
-      boxSetting.put('sellFactorHelp', true);
-      boxSetting.put('OneSellFactorHelp', true);
-      boxSetting.put('buyFactorHelp', true);
-      boxSetting.put('returnOfBuyFactorHelp', true);
-      boxSetting.put('returnOfSellFactorHelp', true);
       boxSetting.put('moneyUnitRial',true);
       boxSetting.put('moneyUnit','ریال');
+      boxSetting.put('storeName','');
+      boxSetting.put('storeAddress','');
+      boxSetting.put('storeLogo','-1');
     }
     var box = await Hive.openBox<Category>(productCategoryBox);
     if (box.isEmpty) {
