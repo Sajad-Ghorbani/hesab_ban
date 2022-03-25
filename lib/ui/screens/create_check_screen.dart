@@ -149,6 +149,7 @@ class CreateCheckScreen extends GetView<CheckController> {
                               ? 'انتخاب تاریخ'
                               : controller.checkDueDateLabel.value,
                           color: Theme.of(context).colorScheme.surface,
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                           onTap: () async {
                             Jalali? pickedDate = await showPersianDatePicker(
                               context: context,
@@ -184,6 +185,7 @@ class CreateCheckScreen extends GetView<CheckController> {
                               ? 'انتخاب تاریخ'
                               : controller.checkDeliveryDateLabel.value,
                           color: Theme.of(context).colorScheme.surface,
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                           onTap: () async {
                             Jalali? pickedDate = await showPersianDatePicker(
                               context: context,

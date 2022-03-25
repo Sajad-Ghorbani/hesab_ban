@@ -128,9 +128,9 @@ class SettingScreen extends GetView<HomeController> {
                             ? const SizedBox.shrink()
                             : Image.file(
                                 controller.storeLogo.value,
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.contain,
                               ),
                       ),
                     ],

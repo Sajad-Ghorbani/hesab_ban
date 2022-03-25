@@ -91,6 +91,7 @@ class OneSaleFactorScreen extends GetView<FactorController> {
                           onTap: () {
                             controller.selectProduct(context);
                           },
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                         ),
                       ),
                       const SizedBox(

@@ -58,6 +58,7 @@ class AllProductScreen extends GetView<HomeController> {
                             parameters: {'categoryName': defaultCategoryName},
                           );
                         },
+                        width: MediaQuery.of(context).size.width / 2 - 25,
                       ),
                       GridMenuWidget(
                         title: 'ساخت پوشه جدید',
@@ -70,6 +71,7 @@ class AllProductScreen extends GetView<HomeController> {
                             },
                           );
                         },
+                        width: MediaQuery.of(context).size.width / 2 - 25,
                       ),
                     ],
                   ),

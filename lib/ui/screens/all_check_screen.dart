@@ -45,6 +45,7 @@ class AllCheckScreen extends GetView<HomeController> {
                   onTap: () {
                     Get.toNamed(Routes.createCheckScreen);
                   },
+                  width: MediaQuery.of(context).size.width / 2 - 25,
                 ),
               ),
             ),

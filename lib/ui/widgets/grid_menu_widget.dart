@@ -8,10 +8,12 @@ class GridMenuWidget extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.color = kGreyColor,
+    this.width,
   }) : super(key: key);
   final String title;
   final VoidCallback onTap;
   final Color color;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,12 @@ class GridMenuWidget extends StatelessWidget {
               Radius.circular(15),
             ),
           ),
-          child: SizedBox(
+          child: Container(
             height: 45,
-            width: MediaQuery.of(context).size.width / 2 - 25,
+            width: width,
+            padding: width == null
+                ? const EdgeInsets.symmetric(horizontal: 10)
+                : null,
             child: Center(
               child: Text(title),
             ),

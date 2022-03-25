@@ -53,6 +53,7 @@ class ProductFolderScreen extends GetView<HomeController> {
                         parameters: {'categoryName': categoryName},
                       );
                     },
+                    width: MediaQuery.of(context).size.width / 2 - 25,
                   ),
                 ),
               )

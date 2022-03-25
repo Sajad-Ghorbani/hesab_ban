@@ -50,6 +50,7 @@ class CustomersScreen extends GetView<HomeController> {
                     onTap: () {
                       Get.toNamed(Routes.createCustomerScreen);
                     },
+                    width: MediaQuery.of(context).size.width / 2 - 25,
                   ),
                 ),
               ),

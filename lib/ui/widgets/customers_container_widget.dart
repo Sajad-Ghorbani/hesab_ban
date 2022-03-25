@@ -48,6 +48,7 @@ class CustomersContainerWidget extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.createCustomerScreen);
                   },
+                  width: MediaQuery.of(context).size.width / 2 - 25,
                 ),
                 const SizedBox(
                   height: 20,

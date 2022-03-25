@@ -227,28 +227,51 @@ class CustomerController extends GetxController {
           ),
         ),
       ),
-      confirm: GridMenuWidget(
-        title: 'اشتراک گذاری',
-        onTap: () {
-          shareFactor(factor);
+      confirm: GetBuilder<PrintController>(
+        init: PrintController(),
+        builder: (controller) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GridMenuWidget(
+                title: 'مشاهده',
+                onTap: () async {
+                  final pdfFile = await saveFactor(factor);
+                  if (pdfFile != null) {
+                    controller.openFile(pdfFile);
+                  }
+                },
+                width: 100,
+              ),
+              GridMenuWidget(
+                title: 'اشتراک گذاری',
+                onTap: () async {
+                  final pdfFile = await saveFactor(factor);
+                  if (pdfFile != null) {
+                    controller.shareFile(pdfFile);
+                  }
+                },
+              ),
+            ],
+          );
         },
       ),
     );
   }
 
-  void shareFactor(Factor factor) async {
+  saveFactor(Factor factor) async {
     var box = Hive.lazyBox(settingBox);
-    String storeName = await box.get('storeName',defaultValue: '');
-    String storeAddress = await box.get('storeAddress',defaultValue: '');
+    String storeName = await box.get('storeName', defaultValue: '');
+    String storeAddress = await box.get('storeAddress', defaultValue: '');
     if (storeName == '' || storeAddress == '') {
       StaticMethods.showSnackBar(
         title: 'توجه',
         description:
-            'برای ارسال فاکتور اطلاعات فروشگاه در تنظیمات برنامه را تکمیل کنید.',
+            'برای مشاهده و ارسال فاکتور اطلاعات فروشگاه در تنظیمات برنامه را تکمیل کنید.',
       );
     } //
     else {
-      await Get.find<PrintController>()
+      return await Get.find<PrintController>()
           .generate(factor, customerBill!.cashPayment!);
     }
   }

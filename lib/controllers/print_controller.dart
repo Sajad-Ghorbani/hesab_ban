@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:hesab_ban/constants.dart';
 import 'package:hive/hive.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 
@@ -38,7 +39,7 @@ class PrintController extends GetxController {
     storeLogo = MemoryImage(File(storeLogoPath).readAsBytesSync());
   }
 
-  Future<void> saveDocument({
+  Future<File> saveDocument({
     required String name,
     required Document pdf,
   }) async {
@@ -46,10 +47,21 @@ class PrintController extends GetxController {
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/$name');
     await file.writeAsBytes(bytes);
-    await Printing.sharePdf(bytes: bytes, filename: name);
+    return file;
   }
 
-  Future<void> generate(Factor factor, int customerCashPayment) async {
+  Future openFile(File file) async {
+    final url = file.path;
+
+    await OpenFile.open(url);
+  }
+
+  Future shareFile(File file) async {
+    await Printing.sharePdf(
+        bytes: file.readAsBytesSync(), filename: file.path.split('/').last);
+  }
+
+  Future<File> generate(Factor factor, int customerCashPayment) async {
     final pdf = Document(
       theme: ThemeData.withFont(
         base: Font.ttf(
@@ -73,7 +85,7 @@ class PrintController extends GetxController {
       margin: const EdgeInsets.all(1 * PdfPageFormat.cm),
     ));
 
-    await saveDocument(
+    return await saveDocument(
       name: '${factor.customer!.name!} ${factor.id}.pdf',
       pdf: pdf,
     );
@@ -113,20 +125,17 @@ class PrintController extends GetxController {
                 ],
               ),
               Container(
-                height: 50,
-                width: 50,
                 child: storeLogoPath == '-1'
                     ? SizedBox.shrink()
                     : Image(
                         storeLogo,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
               ),
             ],
           ),
-          // SizedBox(height: 1 * PdfPageFormat.cm),
           Divider(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,

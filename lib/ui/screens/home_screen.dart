@@ -37,6 +37,7 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {
                             Get.toNamed(Routes.createCustomerScreen);
                           },
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                         ),
                         const SizedBox(
                           width: 10,
@@ -46,6 +47,7 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {
                             Get.toNamed(Routes.createCheckScreen);
                           },
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                         ),
                         const SizedBox(
                           width: 10,
@@ -55,6 +57,7 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {
                             controller.inputCash();
                           },
+                          width: MediaQuery.of(context).size.width / 2 - 25,
                         ),
                       ],
                     ),
