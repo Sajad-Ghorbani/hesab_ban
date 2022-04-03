@@ -28,6 +28,7 @@ class CustomerController extends GetxController {
   Customer? customer = Get.arguments;
   RxBool showFab = true.obs;
   late final LazyBox billBox;
+  RxBool customerIsDebtor = true.obs;
 
   @override
   void onInit() {
@@ -79,8 +80,12 @@ class CustomerController extends GetxController {
         address: customerAddressController.text.trim(),
         initialAccountBalance: customerBalanceController.text.trim().isEmpty
             ? 0
-            : StaticMethods.removeSeparatorFromNumber(
-                customerBalanceController),
+            : customerIsDebtor.value
+                ? -StaticMethods.removeSeparatorFromNumber(
+                    customerBalanceController)
+                : StaticMethods.removeSeparatorFromNumber(
+                    customerBalanceController,
+                  ),
       );
       final int key = await customerBox.add(newCustomer);
       newCustomer.id = key;
@@ -107,11 +112,21 @@ class CustomerController extends GetxController {
       customer.phoneNumber1 = customerPhoneController.text.trim();
       customer.phoneNumber2 = customerPhone2Controller.text.trim();
       customer.address = customerAddressController.text.trim();
-      customer.initialAccountBalance = customerBalanceController.text
-              .trim()
-              .isEmpty
-          ? 0
-          : StaticMethods.removeSeparatorFromNumber(customerBalanceController);
+      if (customerBalanceController.text.trim().isEmpty) {
+        customer.initialAccountBalance = 0;
+      } //
+      else {
+        if (customerIsDebtor.value) {
+          customer.initialAccountBalance =
+              -StaticMethods.removeSeparatorFromNumber(
+                  customerBalanceController);
+        } //
+        else {
+          customer.initialAccountBalance =
+              StaticMethods.removeSeparatorFromNumber(
+                  customerBalanceController);
+        }
+      }
       await customer.save();
       await updateBill(customer);
       Get.back();
@@ -133,6 +148,7 @@ class CustomerController extends GetxController {
     customerPhone2Controller.clear();
     customerAddressController.clear();
     customerBalanceController.clear();
+    customerIsDebtor.value = true;
   }
 
   getCustomerBill() async {

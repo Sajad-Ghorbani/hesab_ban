@@ -1,5 +1,6 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:hesab_ban/controllers/customer_controller.dart';
 import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
@@ -160,6 +161,7 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                           controller: controller.customerBalanceController,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
                             CurrencyTextInputFormatter(
                               decimalDigits: 0,
                               symbol: '',
@@ -173,6 +175,36 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                       Text(
                         Get.find<HomeController>().moneyUnit.value,
                         style: kRialTextStyle,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text('نوع'),
+                      const Spacer(),
+                      SizedBox(
+                        width: 120,
+                        child: Obx(
+                          () => DropdownButtonFormField<bool>(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide.none)),
+                            items: const [
+                              DropdownMenuItem(
+                                child: Text('بدهکار'),
+                                value: true,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('بستانکار'),
+                                value: false,
+                              ),
+                            ],
+                            value: controller.customerIsDebtor.value,
+                            onChanged: (bool? value) {
+                              controller.customerIsDebtor.value = value!;
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -191,9 +223,10 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                   style: const TextStyle(
                     color: kBackgroundColor,
                   ),
-                  recognizer: TapGestureRecognizer()..onTap = (){
-                    Get.toNamed(Routes.privacyAndPolicyScreen);
-                  },
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Get.toNamed(Routes.privacyAndPolicyScreen);
+                    },
                 ),
                 const TextSpan(text: ' را میپذیرم.'),
               ],
