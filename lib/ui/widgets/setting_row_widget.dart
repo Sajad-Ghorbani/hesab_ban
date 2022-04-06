@@ -15,10 +15,10 @@ class SettingRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: GestureDetector(
-        onTap: onTap,
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
           children: [
             Icon(icon),

@@ -31,12 +31,12 @@ class CheckContainerWidget extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: Hive.box<Check>(checksBox).listenable(),
       builder: (context, Box<Check> box, _) {
-        List<Check> list = isBox
+        List<Check> checks = isBox
             ? box.values
                 .where((element) => element.typeOfCheck == typeOfCheck)
                 .toList()
             : checkList!;
-        if (list.isEmpty) {
+        if (checks.isEmpty) {
           return SliverToBoxAdapter(
             child: Column(
               children: const [
@@ -52,7 +52,13 @@ class CheckContainerWidget extends StatelessWidget {
           );
         } //
         else {
-          list.sort((a, b) {
+          List<Check> listOfCheckFromToday = [];
+          for (var check in checks) {
+            if (check.checkDeliveryDate!.day >= DateTime.now().day) {
+              listOfCheckFromToday.add(check);
+            }
+          }
+          listOfCheckFromToday.sort((a, b) {
             return a.checkDeliveryDate!.compareTo(b.checkDeliveryDate!);
           });
           return SliverPadding(
@@ -81,12 +87,12 @@ class CheckContainerWidget extends StatelessWidget {
                       ],
                       rows: List<DataRow>.generate(
                         miniDataTable
-                            ? list.length > 5
+                            ? listOfCheckFromToday.length > 5
                                 ? 5
-                                : list.length
-                            : list.length,
+                                : listOfCheckFromToday.length
+                            : listOfCheckFromToday.length,
                         (index) {
-                          Check check = list[index];
+                          Check check = listOfCheckFromToday[index];
                           return DataRow(
                             cells: [
                               DataCell(
@@ -129,7 +135,9 @@ class CheckContainerWidget extends StatelessWidget {
                                       width: 5,
                                     ),
                                     Text(
-                                      Get.find<HomeController>().moneyUnit.value,
+                                      Get.find<HomeController>()
+                                          .moneyUnit
+                                          .value,
                                       style: kRialTextStyle,
                                     ),
                                   ],

@@ -142,29 +142,42 @@ class SettingScreen extends GetView<HomeController> {
               child: Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
+                child: Obx(
+                  () => SettingRowWidget(
+                    onTap: () {
+                      controller.setNotificationTime(context);
+                    },
+                    icon: Icons.notifications_active,
+                    title: 'زمان دریافت اعلان چک',
+                    valueWidget: Text(
+                        '${controller.minutesNotification.value} : ${controller.hoursNotification.value}'),
+                  ),
+                ),
+              ),
+            ),
+            BoxContainerWidget(
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'برای ارسال پیشنهادات و انتقادات خود می توانید از طریق واتساپ با ما در ارتباط باشید.',
-                            style: TextStyle(height: 1.5),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            controller.openWhatsApp();
-                          },
-                          child: Image.asset(
-                            'assets/images/whatsapp.png',
-                            width: 35,
-                          ),
-                        ),
-                      ],
+                    const Expanded(
+                      child: Text(
+                        'برای ارسال پیشنهادات و انتقادات خود می توانید از طریق واتساپ با ما در ارتباط باشید.',
+                        style: TextStyle(height: 1.5),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller.openWhatsApp();
+                      },
+                      child: Image.asset(
+                        'assets/images/whatsapp.png',
+                        width: 35,
+                      ),
                     ),
                   ],
                 ),

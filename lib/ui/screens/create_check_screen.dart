@@ -6,8 +6,6 @@ import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../controllers/home_controller.dart';
 import '../theme/app_colors.dart';
@@ -21,8 +19,10 @@ class CreateCheckScreen extends GetView<CheckController> {
     if (controller.check != null) {
       controller.checkBankNameController.text = controller.check!.bankName!;
       controller.checkNumberController.text = controller.check!.checkNumber!;
-      controller.checkAmountController.text = controller.check!.checkAmount.toString();
-      controller.checkDueDateLabel.value = controller.check!.checkDueDate.toString();
+      controller.checkAmountController.text =
+          controller.check!.checkAmount.toString();
+      controller.checkDueDateLabel.value =
+          controller.check!.checkDueDate.toString();
       controller.checkDeliveryDateLabel.value =
           controller.check!.checkDeliveryDate.toString();
     }
@@ -151,20 +151,7 @@ class CreateCheckScreen extends GetView<CheckController> {
                           color: Theme.of(context).colorScheme.surface,
                           width: MediaQuery.of(context).size.width / 2 - 25,
                           onTap: () async {
-                            Jalali? pickedDate = await showPersianDatePicker(
-                              context: context,
-                              initialDate: Jalali.now(),
-                              firstDate: Jalali.now(),
-                              lastDate: Jalali(1450, 9),
-                            );
-                            if (pickedDate != null) {
-                              controller.checkDueDateLabel.value = pickedDate
-                                  .toJalaliDateTime()
-                                  .split(' ')
-                                  .first
-                                  .toPersianDigit();
-                              controller.checkDueDate = pickedDate.toDateTime();
-                            }
+                            controller.setDateOfCheck(context, false);
                           },
                         ),
                       ),
@@ -186,23 +173,8 @@ class CreateCheckScreen extends GetView<CheckController> {
                               : controller.checkDeliveryDateLabel.value,
                           color: Theme.of(context).colorScheme.surface,
                           width: MediaQuery.of(context).size.width / 2 - 25,
-                          onTap: () async {
-                            Jalali? pickedDate = await showPersianDatePicker(
-                              context: context,
-                              initialDate: Jalali.now(),
-                              firstDate: Jalali.now(),
-                              lastDate: Jalali(1450, 9),
-                            );
-                            if (pickedDate != null) {
-                              controller.checkDeliveryDateLabel.value =
-                                  pickedDate
-                                      .toJalaliDateTime()
-                                      .split(' ')
-                                      .first
-                                      .toPersianDigit();
-                              controller.checkDeliveryDate =
-                                  pickedDate.toDateTime();
-                            }
+                          onTap: () {
+                            controller.setDateOfCheck(context, true);
                           },
                         ),
                       ),

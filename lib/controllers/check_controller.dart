@@ -1,4 +1,6 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/static_methods.dart';
@@ -6,6 +8,8 @@ import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../models/bill_model.dart';
 
@@ -94,6 +98,34 @@ class CheckController extends GetxController {
     Get.back();
   }
 
+  setDateOfCheck(BuildContext context, bool checkDeliverStatus) async {
+    var settingsBox = Hive.lazyBox(settingBox);
+    Jalali? pickedDate = await showPersianDatePicker(
+      context: context,
+      initialDate: Jalali.now(),
+      firstDate: Jalali.now(),
+      lastDate: Jalali(1450, 9),
+    );
+    if (pickedDate != null) {
+      if (checkDeliverStatus) {
+        int hours = await settingsBox.get('notificationHours') ?? 8;
+        int minutes = await settingsBox.get('notificationMinutes') ?? 0;
+        pickedDate = pickedDate.add(
+          hours: hours,
+          minutes: minutes,
+        );
+        checkDeliveryDateLabel.value =
+            pickedDate.toJalaliDateTime().split(' ').first.toPersianDigit();
+        checkDeliveryDate = pickedDate.toDateTime();
+      } //
+      else {
+        checkDueDateLabel.value =
+            pickedDate.toJalaliDateTime().split(' ').first.toPersianDigit();
+        checkDueDate = pickedDate.toDateTime();
+      }
+    }
+  }
+
   void saveCheck(BuildContext context) async {
     String bankName = checkBankNameController.text.trim();
     String checkNumber = checkNumberController.text.trim();
@@ -170,6 +202,7 @@ class CheckController extends GetxController {
       newCheck.id = index;
       await newCheck.save();
       await addToCustomerBill(newCheck);
+      await createCheckNotification(newCheck);
       resetCheckScreen(context);
       StaticMethods.showSnackBar(
         title: 'تبریک!',
@@ -231,5 +264,30 @@ class CheckController extends GetxController {
     Bill? newBill = await billBox.get(key);
     newBill!.check!.add(check);
     await newBill.save();
+  }
+
+  Future createCheckNotification(Check check) async {
+    String amount = check.checkAmount!.abs().toString().seRagham();
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: check.id!,
+          channelKey: 'basic_channel',
+          title: '${Emojis.money_dollar_banknote} سر رسید چک',
+          body: 'شما یک چک ${typeOfCheck == TypeOfCheck.send ? 'به' : 'از'} '
+              '${check.customerCheck!.name}'
+              ' از بانک ${check.bankName}'
+              ' به مبلغ $amount '
+              '${Get.find<HomeController>().moneyUnit.value} دارید.',
+          notificationLayout: NotificationLayout.BigText,
+          category: NotificationCategory.Reminder,
+          displayOnBackground: true,
+          wakeUpScreen: true,
+          color: kBlueColor,
+          payload: {'check_id': check.id.toString()}),
+      schedule: NotificationCalendar.fromDate(
+        date: check.checkDeliveryDate!,
+        allowWhileIdle: true,
+      ),
+    );
   }
 }

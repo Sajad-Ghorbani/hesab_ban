@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/bill_model.dart';
 import 'package:hesab_ban/models/cash_model.dart';
@@ -9,7 +12,10 @@ import 'package:hesab_ban/models/customer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/ui/screens/check_details.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
+import 'package:hesab_ban/ui/widgets/confirm_button.dart';
+import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,6 +57,8 @@ class HomeController extends GetxController {
   RxString storeName = ''.obs;
   RxString storeAddress = ''.obs;
   Rx<File> storeLogo = File('-1').obs;
+  RxInt hoursNotification = 8.obs;
+  RxInt minutesNotification = 0.obs;
 
   Customer? cashCustomer;
   String typeOfCash = '';
@@ -60,6 +68,8 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    checkNotificationAllowed();
+    checkNotificationListen();
     categoryNameController = TextEditingController();
     cashPaymentController = TextEditingController();
     storeNameController = TextEditingController();
@@ -75,6 +85,7 @@ class HomeController extends GetxController {
   @override
   onClose() {
     super.onClose();
+    AwesomeNotifications().actionSink.close();
     pageController.dispose();
     checkScreenScrollController.dispose();
     customerScreenScrollController.dispose();
@@ -82,6 +93,53 @@ class HomeController extends GetxController {
     categoryNameController.dispose();
     cashPaymentController.dispose();
     Hive.close();
+  }
+
+  checkNotificationAllowed() {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        Get.defaultDialog(
+          title: 'توجه',
+          content: const Text(
+            'حساب بان برای یادآوری چک ها میخواهد برای شما نوتیفیکیشن ارسال کند. آیا تایید میکنید؟',
+            textAlign: TextAlign.center,
+            style: TextStyle(height: 1.5),
+          ),
+          confirm: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GridMenuWidget(
+                title: 'بله',
+                onTap: () => AwesomeNotifications()
+                    .requestPermissionToSendNotifications()
+                    .then((value) => Get.back()),
+                color: kDarkGreyColor,
+                width: 100,
+              ),
+              GridMenuWidget(
+                title: 'خیر',
+                onTap: () {
+                  Get.back();
+                },
+                color: kGreyColor,
+                width: 100,
+              ),
+            ],
+          ),
+        );
+      }
+    });
+  }
+
+  checkNotificationListen() {
+    AwesomeNotifications().actionStream.listen((notification) {
+      Check check = homeChecksBox.values.firstWhere((element) {
+        return element.id == int.parse('${notification.payload!['check_id']}');
+      });
+      Get.to(
+        () => CheckDetails(check),
+      );
+    });
   }
 
   void changeMoneyUnit(bool value) {
@@ -100,6 +158,67 @@ class HomeController extends GetxController {
     storeName.value = await boxSetting.get('storeName');
     storeAddress.value = await boxSetting.get('storeAddress');
     storeLogo.value = File(await boxSetting.get('storeLogo'));
+    hoursNotification.value = await boxSetting.get('notificationHours');
+    minutesNotification.value = await boxSetting.get('notificationMinutes');
+  }
+
+  void setNotificationTime(context) async {
+    Get.defaultDialog(
+      title: 'زمان دریافت اعلان چک',
+      content: Column(
+        children: [
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: TimePickerSpinner(
+              normalTextStyle:
+                  const TextStyle(fontSize: 20, color: kDarkGreyColor),
+              highlightedTextStyle:
+                  const TextStyle(fontSize: 20, color: kWhiteColor),
+              isForce2Digits: true,
+              time: DateTime(
+                DateTime.now().year,
+                DateTime.now().month,
+                DateTime.now().day,
+                hoursNotification.value,
+                minutesNotification.value,
+              ),
+              spacing: 10,
+              itemHeight: 40,
+              alignment: Alignment.center,
+              onTimeChange: (time) async {
+                hoursNotification.value = time.hour;
+                minutesNotification.value = time.minute;
+                await boxSetting.put(
+                    'notificationHours', hoursNotification.value);
+                await boxSetting.put(
+                    'notificationMinutes', minutesNotification.value);
+              },
+            ),
+          ),
+          Row(
+            children: const [
+              Icon(
+                FontAwesomeIcons.exclamationCircle,
+                size: 18,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Text(
+                  'با تغییر این زمان، زمان اعلان چک هایی که از الان ثبت کنید تغییر می کنند.',
+                  style: TextStyle(
+                    height: 1.5,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      confirm: ConfirmButton(onTap: Get.back),
+    );
   }
 
   void setUserInfo({bool? isName, bool? isAddress, bool? isLogo}) {
@@ -122,24 +241,13 @@ class HomeController extends GetxController {
         controller: storeNameController,
         autofocus: true,
       ),
-      confirm: GestureDetector(
+      confirm: ConfirmButton(
         onTap: () async {
           storeName.value = storeNameController.text.trim();
           await boxSetting.put('storeName', storeName.value);
           Get.back();
           storeNameController.clear();
-
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            color: kGreyColor,
-          ),
-          child: const Icon(Icons.check),
-        ),
       ),
     );
   }
@@ -152,23 +260,13 @@ class HomeController extends GetxController {
         controller: storeAddressController,
         autofocus: true,
       ),
-      confirm: GestureDetector(
+      confirm: ConfirmButton(
         onTap: () async {
           storeAddress.value = storeAddressController.text.trim();
           await boxSetting.put('storeAddress', storeAddress.value);
           Get.back();
           storeAddressController.clear();
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            color: kGreyColor,
-          ),
-          child: const Icon(Icons.check),
-        ),
       ),
     );
   }

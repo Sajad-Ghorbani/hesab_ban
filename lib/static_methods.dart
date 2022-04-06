@@ -5,6 +5,7 @@ import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hesab_ban/ui/widgets/confirm_button.dart';
 import 'package:hive/hive.dart';
 
 import 'controllers/home_controller.dart';
@@ -86,19 +87,7 @@ class StaticMethods {
         productCountController.clear();
         return true;
       },
-      confirm: GestureDetector(
-        onTap: onConfirm,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            color: kGreyColor,
-          ),
-          child: const Icon(Icons.check),
-        ),
-      ),
+      confirm: ConfirmButton(onTap: onConfirm),
       content: Column(
         children: [
           Row(
@@ -195,19 +184,7 @@ class StaticMethods {
           ),
         ],
       ),
-      confirm: GestureDetector(
-        onTap: onConfirmTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            color: kGreyColor,
-          ),
-          child: const Icon(Icons.check),
-        ),
-      ),
+      confirm: ConfirmButton(onTap: onConfirmTap),
     );
   }
 

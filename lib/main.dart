@@ -1,3 +1,5 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/services.dart';
 import 'package:hesab_ban/bindings/initial_binding.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/static_methods.dart';
@@ -6,9 +8,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main()async {
+void main() async {
   await Hive.initFlutter();
   StaticMethods.hiveAdapters();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  AwesomeNotifications().initialize(
+    'resource://drawable/res_app_notification_icon',
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Notification',
+        channelDescription: 'Notification channel for basic tests',
+        enableLights: true,
+        enableVibration: true,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      ),
+    ],
+  );
   runApp(const MyApp());
 }
 
@@ -23,7 +42,7 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.initial,
       getPages: AppPages.pages,
       initialBinding: InitialBinding(),
-      locale: const Locale('fa','IR'),
+      locale: const Locale('fa', 'IR'),
       fallbackLocale: const Locale('en', 'US'),
       defaultTransition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 200),
@@ -31,4 +50,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

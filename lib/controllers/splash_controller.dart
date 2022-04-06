@@ -13,7 +13,6 @@ import '../models/customer_model.dart';
 class SplashController extends GetxController {
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     Future.delayed(const Duration(milliseconds: 1500), () async {
       await openAppBox();
@@ -33,6 +32,8 @@ class SplashController extends GetxController {
       boxSetting.put('storeName','');
       boxSetting.put('storeAddress','');
       boxSetting.put('storeLogo','-1');
+      boxSetting.put('notificationHours',8);
+      boxSetting.put('notificationMinutes',0);
     }
     var box = await Hive.openBox<Category>(productCategoryBox);
     if (box.isEmpty) {

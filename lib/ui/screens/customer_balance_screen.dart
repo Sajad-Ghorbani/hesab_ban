@@ -212,64 +212,66 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  columnSpacing: 30,
-                                  showCheckboxColumn: false,
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('ردیف'),
-                                      numeric: true,
-                                    ),
-                                    DataColumn(label: Text('تاریخ')),
-                                    DataColumn(label: Text('شرح')),
-                                    DataColumn(label: Text('مبلغ')),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                    controller.customerBill!.factor!.length,
-                                    (index) {
-                                      Factor factor = controller
-                                          .customerBill!.factor![index];
-                                      String type = StaticMethods.setTypeFactorString(factor.typeOfFactor!);
-                                      return DataRow(
-                                        onSelectChanged: (selected){
-                                          controller.showFactor(factor,type,);
-                                        },
-                                        cells: [
-                                          DataCell(
-                                            Text(
-                                              (index + 1)
+                                child: SingleChildScrollView(
+                                  child: DataTable(
+                                    columnSpacing: 30,
+                                    showCheckboxColumn: false,
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('ردیف'),
+                                        numeric: true,
+                                      ),
+                                      DataColumn(label: Text('تاریخ')),
+                                      DataColumn(label: Text('شرح')),
+                                      DataColumn(label: Text('مبلغ')),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      controller.customerBill!.factor!.length,
+                                      (index) {
+                                        Factor factor = controller
+                                            .customerBill!.factor![index];
+                                        String type = StaticMethods.setTypeFactorString(factor.typeOfFactor!);
+                                        return DataRow(
+                                          onSelectChanged: (selected){
+                                            controller.showFactor(factor,type,);
+                                          },
+                                          cells: [
+                                            DataCell(
+                                              Text(
+                                                (index + 1)
+                                                    .toString()
+                                                    .toPersianDigit(),
+                                              ),
+                                            ),
+                                            DataCell(
+                                              Text(factor.factorDate
                                                   .toString()
-                                                  .toPersianDigit(),
+                                                  .toPersianDate()),
                                             ),
-                                          ),
-                                          DataCell(
-                                            Text(factor.factorDate
-                                                .toString()
-                                                .toPersianDate()),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                                '$type به شماره فاکتور "${factor.id}"'),
-                                          ),
-                                          DataCell(
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    '${factor.factorSum!.abs()}'
-                                                        .seRagham()),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  Get.find<HomeController>().moneyUnit.value,
-                                                  style: kRialTextStyle,
-                                                ),
-                                              ],
+                                            DataCell(
+                                              Text(
+                                                  '$type به شماره فاکتور "${factor.id}"'),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                                            DataCell(
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      '${factor.factorSum!.abs()}'
+                                                          .seRagham()),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    Get.find<HomeController>().moneyUnit.value,
+                                                    style: kRialTextStyle,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -280,82 +282,84 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  columnSpacing: 30,
-                                  showCheckboxColumn: false,
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('ردیف'),
-                                      numeric: true,
+                                child: SingleChildScrollView(
+                                  child: DataTable(
+                                    columnSpacing: 30,
+                                    showCheckboxColumn: false,
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('ردیف'),
+                                        numeric: true,
+                                      ),
+                                      DataColumn(label: Text('تاریخ')),
+                                      DataColumn(label: Text('شرح')),
+                                      DataColumn(label: Text('مبلغ')),
+                                      DataColumn(label: Text('تاریخ سررسید')),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      controller.customerBill!.check!.length,
+                                      (index) {
+                                        Check check = controller
+                                            .customerBill!.check![index];
+                                        String type = check.typeOfCheck ==
+                                                TypeOfCheck.received
+                                            ? 'دریافت'
+                                            : 'پرداخت';
+                                        return DataRow(
+                                          cells: [
+                                            DataCell(
+                                              Text(
+                                                (index + 1)
+                                                    .toString()
+                                                    .toPersianDigit(),
+                                              ),
+                                            ),
+                                            DataCell(
+                                              Center(
+                                                child: Text(
+                                                  (check.checkDueDate)
+                                                      .toString()
+                                                      .toPersianDate(),
+                                                ),
+                                              ),
+                                            ),
+                                            DataCell(
+                                              Text(
+                                                  '$type چک بانک ${check.bankName} به شماره ${check.checkNumber}'),
+                                            ),
+                                            DataCell(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      '${check.checkAmount!.abs()}'
+                                                          .toPersianDigit()
+                                                          .seRagham()),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    Get.find<HomeController>().moneyUnit.value,
+                                                    style: kRialTextStyle,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            DataCell(
+                                              Center(
+                                                child: Text(
+                                                  (check.checkDeliveryDate)
+                                                      .toString()
+                                                      .toPersianDate(),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
-                                    DataColumn(label: Text('تاریخ')),
-                                    DataColumn(label: Text('شرح')),
-                                    DataColumn(label: Text('مبلغ')),
-                                    DataColumn(label: Text('تاریخ سررسید')),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                    controller.customerBill!.check!.length,
-                                    (index) {
-                                      Check check = controller
-                                          .customerBill!.check![index];
-                                      String type = check.typeOfCheck ==
-                                              TypeOfCheck.received
-                                          ? 'دریافت'
-                                          : 'پرداخت';
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(
-                                            Text(
-                                              (index + 1)
-                                                  .toString()
-                                                  .toPersianDigit(),
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Center(
-                                              child: Text(
-                                                (check.checkDueDate)
-                                                    .toString()
-                                                    .toPersianDate(),
-                                              ),
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Text(
-                                                '$type چک بانک ${check.bankName} به شماره ${check.checkNumber}'),
-                                          ),
-                                          DataCell(
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                    '${check.checkAmount!.abs()}'
-                                                        .toPersianDigit()
-                                                        .seRagham()),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  Get.find<HomeController>().moneyUnit.value,
-                                                  style: kRialTextStyle,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Center(
-                                              child: Text(
-                                                (check.checkDeliveryDate)
-                                                    .toString()
-                                                    .toPersianDate(),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
                                   ),
                                 ),
                               ),
@@ -366,69 +370,71 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                               padding: const EdgeInsets.all(20),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  columnSpacing: 30,
-                                  showCheckboxColumn: false,
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('ردیف'),
-                                      numeric: true,
-                                    ),
-                                    DataColumn(label: Text('تاریخ')),
-                                    DataColumn(label: Text('شرح')),
-                                    DataColumn(label: Text('مبلغ')),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                    controller.customerBill!.cash!.length,
-                                    (index) {
-                                      Cash cash =
-                                          controller.customerBill!.cash![index];
-                                      String cashDescription = cash.cashAmount! < 0
-                                          ? 'پرداخت وجه نقد به ${controller.customer!.name}'
-                                          : 'دریافت وجه نقد از ${controller.customer!.name}';
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(
-                                            Text(
-                                              (index + 1)
-                                                  .toString()
-                                                  .toPersianDigit(),
-                                            ),
-                                          ),
-                                          DataCell(
-                                            Center(
-                                              child: Text(
-                                                cash.cashDate
+                                child: SingleChildScrollView(
+                                  child: DataTable(
+                                    columnSpacing: 30,
+                                    showCheckboxColumn: false,
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('ردیف'),
+                                        numeric: true,
+                                      ),
+                                      DataColumn(label: Text('تاریخ')),
+                                      DataColumn(label: Text('شرح')),
+                                      DataColumn(label: Text('مبلغ')),
+                                    ],
+                                    rows: List<DataRow>.generate(
+                                      controller.customerBill!.cash!.length,
+                                      (index) {
+                                        Cash cash =
+                                            controller.customerBill!.cash![index];
+                                        String cashDescription = cash.cashAmount! < 0
+                                            ? 'پرداخت وجه نقد به ${controller.customer!.name}'
+                                            : 'دریافت وجه نقد از ${controller.customer!.name}';
+                                        return DataRow(
+                                          cells: [
+                                            DataCell(
+                                              Text(
+                                                (index + 1)
                                                     .toString()
-                                                    .toPersianDate(),
+                                                    .toPersianDigit(),
                                               ),
                                             ),
-                                          ),
-                                          DataCell(
-                                            Text(cashDescription),
-                                          ),
-                                          DataCell(
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                    '${cash.cashAmount!.abs()}'
-                                                        .seRagham()),
-                                                const SizedBox(
-                                                  width: 5,
+                                            DataCell(
+                                              Center(
+                                                child: Text(
+                                                  cash.cashDate
+                                                      .toString()
+                                                      .toPersianDate(),
                                                 ),
-                                                Text(
-                                                  Get.find<HomeController>().moneyUnit.value,
-                                                  style: kRialTextStyle,
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                                            DataCell(
+                                              Text(cashDescription),
+                                            ),
+                                            DataCell(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      '${cash.cashAmount!.abs()}'
+                                                          .seRagham()),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    Get.find<HomeController>().moneyUnit.value,
+                                                    style: kRialTextStyle,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
