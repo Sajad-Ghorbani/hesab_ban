@@ -104,7 +104,14 @@ class SettingScreen extends GetView<HomeController> {
                         },
                         icon: Icons.text_snippet_rounded,
                         title: 'نام فروشگاه',
-                        valueWidget: Text(controller.storeName.value),
+                        valueWidget: Expanded(
+                          flex: 3,
+                          child: Text(
+                            controller.storeName.value,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
                       ),
                       SettingRowWidget(
                         onTap: () {
@@ -112,10 +119,13 @@ class SettingScreen extends GetView<HomeController> {
                         },
                         icon: Icons.store_rounded,
                         title: 'آدرس فروشگاه',
-                        valueWidget: Text(
-                          controller.storeAddress.value.length < 15
-                              ? controller.storeAddress.value
-                              : '${controller.storeAddress.value.substring(0, 15)} ...',
+                        valueWidget: Expanded(
+                          flex: 3,
+                          child: Text(
+                            controller.storeAddress.value,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                       ),
                       SettingRowWidget(

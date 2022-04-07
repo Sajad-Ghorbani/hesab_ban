@@ -102,7 +102,7 @@ class PrintController extends GetxController {
                 width: 50,
                 height: 50,
                 child: BarcodeWidget(
-                  data: factor.id.toString(),
+                  data: 'https://cafebazaar.ir/app/com.nahal1401.hesab_ban',
                   barcode: Barcode.qrCode(),
                 ),
               ),

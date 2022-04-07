@@ -7,7 +7,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Hesab Ban">
+        android:label="حساب بان">
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:exported="true"

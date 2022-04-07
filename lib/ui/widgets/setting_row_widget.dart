@@ -26,7 +26,7 @@ class SettingRowWidget extends StatelessWidget {
               width: 10,
             ),
             Text(title),
-            const Spacer(),
+            const Spacer(flex: 1),
             valueWidget ?? const SizedBox.shrink(),
           ],
         ),
