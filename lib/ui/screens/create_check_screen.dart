@@ -17,7 +17,7 @@ class CreateCheckScreen extends GetView<CheckController> {
   @override
   Widget build(BuildContext context) {
     if (controller.check != null) {
-      controller.checkBankNameController.text = controller.check!.bankName!;
+      // controller.checkBankName.value = controller.check!.bankName!;
       controller.checkNumberController.text = controller.check!.checkNumber!;
       controller.checkAmountController.text =
           controller.check!.checkAmount.toString();
@@ -77,8 +77,20 @@ class CreateCheckScreen extends GetView<CheckController> {
                         width: 10,
                       ),
                       Expanded(
-                        child: CustomTextField(
-                          controller: controller.checkBankNameController,
+                        child: Obx(
+                          () => DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            itemHeight: 50,
+                            items: controller.bankLists,
+                            value: controller.checkBankName.value,
+                            onChanged: (String? value) {
+                              controller.checkBankName.value = value!;
+                            },
+                          ),
                         ),
                       ),
                     ],

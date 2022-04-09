@@ -325,7 +325,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                             ),
                                             DataCell(
                                               Text(
-                                                  '$type چک بانک ${check.bankName} به شماره ${check.checkNumber}'),
+                                                  '$type چک ${check.bankName == null?check.checkBank!.name: 'بانک ${check.bankName}'} به شماره ${check.checkNumber}'),
                                             ),
                                             DataCell(
                                               Row(

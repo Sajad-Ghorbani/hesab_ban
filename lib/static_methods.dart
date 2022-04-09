@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:hesab_ban/models/bank_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class StaticMethods {
     Hive.registerAdapter(TypeOfCheckAdapter());
     Hive.registerAdapter(TypeOfFactorAdapter());
     Hive.registerAdapter(CashAdapter());
+    Hive.registerAdapter(BankAdapter());
   }
 
   static removeSeparatorFromNumber(TextEditingController controller,
@@ -469,11 +471,14 @@ class StaticMethods {
                         ),
                       ),
                       const Divider(),
-                      DropdownButtonFormField<int>(
-                        items: dropDownList,
-                        onChanged: onSelectCustomer,
-                        value: 0,
-                        decoration: kCustomInputDecoration,
+                      SizedBox(
+                        width: Get.width - 120,
+                        child: DropdownButtonFormField<int>(
+                          items: dropDownList,elevation: 8,
+                          onChanged: onSelectCustomer,
+                          value: 0,
+                          decoration: kCustomInputDecoration,
+                        ),
                       ),
                     ],
                   ),

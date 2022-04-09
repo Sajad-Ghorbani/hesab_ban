@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
+import 'package:hesab_ban/models/bank_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/customer_model.dart';
 import 'package:hesab_ban/static_methods.dart';
@@ -14,11 +15,11 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import '../models/bill_model.dart';
 
 class CheckController extends GetxController {
-  TextEditingController checkBankNameController = TextEditingController();
   TextEditingController checkNumberController = TextEditingController();
   TextEditingController checkAmountController = TextEditingController();
 
   RxString checkDueDateLabel = '-1'.obs;
+  RxString checkBankName = bankList[0].name!.obs;
   RxString checkDeliveryDateLabel = '-1'.obs;
   DateTime? checkDueDate;
   DateTime? checkDeliveryDate;
@@ -28,6 +29,7 @@ class CheckController extends GetxController {
 
   Check? check = Get.arguments;
   String? fromFactor = Get.parameters['from_factor'];
+  List<DropdownMenuItem<String>> bankLists = [];
 
   @override
   onInit() {
@@ -37,6 +39,39 @@ class CheckController extends GetxController {
     } //
     else {
       setCheckDetailFromFactor();
+    }
+    setBankList();
+  }
+
+  setBankList() {
+    for (var item in bankList) {
+      bankLists.add(
+        DropdownMenuItem(
+          child: Row(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(3),
+                  ),
+                  color: kWhiteColor,
+                ),
+                padding: const EdgeInsets.all(2),
+                child: Image.asset(
+                  item.imageAddress!,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(item.name!),
+            ],
+          ),
+          value: item.name!,
+        ),
+      );
     }
   }
 
@@ -59,7 +94,6 @@ class CheckController extends GetxController {
   @override
   onClose() {
     super.onClose();
-    checkBankNameController.dispose();
     checkNumberController.dispose();
     checkAmountController.dispose();
   }
@@ -127,9 +161,8 @@ class CheckController extends GetxController {
   }
 
   void saveCheck(BuildContext context) async {
-    String bankName = checkBankNameController.text.trim();
     String checkNumber = checkNumberController.text.trim();
-    if (bankName.isEmpty ||
+    if (checkBankName.value == '-1' ||
         checkNumber.isEmpty ||
         checkAmountController.text.trim().isEmpty) {
       StaticMethods.showSnackBar(
@@ -186,13 +219,13 @@ class CheckController extends GetxController {
           : -StaticMethods.removeSeparatorFromNumber(checkAmountController);
       var checkBox = Hive.box<Check>(checksBox);
       Check newCheck = Check(
-        bankName: bankName,
         checkNumber: checkNumber,
         checkAmount: amount,
         checkDueDate: checkDueDate,
         checkDeliveryDate: checkDeliveryDate,
         customerCheck: checkCustomer,
         typeOfCheck: typeOfCheck,
+        checkBank: bankList.firstWhere((bank) => bank.name == checkBankName.value),
       );
       if (fromFactor != null) {
         Get.back(result: newCheck);
@@ -216,10 +249,10 @@ class CheckController extends GetxController {
 
   void resetCheckScreen(BuildContext context) {
     FocusScope.of(context).unfocus();
-    checkBankNameController.clear();
     checkNumberController.clear();
     checkAmountController.clear();
     checkDueDate = null;
+    checkBankName.value = bankList[0].name!;
     checkDueDateLabel.value = '-1';
     checkDeliveryDate = null;
     checkDeliveryDateLabel.value = '-1';
@@ -275,7 +308,7 @@ class CheckController extends GetxController {
           title: '${Emojis.money_dollar_banknote} سر رسید چک',
           body: 'شما یک چک ${typeOfCheck == TypeOfCheck.send ? 'به' : 'از'} '
               '${check.customerCheck!.name}'
-              ' از بانک ${check.bankName}'
+              ' از ${check.checkBank!.name}'
               ' به مبلغ $amount '
               '${Get.find<HomeController>().moneyUnit.value} دارید.',
           notificationLayout: NotificationLayout.BigText,

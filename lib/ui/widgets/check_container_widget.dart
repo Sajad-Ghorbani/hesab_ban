@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hesab_ban/constants.dart';
+import 'package:hesab_ban/models/bank_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,7 @@ class CheckContainerWidget extends StatelessWidget {
                                 ),
                               ),
                               DataCell(
-                                Text(check.bankName!),
+                                showBankImage(check),
                               ),
                               if (!miniDataTable)
                                 DataCell(
@@ -195,6 +196,44 @@ class CheckContainerWidget extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  Widget showBankImage(Check check) {
+    String imageAddress = '-1';
+    if (check.bankName == null) {
+      imageAddress = check.checkBank!.imageAddress!;
+    } //
+    else {
+      for (var item in bankList) {
+        if (item.name!.contains(check.bankName!)) {
+          imageAddress = item.imageAddress!;
+        }
+      }
+    }
+    return Row(
+      children: [
+        imageAddress == '-1'
+            ? const SizedBox.shrink()
+            : Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      color: kWhiteColor,
+                    ),
+                    child: Image.asset(imageAddress,width: 30,height: 30,),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
+              ),
+        check.bankName == null
+            ? Text(check.checkBank!.name!)
+            : Text(check.bankName!),
+      ],
     );
   }
 }

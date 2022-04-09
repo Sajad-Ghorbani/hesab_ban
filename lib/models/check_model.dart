@@ -1,3 +1,4 @@
+import 'package:hesab_ban/models/bank_model.dart';
 import 'package:hive/hive.dart';
 import 'customer_model.dart';
 
@@ -29,6 +30,9 @@ class Check extends HiveObject {
   @HiveField(7)
   TypeOfCheck? typeOfCheck;
 
+  @HiveField(8)
+  Bank? checkBank;
+
   Check({
     this.id,
     this.bankName,
@@ -38,6 +42,7 @@ class Check extends HiveObject {
     this.checkDueDate,
     this.checkDeliveryDate,
     this.typeOfCheck,
+    this.checkBank,
   });
 
   Check.fromJson(Map<String, dynamic> json) {
@@ -49,6 +54,7 @@ class Check extends HiveObject {
     checkDueDate = json['check_due_date'];
     checkDeliveryDate = json['check_delivery_date'];
     typeOfCheck = json['type_of_check'];
+    checkBank = json['check_bank'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +67,7 @@ class Check extends HiveObject {
     data['check_due_date'] = checkDueDate;
     data['check_delivery_date'] = checkDeliveryDate;
     data['type_of_check'] = typeOfCheck;
+    data['check_bank'] = checkBank;
     return data;
   }
 }

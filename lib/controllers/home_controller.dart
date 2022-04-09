@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/bill_model.dart';
 import 'package:hesab_ban/models/cash_model.dart';
@@ -185,40 +184,45 @@ class HomeController extends GetxController {
               spacing: 10,
               itemHeight: 40,
               alignment: Alignment.center,
-              onTimeChange: (time) async {
+              onTimeChange: (time) {
                 hoursNotification.value = time.hour;
                 minutesNotification.value = time.minute;
-                await boxSetting.put(
-                    'notificationHours', hoursNotification.value);
-                await boxSetting.put(
-                    'notificationMinutes', minutesNotification.value);
               },
             ),
           ),
-          Row(
-            children: const [
-              Icon(
-                FontAwesomeIcons.exclamationCircle,
-                size: 18,
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                child: Text(
-                  'با تغییر این زمان، زمان اعلان چک هایی که از الان ثبت کنید تغییر می کنند.',
-                  style: TextStyle(
-                    height: 1.5,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
-      confirm: ConfirmButton(onTap: Get.back),
+      confirm: ConfirmButton(
+        onTap: () {
+          Get.back();
+          changeScheduleOfNotifications(
+              hoursNotification.value, minutesNotification.value);
+        },
+      ),
     );
+  }
+
+  Future<void> changeScheduleOfNotifications(int hour, int minute) async {
+    await boxSetting.put('notificationHours', hoursNotification.value);
+    await boxSetting.put('notificationMinutes', minutesNotification.value);
+    List<NotificationModel> notificationList =
+        await AwesomeNotifications().listScheduledNotifications();
+    for (var notification in notificationList) {
+      Map<String, dynamic> notificationSchedule =
+          notification.schedule!.toMap();
+      await AwesomeNotifications().createNotification(
+        content: notification.content!,
+        schedule: NotificationCalendar(
+          allowWhileIdle: true,
+          timeZone: notificationSchedule['timeZone'],
+          year: notificationSchedule['year'],
+          month: notificationSchedule['month'],
+          day: notificationSchedule['day'],
+          hour: hour,
+          minute: minute,
+        ),
+      );
+    }
   }
 
   void setUserInfo({bool? isName, bool? isAddress, bool? isLogo}) {
