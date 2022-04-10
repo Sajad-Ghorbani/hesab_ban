@@ -1,6 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/services.dart';
-import 'package:hesab_ban/bindings/initial_binding.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/theme/app_theme.dart';
@@ -41,7 +40,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.initial,
       getPages: AppPages.pages,
-      initialBinding: InitialBinding(),
       locale: const Locale('fa', 'IR'),
       fallbackLocale: const Locale('en', 'US'),
       defaultTransition: Transition.rightToLeftWithFade,

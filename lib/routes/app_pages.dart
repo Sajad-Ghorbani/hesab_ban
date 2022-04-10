@@ -2,6 +2,7 @@ import 'package:hesab_ban/bindings/check_binding.dart';
 import 'package:hesab_ban/bindings/customer_binding.dart';
 import 'package:hesab_ban/bindings/factor_binding.dart';
 import 'package:hesab_ban/bindings/home_binding.dart';
+import 'package:hesab_ban/bindings/initial_binding.dart';
 import 'package:hesab_ban/bindings/product_binding.dart';
 import 'package:hesab_ban/ui/screens/create_check_screen.dart';
 import 'package:hesab_ban/ui/screens/create_customer_screen.dart';
@@ -23,6 +24,7 @@ class AppPages {
     GetPage(
       name: Routes.initial,
       page: () => const SplashScreen(),
+      binding: InitialBinding(),
     ),
     GetPage(
       name: Routes.mainScreen,
