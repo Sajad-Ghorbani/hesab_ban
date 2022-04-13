@@ -10,6 +10,7 @@ import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hesab_ban/ui/widgets/box_container_widget.dart';
+import 'package:hesab_ban/ui/widgets/data_table.dart';
 import 'package:hesab_ban/ui/widgets/scroll_to_up.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -138,7 +139,9 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                Get.find<HomeController>().moneyUnit.value,
+                                                Get.find<HomeController>()
+                                                    .moneyUnit
+                                                    .value,
                                                 style: kRialTextStyle,
                                               ),
                                             ],
@@ -148,7 +151,8 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                           ),
                                           Visibility(
                                             visible: myController.customerBill!
-                                                    .cashPayment! != 0,
+                                                    .cashPayment! !=
+                                                0,
                                             child: Text(
                                               myController.customerBill!
                                                           .cashPayment! <
@@ -208,237 +212,85 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                       return TabBarView(
                         children: [
                           BoxContainerWidget(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SingleChildScrollView(
-                                  child: DataTable(
-                                    columnSpacing: 30,
-                                    showCheckboxColumn: false,
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('ردیف'),
-                                        numeric: true,
+                            child: controller.customerBill!.factor!.isEmpty
+                                ? const SizedBox.shrink()
+                                : Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: SingleChildScrollView(
+                                      child: DataTableWidget(
+                                        dataList:
+                                            controller.customerBill!.factor!,
+                                        dataColumnList: const [
+                                          DataColumn(
+                                            label: Text('ردیف'),
+                                            numeric: true,
+                                          ),
+                                          DataColumn(label: Text('تاریخ')),
+                                          DataColumn(label: Text('شرح')),
+                                          DataColumn(label: Text('مبلغ')),
+                                        ],
+                                        source: FactorDataTableSource(
+                                            listOfFactor: controller
+                                                .customerBill!.factor!),
                                       ),
-                                      DataColumn(label: Text('تاریخ')),
-                                      DataColumn(label: Text('شرح')),
-                                      DataColumn(label: Text('مبلغ')),
-                                    ],
-                                    rows: List<DataRow>.generate(
-                                      controller.customerBill!.factor!.length,
-                                      (index) {
-                                        Factor factor = controller
-                                            .customerBill!.factor![index];
-                                        String type = StaticMethods.setTypeFactorString(factor.typeOfFactor!);
-                                        return DataRow(
-                                          onSelectChanged: (selected){
-                                            controller.showFactor(factor,type,);
-                                          },
-                                          cells: [
-                                            DataCell(
-                                              Text(
-                                                (index + 1)
-                                                    .toString()
-                                                    .toPersianDigit(),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(factor.factorDate
-                                                  .toString()
-                                                  .toPersianDate()),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                  '$type به شماره فاکتور "${factor.id}"'),
-                                            ),
-                                            DataCell(
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                      '${factor.factorSum!.abs()}'
-                                                          .seRagham()),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    Get.find<HomeController>().moneyUnit.value,
-                                                    style: kRialTextStyle,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
                           ),
                           BoxContainerWidget(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SingleChildScrollView(
-                                  child: DataTable(
-                                    columnSpacing: 30,
-                                    showCheckboxColumn: false,
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('ردیف'),
-                                        numeric: true,
+                            child: controller.customerBill!.check!.isEmpty
+                                ? const SizedBox.shrink()
+                                : Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: SingleChildScrollView(
+                                      child: DataTableWidget(
+                                        dataList:
+                                            controller.customerBill!.check!,
+                                        dataColumnList: const [
+                                          DataColumn(
+                                            label: Text('ردیف'),
+                                            numeric: true,
+                                          ),
+                                          DataColumn(label: Text('تاریخ')),
+                                          DataColumn(label: Text('شرح')),
+                                          DataColumn(label: Text('مبلغ')),
+                                          DataColumn(
+                                              label: Text('تاریخ سررسید')),
+                                        ],
+                                        source: CheckDataTableSource(
+                                          listOfCheck:
+                                              controller.customerBill!.check!,
+                                        ),
                                       ),
-                                      DataColumn(label: Text('تاریخ')),
-                                      DataColumn(label: Text('شرح')),
-                                      DataColumn(label: Text('مبلغ')),
-                                      DataColumn(label: Text('تاریخ سررسید')),
-                                    ],
-                                    rows: List<DataRow>.generate(
-                                      controller.customerBill!.check!.length,
-                                      (index) {
-                                        Check check = controller
-                                            .customerBill!.check![index];
-                                        String type = check.typeOfCheck ==
-                                                TypeOfCheck.received
-                                            ? 'دریافت'
-                                            : 'پرداخت';
-                                        return DataRow(
-                                          cells: [
-                                            DataCell(
-                                              Text(
-                                                (index + 1)
-                                                    .toString()
-                                                    .toPersianDigit(),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Center(
-                                                child: Text(
-                                                  (check.checkDueDate)
-                                                      .toString()
-                                                      .toPersianDate(),
-                                                ),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                  '$type چک ${check.bankName == null?check.checkBank!.name: 'بانک ${check.bankName}'} به شماره ${check.checkNumber}'),
-                                            ),
-                                            DataCell(
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                      '${check.checkAmount!.abs()}'
-                                                          .toPersianDigit()
-                                                          .seRagham()),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    Get.find<HomeController>().moneyUnit.value,
-                                                    style: kRialTextStyle,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Center(
-                                                child: Text(
-                                                  (check.checkDeliveryDate)
-                                                      .toString()
-                                                      .toPersianDate(),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
                           ),
                           BoxContainerWidget(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SingleChildScrollView(
-                                  child: DataTable(
-                                    columnSpacing: 30,
-                                    showCheckboxColumn: false,
-                                    columns: const [
-                                      DataColumn(
-                                        label: Text('ردیف'),
-                                        numeric: true,
+                            child: controller.customerBill!.cash!.isEmpty
+                                ? const SizedBox.shrink()
+                                : Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: SingleChildScrollView(
+                                      child: DataTableWidget(
+                                        dataList:
+                                            controller.customerBill!.cash!,
+                                        dataColumnList: const [
+                                          DataColumn(
+                                            label: Text('ردیف'),
+                                            numeric: true,
+                                          ),
+                                          DataColumn(label: Text('تاریخ')),
+                                          DataColumn(label: Text('شرح')),
+                                          DataColumn(label: Text('مبلغ')),
+                                        ],
+                                        source: CashDataTableSource(
+                                          listOfCash:
+                                              controller.customerBill!.cash!,
+                                          customerName:
+                                              controller.customer!.name!,
+                                        ),
                                       ),
-                                      DataColumn(label: Text('تاریخ')),
-                                      DataColumn(label: Text('شرح')),
-                                      DataColumn(label: Text('مبلغ')),
-                                    ],
-                                    rows: List<DataRow>.generate(
-                                      controller.customerBill!.cash!.length,
-                                      (index) {
-                                        Cash cash =
-                                            controller.customerBill!.cash![index];
-                                        String cashDescription = cash.cashAmount! < 0
-                                            ? 'پرداخت وجه نقد به ${controller.customer!.name}'
-                                            : 'دریافت وجه نقد از ${controller.customer!.name}';
-                                        return DataRow(
-                                          cells: [
-                                            DataCell(
-                                              Text(
-                                                (index + 1)
-                                                    .toString()
-                                                    .toPersianDigit(),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Center(
-                                                child: Text(
-                                                  cash.cashDate
-                                                      .toString()
-                                                      .toPersianDate(),
-                                                ),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(cashDescription),
-                                            ),
-                                            DataCell(
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                      '${cash.cashAmount!.abs()}'
-                                                          .seRagham()),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    Get.find<HomeController>().moneyUnit.value,
-                                                    style: kRialTextStyle,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
                           ),
                         ],
                       );
@@ -453,7 +305,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
     );
   }
 }
-
+// TODO: use nested scroll view for this page
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Container child;
 
@@ -475,4 +327,204 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
+}
+
+class FactorDataTableSource extends DataTableSource {
+  FactorDataTableSource({
+    required this.listOfFactor,
+  });
+
+  final List<Factor> listOfFactor;
+
+  @override
+  DataRow? getRow(int index) {
+    assert(index >= 0);
+    if (index >= listOfFactor.length) {
+      return null;
+    }
+    Factor factor = listOfFactor[index];
+    String type = StaticMethods.setTypeFactorString(factor.typeOfFactor!);
+    return DataRow.byIndex(
+      index: index,
+      onSelectChanged: (_) {
+        Get.find<CustomerController>().showFactor(
+          factor,
+          type,
+        );
+      },
+      cells: [
+        DataCell(
+          Text(
+            (index + 1).toString().toPersianDigit(),
+          ),
+        ),
+        DataCell(
+          Text(factor.factorDate.toString().toPersianDate()),
+        ),
+        DataCell(
+          Text('$type به شماره فاکتور "${factor.id}"'),
+        ),
+        DataCell(
+          Row(
+            children: [
+              Text('${factor.factorSum!.abs()}'.seRagham()),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                Get.find<HomeController>().moneyUnit.value,
+                style: kRialTextStyle,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => listOfFactor.length;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+class CheckDataTableSource extends DataTableSource {
+  CheckDataTableSource({
+    required this.listOfCheck,
+  });
+
+  final List<Check> listOfCheck;
+
+  @override
+  DataRow? getRow(int index) {
+    assert(index >= 0);
+    if (index >= listOfCheck.length) {
+      return null;
+    }
+    Check check = listOfCheck[index];
+    String type =
+        check.typeOfCheck == TypeOfCheck.received ? 'دریافت' : 'پرداخت';
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(
+          Text(
+            (index + 1).toString().toPersianDigit(),
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              (check.checkDueDate).toString().toPersianDate(),
+            ),
+          ),
+        ),
+        DataCell(
+          Text(
+              '$type چک ${check.bankName == null ? check.checkBank!.name : 'بانک ${check.bankName}'} به شماره ${check.checkNumber}'),
+        ),
+        DataCell(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${check.checkAmount!.abs()}'.toPersianDigit().seRagham()),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                Get.find<HomeController>().moneyUnit.value,
+                style: kRialTextStyle,
+              ),
+            ],
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              (check.checkDeliveryDate).toString().toPersianDate(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => listOfCheck.length;
+
+  @override
+  int get selectedRowCount => 0;
+}
+
+class CashDataTableSource extends DataTableSource {
+  CashDataTableSource({
+    required this.listOfCash,
+    required this.customerName,
+  });
+
+  final List<Cash> listOfCash;
+  final String customerName;
+
+  @override
+  DataRow? getRow(int index) {
+    assert(index >= 0);
+    if (index >= listOfCash.length) {
+      return null;
+    }
+    Cash cash = listOfCash[index];
+    String cashDescription = cash.cashAmount! < 0
+        ? 'پرداخت وجه نقد به $customerName'
+        : 'دریافت وجه نقد از $customerName';
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(
+          Text(
+            (index + 1).toString().toPersianDigit(),
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              cash.cashDate.toString().toPersianDate(),
+            ),
+          ),
+        ),
+        DataCell(
+          Text(cashDescription),
+        ),
+        DataCell(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${cash.cashAmount!.abs()}'.seRagham()),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                Get.find<HomeController>().moneyUnit.value,
+                style: kRialTextStyle,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => listOfCash.length;
+
+  @override
+  int get selectedRowCount => 0;
 }

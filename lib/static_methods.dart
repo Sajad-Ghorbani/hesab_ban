@@ -241,7 +241,7 @@ class StaticMethods {
     BuildContext context, {
     required String name,
     required VoidCallback onEditTap,
-    required VoidCallback onDeleteTap,
+    VoidCallback? onDeleteTap,
     bool showDelete = true,
   }) async {
     await Get.bottomSheet(

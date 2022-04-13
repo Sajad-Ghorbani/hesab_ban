@@ -1,5 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/theme/app_theme.dart';
@@ -41,6 +43,15 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.initial,
       getPages: AppPages.pages,
       locale: const Locale('fa', 'IR'),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('fa',''),
+        Locale('en', ''),
+      ],
       fallbackLocale: const Locale('en', 'US'),
       defaultTransition: Transition.rightToLeftWithFade,
       transitionDuration: const Duration(milliseconds: 200),

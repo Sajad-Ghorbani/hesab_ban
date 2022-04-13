@@ -1,5 +1,6 @@
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/ui/widgets/data_table.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,8 +59,9 @@ class CustomersContainerWidget extends StatelessWidget {
           );
         } //
         else {
-          List<Customer> list = isBox ? box.values.toList() : customerList!;
-          list.sort((a, b) {
+          List<Customer> customers =
+              isBox ? box.values.toList() : customerList!;
+          customers.sort((a, b) {
             return a.name!.compareTo(b.name!);
           });
           return SliverPadding(
@@ -67,62 +69,47 @@ class CustomersContainerWidget extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      showCheckboxColumn: false,
-                      columns: const [
-                        DataColumn(
-                          label: Text('ردیف'),
-                          numeric: true,
-                        ),
-                        DataColumn(label: Text('نام')),
-                        DataColumn(label: Text('شماره تماس')),
-                      ],
-                      rows: List<DataRow>.generate(
-                        miniDataTable
-                            ? list.length > 5
-                                ? 5
-                                : list.length
-                            : list.length,
-                        (index) {
-                          Customer customer = list[index];
-                          return DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  (index + 1).toString().toPersianDigit(),
-                                ),
+                  miniDataTable
+                      ? SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            showCheckboxColumn: false,
+                            columns: const [
+                              DataColumn(
+                                label: Text('ردیف'),
+                                numeric: true,
                               ),
-                              DataCell(
-                                Text(customer.name!),
-                              ),
-                              DataCell(
-                                Text(
-                                  (customer.phoneNumber1)
-                                      .toString()
-                                      .toPersianDigit(),
-                                ),
-                              ),
+                              DataColumn(label: Text('نام')),
+                              DataColumn(label: Text('شماره تماس')),
                             ],
-                            onSelectChanged: (bool? selected) {
-                              if (selectCustomer) {
-                                if (fromSearch) {
-                                  Get.back();
-                                  Get.back(result: customer);
-                                } //
-                                else {
-                                  Get.back(result: customer);
-                                }
-                              } //
-                              else {
-                                Get.toNamed(Routes.customerBalanceScreen,arguments: customer);
-                              }
-                            },
-                            onLongPress: () {
-                              selectCustomer
-                                  ? null
-                                  : StaticMethods.productBottomSheet(
+                            rows: List<DataRow>.generate(
+                              customers.length > 5 ? 5 : customers.length,
+                              (index) {
+                                Customer customer = customers[index];
+                                return DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Text(
+                                        (index + 1).toString().toPersianDigit(),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(customer.name!),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        (customer.phoneNumber1)
+                                            .toString()
+                                            .toPersianDigit(),
+                                      ),
+                                    ),
+                                  ],
+                                  onSelectChanged: (bool? selected) {
+                                    Get.toNamed(Routes.customerBalanceScreen,
+                                        arguments: customer);
+                                  },
+                                  onLongPress: () {
+                                    StaticMethods.productBottomSheet(
                                       context,
                                       name: customer.name!,
                                       onEditTap: () {
@@ -132,14 +119,28 @@ class CustomersContainerWidget extends StatelessWidget {
                                         );
                                       },
                                       showDelete: false,
-                                      onDeleteTap: () {},
                                     );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      : DataTableWidget(
+                          dataList: customers,
+                          dataColumnList: const [
+                            DataColumn(
+                              label: Text('ردیف'),
+                              numeric: true,
+                            ),
+                            DataColumn(label: Text('نام')),
+                            DataColumn(label: Text('شماره تماس')),
+                          ],
+                          source: CustomerDataTableSource(context,
+                              listOfCustomer: customers,
+                              selectCustomer: selectCustomer,
+                              fromSearch: fromSearch),
+                        ),
                   miniDataTable
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,4 +182,83 @@ class CustomersContainerWidget extends StatelessWidget {
       },
     );
   }
+}
+
+class CustomerDataTableSource extends DataTableSource {
+  CustomerDataTableSource(
+    this.context, {
+    required this.listOfCustomer,
+    required this.selectCustomer,
+    required this.fromSearch,
+  });
+
+  final BuildContext context;
+  final List<Customer> listOfCustomer;
+  final bool selectCustomer;
+  final bool fromSearch;
+
+  @override
+  DataRow? getRow(int index) {
+    assert(index >= 0);
+    if (index >= listOfCustomer.length) {
+      return null;
+    }
+    Customer customer = listOfCustomer[index];
+    return DataRow.byIndex(
+      index: index,
+      cells: [
+        DataCell(
+          Text(
+            (index + 1).toString().toPersianDigit(),
+          ),
+        ),
+        DataCell(
+          Text(customer.name!),
+        ),
+        DataCell(
+          Text(
+            (customer.phoneNumber1).toString().toPersianDigit(),
+          ),
+        ),
+      ],
+      onSelectChanged: (bool? selected) {
+        if (selectCustomer) {
+          if (fromSearch) {
+            Get.back();
+            Get.back(result: customer);
+          } //
+          else {
+            Get.back(result: customer);
+          }
+        } //
+        else {
+          Get.toNamed(Routes.customerBalanceScreen, arguments: customer);
+        }
+      },
+      onLongPress: () {
+        selectCustomer
+            ? null
+            : StaticMethods.productBottomSheet(
+                context,
+                name: customer.name!,
+                onEditTap: () {
+                  Get.toNamed(
+                    Routes.createCustomerScreen,
+                    arguments: customer,
+                  );
+                },
+                showDelete: false,
+              );
+      },
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => listOfCustomer.length;
+
+  @override
+  int get selectedRowCount => 0;
 }
