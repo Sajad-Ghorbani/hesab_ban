@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'bank_model.g.dart';
 
+@JsonSerializable()
 @HiveType(typeId: 13)
 class Bank extends HiveObject{
   @HiveField(0)
@@ -12,17 +14,20 @@ class Bank extends HiveObject{
 
   Bank({this.name, this.imageAddress});
 
-  Bank.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    imageAddress = json['image_address'];
-  }
+  factory Bank.fromJson(Map<String, dynamic> json) => _$BankFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['name'] = name;
-    data['image_address'] = imageAddress;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$BankToJson(this);
+  // Bank.fromJson(Map<String, dynamic> json) {
+  //   name = json['name'];
+  //   imageAddress = json['image_address'];
+  // }
+  //
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = {};
+  //   data['name'] = name;
+  //   data['image_address'] = imageAddress;
+  //   return data;
+  // }
 }
 
 List<Bank> bankList = [

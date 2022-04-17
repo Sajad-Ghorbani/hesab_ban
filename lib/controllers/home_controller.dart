@@ -156,7 +156,7 @@ class HomeController extends GetxController {
   void getUserInfo() async {
     storeName.value = await boxSetting.get('storeName');
     storeAddress.value = await boxSetting.get('storeAddress');
-    storeLogo.value = File(await boxSetting.get('storeLogo'));
+    storeLogo.value = File(await boxSetting.get('storeLogo') ?? '-1');
     hoursNotification.value = await boxSetting.get('notificationHours');
     minutesNotification.value = await boxSetting.get('notificationMinutes');
   }

@@ -1,8 +1,10 @@
 import 'package:hesab_ban/models/category_model.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'product_model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 2)
 class Product extends HiveObject {
   @HiveField(0)
@@ -48,33 +50,36 @@ class Product extends HiveObject {
     this.category,
   });
 
-  Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    priceOfBuy = json['price_of_buy'];
-    priceOfOneSale = json['price_of_one_sale'];
-    priceOfMajorSale = json['price_of_major_sale'];
-    mainUnit = json['unit'];
-    subCountingUnit = json['sub_counting_unit'];
-    count = json['count'];
-    unitRatio = json['unit_ratio'];
-    category = json['category'];
-  }
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['name'] = name;
-    data['price_of_buy'] = priceOfBuy;
-    data['price_of_one_sale'] = priceOfOneSale;
-    data['price_of_major_sale'] = priceOfMajorSale;
-    data['unit'] = mainUnit;
-    data['sub_counting_unit'] = subCountingUnit;
-    data['count'] = count;
-    data['unit_ratio'] = unitRatio;
-    data['category'] = category;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
+  // Product.fromJson(Map<String, dynamic> json) {
+  //   id = json['id'];
+  //   name = json['name'];
+  //   priceOfBuy = json['price_of_buy'];
+  //   priceOfOneSale = json['price_of_one_sale'];
+  //   priceOfMajorSale = json['price_of_major_sale'];
+  //   mainUnit = json['unit'];
+  //   subCountingUnit = json['sub_counting_unit'];
+  //   count = json['count'];
+  //   unitRatio = json['unit_ratio'];
+  //   category = json['category'];
+  // }
+  //
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = {};
+  //   data['id'] = id;
+  //   data['name'] = name;
+  //   data['price_of_buy'] = priceOfBuy;
+  //   data['price_of_one_sale'] = priceOfOneSale;
+  //   data['price_of_major_sale'] = priceOfMajorSale;
+  //   data['unit'] = mainUnit;
+  //   data['sub_counting_unit'] = subCountingUnit;
+  //   data['count'] = count;
+  //   data['unit_ratio'] = unitRatio;
+  //   data['category'] = category;
+  //   return data;
+  // }
 }
 
 @HiveType(typeId: 3)

@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'factor_row.g.dart';
 
+@JsonSerializable()
 @HiveType(typeId: 11)
 class FactorRow {
   @HiveField(0)
@@ -24,10 +26,16 @@ class FactorRow {
     return _productSum;
   }
 
-  FactorRow({
+  FactorRow(
+    this._productSum, {
     required this.productName,
     required this.productCount,
     required this.productPrice,
     required this.productUnit,
   });
+
+  factory FactorRow.fromJson(Map<String, dynamic> json) =>
+      _$FactorRowFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FactorRowToJson(this);
 }

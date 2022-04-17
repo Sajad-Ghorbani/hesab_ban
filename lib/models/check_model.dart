@@ -1,9 +1,11 @@
 import 'package:hesab_ban/models/bank_model.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'customer_model.dart';
 
 part 'check_model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 5)
 class Check extends HiveObject {
   @HiveField(0)
@@ -45,31 +47,31 @@ class Check extends HiveObject {
     this.checkBank,
   });
 
-  Check.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    bankName = json['bank_name'];
-    checkNumber = json['check_number'];
-    customerCheck = json['customer_check'];
-    checkAmount = json['check_amount'];
-    checkDueDate = json['check_due_date'];
-    checkDeliveryDate = json['check_delivery_date'];
-    typeOfCheck = json['type_of_check'];
-    checkBank = json['check_bank'];
-  }
+  factory Check.fromJson(Map<String, dynamic> json) => _$CheckFromJson(json);
+  //   id = json['id'];
+  //   bankName = json['bank_name'];
+  //   checkNumber = json['check_number'];
+  //   customerCheck = json['customer_check'];
+  //   checkAmount = json['check_amount'];
+  //   checkDueDate = json['check_due_date'];
+  //   checkDeliveryDate = json['check_delivery_date'];
+  //   typeOfCheck = json['type_of_check'];
+  //   checkBank = json['check_bank'];
+  // }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['bank_name'] = bankName;
-    data['check_number'] = checkNumber;
-    data['customer_check'] = customerCheck;
-    data['check_amount'] = checkAmount;
-    data['check_due_date'] = checkDueDate;
-    data['check_delivery_date'] = checkDeliveryDate;
-    data['type_of_check'] = typeOfCheck;
-    data['check_bank'] = checkBank;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$CheckToJson(this);
+  //   final Map<String, dynamic> data = {};
+  //   data['id'] = id;
+  //   data['bank_name'] = bankName;
+  //   data['check_number'] = checkNumber;
+  //   data['customer_check'] = customerCheck;
+  //   data['check_amount'] = checkAmount;
+  //   data['check_due_date'] = checkDueDate;
+  //   data['check_delivery_date'] = checkDeliveryDate;
+  //   data['type_of_check'] = typeOfCheck;
+  //   data['check_bank'] = checkBank;
+  //   return data;
+  // }
 }
 
 @HiveType(typeId: 9)

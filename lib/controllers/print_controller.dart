@@ -15,14 +15,14 @@ import 'package:hesab_ban/static_methods.dart';
 import 'package:pdf/pdf.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../../models/customer_model.dart';
-import '../../models/factor_row.dart';
+import '../models/customer_model.dart';
+import '../models/factor_row.dart';
 
 class PrintController extends GetxController {
   String storeName = '';
   String storeAddress = '';
   String storeLogoPath = '-1';
-  late MemoryImage storeLogo;
+  MemoryImage? storeLogo;
 
   var boxSetting = Hive.lazyBox(settingBox);
 
@@ -35,8 +35,10 @@ class PrintController extends GetxController {
   void getStoreInfo() async {
     storeName = await boxSetting.get('storeName');
     storeAddress = await boxSetting.get('storeAddress');
-    storeLogoPath = await boxSetting.get('storeLogo');
-    storeLogo = MemoryImage(File(storeLogoPath).readAsBytesSync());
+    storeLogoPath = await boxSetting.get('storeLogo') ?? '-1';
+    storeLogo = storeLogoPath == '-1'
+        ? null
+        : MemoryImage(File(storeLogoPath).readAsBytesSync());
   }
 
   Future<File> saveDocument({
@@ -128,7 +130,7 @@ class PrintController extends GetxController {
                 child: storeLogoPath == '-1'
                     ? SizedBox.shrink()
                     : Image(
-                        storeLogo,
+                        storeLogo!,
                         width: 80,
                         height: 80,
                         fit: BoxFit.contain,

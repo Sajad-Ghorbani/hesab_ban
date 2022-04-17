@@ -96,7 +96,7 @@ class FactorController extends GetxController {
     Get.back();
     productCountController.clear();
     productPriceController.clear();
-    FactorRow row = FactorRow(
+    FactorRow row = FactorRow(0,
       productName: product.name!,
       productCount: count,
       productPrice: price,
@@ -188,6 +188,7 @@ class FactorController extends GetxController {
         productCountController.clear();
         productPriceController.clear();
         FactorRow newRow = FactorRow(
+          row.productSum,
           productName: row.productName,
           productCount: count,
           productPrice: price,
@@ -296,7 +297,8 @@ class FactorController extends GetxController {
       Get.back();
       StaticMethods.showSnackBar(
         title: 'تبریک!',
-        description: 'فاکتور شما با موفقیت ثبت شد.\nبرای ارسال فاکتور وارد صورتحساب کاربر شوید.',
+        description:
+            'فاکتور شما با موفقیت ثبت شد.\nبرای ارسال فاکتور وارد صورتحساب کاربر شوید.',
         color: kLightGreenColor,
         duration: const Duration(seconds: 4),
       );

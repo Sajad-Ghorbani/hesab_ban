@@ -1,11 +1,13 @@
 import 'package:hesab_ban/models/cash_model.dart';
 import 'package:hesab_ban/models/check_model.dart';
 import 'package:hesab_ban/models/factor_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'customer_model.dart';
 import 'package:hive/hive.dart';
 
 part 'bill_model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: 7)
 class Bill extends HiveObject {
   @HiveField(0)
@@ -48,23 +50,26 @@ class Bill extends HiveObject {
 
   Bill({this.id, this.customer, this.factor, this.check, this.cash});
 
-  Bill.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    customer = json['customer'];
-    factor = json['factor'].cast<Factor>();
-    check = json['check'].cast<Check>();
-    cash = json['cash'].cast<Cash>();
-    _cashPayment = json['cash_payment'];
-  }
+  factory Bill.fromJson(Map<String, dynamic> json) => _$BillFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['customer'] = customer;
-    data['factor'] = factor;
-    data['check'] = check;
-    data['cash'] = cash;
-    data['cash_payment'] = _cashPayment;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$BillToJson(this);
+  // factory Bill.fromJson(Map<String, dynamic> json) {
+  //   id = json['id'];
+  //   customer = json['customer'];
+  //   factor = json['factor'].cast<Factor>();
+  //   check = json['check'].cast<Check>();
+  //   cash = json['cash'].cast<Cash>();
+  //   _cashPayment = json['cash_payment'];
+  // }
+
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = {};
+  //   data['id'] = id;
+  //   data['customer'] = customer;
+  //   data['factor'] = factor;
+  //   data['check'] = check;
+  //   data['cash'] = cash;
+  //   data['cash_payment'] = _cashPayment;
+  //   return data;
+  // }
 }
