@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
-import 'package:hesab_ban/models/bank_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/data/models/bank_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';

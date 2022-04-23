@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../models/product_model.dart';
+import '../../data/models/product_model.dart';
 import '../../routes/app_pages.dart';
 import '../widgets/grid_menu_widget.dart';
 

@@ -4,7 +4,7 @@ import 'package:hesab_ban/controllers/factor_controller.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../../models/factor_row.dart';
+import '../../data/models/factor_row.dart';
 import '../theme/constants_app_styles.dart';
 import 'sliver_box_container_widget.dart';
 

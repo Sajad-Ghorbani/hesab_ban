@@ -19,7 +19,7 @@ class Loading extends StatelessWidget {
         child,
         showLoading
             ? Container(
-                color: backgroundColor ?? Colors.grey.withOpacity(0.6),
+                color: backgroundColor ?? Colors.black87.withOpacity(0.7),
                 child: Center(
                   child: Lottie.asset(
                     'assets/loading.json',

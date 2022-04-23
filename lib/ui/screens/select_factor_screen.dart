@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
-import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:hesab_ban/ui/widgets/select_factor_widget.dart';

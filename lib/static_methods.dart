@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:hesab_ban/models/bank_model.dart';
+import 'package:hesab_ban/data/models/bank_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
@@ -10,15 +10,15 @@ import 'package:hesab_ban/ui/widgets/confirm_button.dart';
 import 'package:hive/hive.dart';
 
 import 'controllers/home_controller.dart';
-import 'models/bill_model.dart';
-import 'models/cash_model.dart';
-import 'models/category_model.dart';
-import 'models/check_model.dart';
-import 'models/customer_model.dart';
-import 'models/factor_model.dart';
-import 'models/factor_row.dart';
-import 'models/product_model.dart';
-import 'models/user_model.dart';
+import '/data/models/bill_model.dart';
+import '/data/models/cash_model.dart';
+import '/data/models/category_model.dart';
+import '/data/models/check_model.dart';
+import '/data/models/customer_model.dart';
+import '/data/models/factor_model.dart';
+import '/data/models/factor_row.dart';
+import '/data/models/product_model.dart';
+import '/data/models/user_model.dart';
 
 class StaticMethods {
   static void hiveAdapters() {

@@ -1,8 +1,8 @@
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/category_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/customer_model.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/data/models/category_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
+import 'package:hesab_ban/data/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';

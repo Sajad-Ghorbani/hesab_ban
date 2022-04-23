@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../models/category_model.dart';
+import '../../data/models/category_model.dart';
 import '../../static_methods.dart';
 import '../theme/app_colors.dart';
 

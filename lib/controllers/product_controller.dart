@@ -1,12 +1,12 @@
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/data/models/product_model.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
-import '../models/category_model.dart';
+import '../data/models/category_model.dart';
 
 class ProductController extends GetxController {
   List<DropdownMenuItem<int>> productUnitList = [];

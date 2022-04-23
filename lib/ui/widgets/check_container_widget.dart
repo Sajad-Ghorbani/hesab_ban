@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/bank_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/data/models/bank_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hesab_ban/ui/widgets/data_table.dart';

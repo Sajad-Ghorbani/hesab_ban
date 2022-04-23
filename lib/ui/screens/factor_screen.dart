@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/controllers/factor_controller.dart';
-import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';

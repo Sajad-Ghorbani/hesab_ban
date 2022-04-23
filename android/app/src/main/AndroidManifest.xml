@@ -3,6 +3,7 @@
     package="com.nahal1401.hesab_ban">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -17,7 +18,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             tools:ignore="MissingClass" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.nahal1401.accounting_app.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"

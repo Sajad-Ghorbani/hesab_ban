@@ -1,5 +1,5 @@
 import 'package:hesab_ban/controllers/search_controller.dart';
-import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
 import 'package:hesab_ban/ui/widgets/check_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

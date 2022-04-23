@@ -1,4 +1,4 @@
-import 'package:hesab_ban/models/category_model.dart';
+import 'package:hesab_ban/data/models/category_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

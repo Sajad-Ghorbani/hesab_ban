@@ -1,5 +1,5 @@
 import 'package:hesab_ban/controllers/search_controller.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/data/models/product_model.dart';
 import 'package:hesab_ban/ui/widgets/category_widget.dart';
 import 'package:hesab_ban/ui/widgets/sliver_box_container_widget.dart';
 import 'package:hesab_ban/ui/widgets/product_widget.dart';
@@ -7,7 +7,7 @@ import 'package:hesab_ban/ui/widgets/search_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/category_model.dart';
+import '../../data/models/category_model.dart';
 
 // ignore: must_be_immutable
 class SearchProductScreen extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:hesab_ban/models/customer_model.dart';
-import 'package:hesab_ban/models/factor_row.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
+import 'package:hesab_ban/data/models/factor_row.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

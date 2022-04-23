@@ -1,6 +1,6 @@
-import 'package:hesab_ban/models/cash_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/data/models/cash_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'customer_model.dart';
 import 'package:hive/hive.dart';

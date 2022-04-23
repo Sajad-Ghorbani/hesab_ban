@@ -1,19 +1,29 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/abusiveexperiencereport/v1.dart';
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/bill_model.dart';
-import 'package:hesab_ban/models/category_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/customer_model.dart';
-import 'package:hesab_ban/models/factor_model.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/data/models/bill_model.dart';
+import 'package:hesab_ban/data/models/category_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
+import 'package:hesab_ban/data/models/product_model.dart';
+import 'package:hesab_ban/data/providers/google_auth_client.dart';
+import 'package:hesab_ban/static_methods.dart';
+import 'package:hesab_ban/ui/widgets/confirm_button.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:google_sign_in/google_sign_in.dart' as sign_in;
+import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class BackupController extends GetxController {
   late Box<Product> productBox;
@@ -24,17 +34,27 @@ class BackupController extends GetxController {
   late LazyBox<Bill> billBox;
   late LazyBox settingsBox;
 
-  bool showLoading = false;
-  String appDirectory = 'storage/emulated/0/HesabBan/backup/.data/';
+  RxBool showLoading = false.obs;
+  RxString email = '-1'.obs;
+  RxList<drive.File> onlineBackupList = <drive.File>[].obs;
+  RxList<FileSystemEntity> storageBackupList = <FileSystemEntity>[].obs;
+
+  late Directory _appDataDirectory;
+  late Directory _appDirectory;
 
   String formattedDate = DateTime.now()
-      .toString()
-      .split('.')
-      .first
-      .substring(0, 16)
-      .replaceAll(' ', '-')
-      .replaceAll(':', '-');
-  Directory newDirectory = Directory('storage/emulated/0/HesabBan/backup/');
+          .toString()
+          .toPersianDate(digitType: NumStrLanguage.English)
+          .replaceAll('/', '-') +
+      '-' +
+      DateTime.now()
+          .toString()
+          .split('.')
+          .first
+          .split(' ')
+          .last
+          .substring(0, 5)
+          .replaceAll(':', '-');
 
   @override
   void onInit() {
@@ -46,23 +66,49 @@ class BackupController extends GetxController {
     billBox = Hive.lazyBox<Bill>(billsBox);
     settingsBox = Hive.lazyBox(settingBox);
     categoryBox = Hive.box(productCategoryBox);
+    _getDirectory().then((value) async {
+      await _setStorageBackupList();
+      await checkBackupFilesCount();
+    });
+    _setUserEmail();
   }
 
-  Future<Directory> getDirectory() async {
+  _setUserEmail() async {
+    email.value = await settingsBox.get('userEmail') ?? '-1';
+  }
+
+  _setStorageBackupList() async {
+    List<FileSystemEntity> list = [];
+    List<FileSystemEntity> fileList = await _appDirectory.list().toList();
+    for (var file in fileList) {
+      if (file.path.split('/').last.startsWith('backup')) {
+        list.add(file);
+      }
+    }
+    storageBackupList.value = list.reversed.toList();
+  }
+
+  Future<void> _getDirectory() async {
     var checkResult = await Permission.storage.status;
     if (!checkResult.isGranted) {
       await Permission.storage.request();
     }
-    Directory newDirectory = Directory(appDirectory);
-    if (await newDirectory.exists() == false) {
-      return newDirectory.create(recursive: true);
-    }
-    return newDirectory;
+    await getApplicationSupportDirectory().then((newDirectory) async {
+      Directory rootDirectory = Directory(newDirectory.path + '/backup/.data/');
+      if (await rootDirectory.exists() == false) {
+        _appDataDirectory = await rootDirectory.create(recursive: true);
+        _appDirectory = Directory(newDirectory.path + '/backup/');
+        return;
+      }
+      _appDataDirectory = rootDirectory;
+      _appDirectory = Directory(newDirectory.path + '/backup/');
+      return;
+    });
   }
 
   // This is method for to map lazy box on hive
-  Future<Map<dynamic, dynamic>> toMap(LazyBox box) async {
-    Map data = {};
+  Future<Map<dynamic, E>> _toMap<E>(LazyBox box) async {
+    Map<dynamic, E> data = {};
     List keys = box.keys.toList();
 
     for (int i = 0; i < box.length; i++) {
@@ -71,28 +117,34 @@ class BackupController extends GetxController {
     return data;
   }
 
-  Future<void> createBackup() async {
-    showLoading = true;
-    update();
-    Map<String, Map<String, dynamic>> productMap = productBox
-        .toMap()
-        .map((key, value) => MapEntry(key.toString(), value.toJson()));
-    Map<String, Map<String, dynamic>> customerMap = customerBox
-        .toMap()
-        .map((key, value) => MapEntry(key.toString(), value.toJson()));
-    Map<String, Map<String, dynamic>> checkMap = checkBox
-        .toMap()
-        .map((key, value) => MapEntry(key.toString(), value.toJson()));
-    Map<String, Map<String, dynamic>> factorMap = await toMap(factorsBox).then(
-        (value) => value
-            .map((key, value) => MapEntry(key.toString(), value.toJson())));
-    Map<String, Map<String, dynamic>> billMap = await toMap(billBox).then(
-        (value) => value
-            .map((key, value) => MapEntry(key.toString(), value.toJson())));
-    Map<String, Map<String, dynamic>> categoryMap = categoryBox
-        .toMap()
-        .map((key, value) => MapEntry(key.toString(), value.toJson()));
-    Map<String, dynamic> settingMap = await toMap(settingsBox).then(
+  Future<Map<String, Map<String, dynamic>>> createMapOfBox(
+      Box? box, LazyBox? lazyBox) async {
+    if (lazyBox != null && lazyBox.lazy) {
+      return await _toMap(lazyBox).then((value) =>
+          value.map((key, value) => MapEntry(key.toString(), value.toJson())));
+    } //
+    else {
+      return box!
+          .toMap()
+          .map((key, value) => MapEntry(key.toString(), value.toJson()));
+    }
+  }
+
+  Future<void> createBackup(bool createOnlineBackup) async {
+    showLoading.value = true;
+    Map<String, Map<String, dynamic>> productMap =
+        await createMapOfBox(productBox, null);
+    Map<String, Map<String, dynamic>> customerMap =
+        await createMapOfBox(customerBox, null);
+    Map<String, Map<String, dynamic>> checkMap =
+        await createMapOfBox(checkBox, null);
+    Map<String, Map<String, dynamic>> factorMap =
+        await createMapOfBox(null, factorsBox);
+    Map<String, Map<String, dynamic>> billMap =
+        await createMapOfBox(null, billBox);
+    Map<String, Map<String, dynamic>> categoryMap =
+        await createMapOfBox(categoryBox, null);
+    Map<String, dynamic> settingMap = await _toMap(settingsBox).then(
         (value) => value.map((key, value) => MapEntry(key.toString(), value)));
     settingMap.remove('storeLogo');
     //
@@ -104,15 +156,15 @@ class BackupController extends GetxController {
     List<int> settingJson = jsonEncode(settingMap).codeUnits;
     List<int> categoryJson = jsonEncode(categoryMap).codeUnits;
     //
-    Directory dir = await getDirectory();
-    //
-    String productPath = '${dir.path}product-$formattedDate.hdb';
-    String customerPath = '${dir.path}customer-$formattedDate.hdb';
-    String checkPath = '${dir.path}check-$formattedDate.hdb';
-    String factorPath = '${dir.path}factor-$formattedDate.hdb';
-    String billPath = '${dir.path}bill-$formattedDate.hdb';
-    String categoryPath = '${dir.path}category-$formattedDate.hdb';
-    String settingPath = '${dir.path}setting-$formattedDate.hdb';
+    String productPath = '${_appDataDirectory.path}product-$formattedDate.hdb';
+    String customerPath =
+        '${_appDataDirectory.path}customer-$formattedDate.hdb';
+    String checkPath = '${_appDataDirectory.path}check-$formattedDate.hdb';
+    String factorPath = '${_appDataDirectory.path}factor-$formattedDate.hdb';
+    String billPath = '${_appDataDirectory.path}bill-$formattedDate.hdb';
+    String categoryPath =
+        '${_appDataDirectory.path}category-$formattedDate.hdb';
+    String settingPath = '${_appDataDirectory.path}setting-$formattedDate.hdb';
     //
     File productBackupFile = File(productPath);
     File customerBackupFile = File(customerPath);
@@ -139,51 +191,41 @@ class BackupController extends GetxController {
       await categoryBackupFile.writeAsString(categoryJson.toString());
       await settingBackupFile.writeAsString(settingJson.toString());
       var encoder = ZipFileEncoder();
-      encoder.create('${newDirectory.path}backup_$formattedDate.hdb');
+      encoder.create('${_appDirectory.path}backup_$formattedDate.hdb');
       for (File file in files) {
         encoder.addFile(file);
       }
       encoder.close();
+      await checkBackupFilesCount();
+      if (createOnlineBackup) {
+        _createOnlineBackup(File(encoder.zipPath));
+      } //
+      else {
+        _setStorageBackupList();
+      }
     } catch (e) {
-      print(e);
-      print('ERROR on write zip file');
+      log(e.toString());
     }
-    showLoading = false;
-    update();
-    // uploadFile(File(encoder.zipPath));
+    showLoading.value = false;
   }
 
-  Future<void> restoreBackup() async {
-    var checkResult = await Permission.storage.status;
-    if (!checkResult.isGranted) {
-      await Permission.storage.request();
-    }
-    showLoading = true;
-    update();
-    File selectedFile = File('-1');
-    FilePickerResult? pickedFile = await FilePicker.platform.pickFiles();
-    if (pickedFile != null) {
-      selectedFile = File(pickedFile.files.single.path!);
-    } //
-    else {
-      showLoading = false;
-      update();
-      return;
-    }
+  Future<void> restoreBackup(File selectedFile) async {
+    showLoading.value = true;
     String commonDateName = selectedFile.path.split('/').last.split('_').last;
     //
     final inputStream = InputFileStream(selectedFile.path);
     final archive = ZipDecoder().decodeBuffer(inputStream);
     for (var val in archive.files) {
       if (val.isFile) {
-        final outputStream = OutputFileStream(appDirectory + val.name);
+        final outputStream =
+            OutputFileStream(_appDataDirectory.path + val.name);
         val.writeContent(outputStream);
         outputStream.close();
       }
     }
     //
     List<FileSystemEntity> dataDirectory =
-        await Directory(appDirectory).list().toList();
+        await _appDataDirectory.list().toList();
     List<File> files = [];
     for (var file in dataDirectory) {
       if (file.path.contains(commonDateName)) {
@@ -203,7 +245,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Product> newMap = map.map<int, Product>(
             (key, value) => MapEntry(int.parse(key), Product.fromJson(value)));
-        print(newMap);
         productBox.putAll(newMap);
       } //
       else if (file.path.contains('customer')) {
@@ -217,7 +258,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Customer> newMap = map.map<int, Customer>(
             (key, value) => MapEntry(int.parse(key), Customer.fromJson(value)));
-        print(newMap);
         customerBox.putAll(newMap);
       } //
       else if (file.path.contains('check')) {
@@ -231,7 +271,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Check> newMap = map.map<int, Check>(
             (key, value) => MapEntry(int.parse(key), Check.fromJson(value)));
-        print(newMap);
         checkBox.putAll(newMap);
       } //
       else if (file.path.contains('factor')) {
@@ -245,7 +284,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Factor> newMap = map.map<int, Factor>(
             (key, value) => MapEntry(int.parse(key), Factor.fromJson(value)));
-        print(newMap);
         factorsBox.putAll(newMap);
       } //
       else if (file.path.contains('bill')) {
@@ -259,7 +297,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Bill> newMap = map.map<int, Bill>(
             (key, value) => MapEntry(int.parse(key), Bill.fromJson(value)));
-        print(newMap);
         billBox.putAll(newMap);
       } //
       else if (file.path.contains('category')) {
@@ -273,7 +310,6 @@ class BackupController extends GetxController {
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
         Map<int, Category> newMap = map.map<int, Category>(
             (key, value) => MapEntry(int.parse(key), Category.fromJson(value)));
-        print(newMap);
         categoryBox.putAll(newMap);
       } //
       else {
@@ -285,11 +321,203 @@ class BackupController extends GetxController {
         }
         Map<dynamic, dynamic> map =
             jsonDecode(String.fromCharCodes(intList)) as Map<dynamic, dynamic>;
-        print(map);
         settingsBox.putAll(map);
       }
     }
-    showLoading = false;
-    update();
+    showLoading.value = false;
+    Get.defaultDialog(
+      title: 'بروزرسانی تغییرات',
+      content: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Text(
+          'برای اعمال تغییرات از برنامه خارج شده و دوباره راه اندازی کنید.',
+          style: TextStyle(height: 1.5),
+        ),
+      ),
+      confirm: ConfirmButton(onTap: Get.back),
+    );
+  }
+
+  _createOnlineBackup(File file) async {
+    showLoading.value = true;
+    final driveApi = await _getDriveApi();
+    if (driveApi == null) {
+      await file.delete();
+      return;
+    }
+    final folderId = await _getFolderId(driveApi);
+    if (folderId == null) {
+      return;
+    }
+    var media = drive.Media(file.openRead(), file.lengthSync());
+    drive.File driveFile = drive.File();
+    driveFile.name = file.path.split('/').last;
+    driveFile.parents = [folderId];
+    driveFile.modifiedTime = DateTime.now().toUtc();
+    await driveApi.files.create(driveFile, uploadMedia: media);
+    await file.delete();
+    await checkDriveBackupFilesCount();
+    await setOnlineBackupList();
+  }
+
+  Future<drive.DriveApi?> _getDriveApi() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      showLoading.value = false;
+      StaticMethods.showSnackBar(
+        title: 'خطا',
+        description:
+            'برای استفاده از مزایای پشتیبان گیری آنلاین باید ارتباط اینترنت شما وصل باشد.',
+        duration: const Duration(seconds: 4),
+      );
+      return null;
+    } //
+    else {
+      try {
+        final googleSignIn = sign_in.GoogleSignIn.standard(scopes: [
+          drive.DriveApi.driveFileScope,
+          'email',
+        ]);
+        Map<String, String>? authHeaders = {};
+        final sign_in.GoogleSignInAccount? account =
+            await googleSignIn.signIn();
+        authHeaders = await account?.authHeaders;
+        if (authHeaders == null) {
+          showLoading.value = false;
+          return null;
+        }
+        email.value = account!.email;
+        await settingsBox.put('userEmail', account.email);
+
+        final authenticateClient = GoogleAuthClient(authHeaders);
+        final driveApi = drive.DriveApi(
+          authenticateClient,
+        );
+        return driveApi;
+      } catch (e) {
+        log(e.toString());
+        return null;
+      }
+    }
+  }
+
+  Future<String?> _getFolderId(drive.DriveApi driveApi) async {
+    const mimeType = "application/vnd.google-apps.folder";
+    String folderName = "Hesab Ban";
+
+    try {
+      final found = await driveApi.files.list(
+        q: "mimeType = '$mimeType' and name = '$folderName'",
+        $fields: "files(id, name)",
+      );
+      final files = found.files;
+      if (files == null) {
+        return null;
+      }
+
+      // The folder already exists
+      if (files.isNotEmpty) {
+        return files.first.id;
+      }
+
+      // Create a folder
+      var folder = drive.File();
+      folder.name = folderName;
+      folder.mimeType = mimeType;
+      final folderCreation = await driveApi.files.create(folder);
+      return folderCreation.id;
+    } catch (e) {
+      log('folder not created');
+      log('error...>>> $e');
+      return null;
+    }
+  }
+
+  downloadFile(String id, String name) async {
+    showLoading.value = true;
+    final driveApi = await _getDriveApi();
+    if (driveApi == null) {
+      return;
+    }
+    drive.Media file = await driveApi.files.get(id,
+        downloadOptions: drive.DownloadOptions.fullMedia) as drive.Media;
+    File savedFile = File(_appDirectory.path + name);
+    List<int> dataStore = [];
+    file.stream.listen((data) {
+      dataStore.insertAll(dataStore.length, data);
+    }, onDone: () async {
+      await savedFile.writeAsBytes(dataStore);
+      await restoreBackup(savedFile);
+      savedFile.delete();
+      showLoading.value = false;
+    }, onError: (error) {
+      showLoading.value = false;
+    });
+  }
+
+  Future<void> setOnlineBackupList() async {
+    showLoading.value = true;
+    try {
+      final driveApi = await _getDriveApi();
+      if (driveApi == null) {
+        return;
+      }
+      showLoading.value = false;
+
+      final fileList = await driveApi.files.list(
+        spaces: 'drive',
+        q: "name contains 'backup_' and name contains '.hdb'",
+      );
+      final files = fileList.files;
+      if (files == null) {
+        showLoading.value = false;
+        return;
+      } //
+      else {
+        onlineBackupList.value = files;
+        showLoading.value = false;
+        return;
+      }
+    } on DetailedApiRequestError catch (e) {
+      if (e.status == 401 && e.message == "Invalid Credentials") {
+        final googleUser = await sign_in.GoogleSignIn.standard(scopes: [
+          drive.DriveApi.driveFileScope,
+          'email',
+        ]).signInSilently();
+        if (googleUser == null) {
+          return;
+        } //
+        await setOnlineBackupList();
+      }
+    }
+  }
+
+  checkBackupFilesCount() async {
+    List<FileSystemEntity> backupDataList = await _appDirectory.list().toList();
+    if (backupDataList.length > 11) {
+      await backupDataList[1].delete();
+    }
+  }
+
+  Future<void> checkDriveBackupFilesCount() async {
+    final driveApi = await _getDriveApi();
+    if (driveApi == null) {
+      return;
+    }
+
+    final fileList = await driveApi.files.list(
+      spaces: 'drive',
+      q: "name contains 'backup_' and name contains '.hdb'",
+    );
+    final files = fileList.files;
+    if (files == null) {
+      return;
+    } //
+    else {
+      if (files.length > 5) {
+        await driveApi.files.delete(files.last.id!);
+      }
+      return;
+    }
   }
 }

@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../models/category_model.dart';
-import '../../models/product_model.dart';
+import '../../data/models/category_model.dart';
+import '../../data/models/product_model.dart';
 import '../../static_methods.dart';
 import '../widgets/search_box_widget.dart';
 

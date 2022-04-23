@@ -10,7 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../../models/product_model.dart';
+import '../../data/models/product_model.dart';
 
 class CreateProductScreen extends GetView<ProductController> {
   const CreateProductScreen({Key? key}) : super(key: key);

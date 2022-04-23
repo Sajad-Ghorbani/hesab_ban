@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/bill_model.dart';
-import 'package:hesab_ban/models/category_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/factor_model.dart';
-import 'package:hesab_ban/models/product_model.dart';
+import 'package:hesab_ban/data/models/bill_model.dart';
+import 'package:hesab_ban/data/models/category_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
+import 'package:hesab_ban/data/models/product_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
-import '../models/customer_model.dart';
+import '../data/models/customer_model.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {
   double fontSize = 2;

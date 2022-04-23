@@ -10,13 +10,13 @@ import 'package:printing/printing.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
-import 'package:hesab_ban/models/factor_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:pdf/pdf.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../models/customer_model.dart';
-import '../models/factor_row.dart';
+import '../data/models/customer_model.dart';
+import '../data/models/factor_row.dart';
 
 class PrintController extends GetxController {
   String storeName = '';

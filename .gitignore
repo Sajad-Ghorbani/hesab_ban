@@ -32,6 +32,7 @@
 .pub/
 /build/
 /android/app/google-services.json
+/android/app/client_secret_468393642717-vv4d2g79lku35vue2667aks6ie3v7hjq.apps.googleusercontent.com.json
 
 # Web related
 lib/generated_plugin_registrant.dart

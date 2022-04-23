@@ -2,7 +2,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:hesab_ban/controllers/customer_controller.dart';
-import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';

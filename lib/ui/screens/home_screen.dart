@@ -1,5 +1,5 @@
 import 'package:hesab_ban/controllers/home_controller.dart';
-import 'package:hesab_ban/models/check_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
 import 'package:hesab_ban/ui/screens/all_check_screen.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';

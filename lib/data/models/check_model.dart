@@ -1,4 +1,4 @@
-import 'package:hesab_ban/models/bank_model.dart';
+import 'package:hesab_ban/data/models/bank_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'customer_model.dart';

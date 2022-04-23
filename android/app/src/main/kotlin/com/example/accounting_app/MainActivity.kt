@@ -1,4 +1,4 @@
-package com.nahal1401.hesab_ban
+package com.example.accounting_app
 
 import io.flutter.embedding.android.FlutterActivity
 

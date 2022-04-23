@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/bill_model.dart';
-import 'package:hesab_ban/models/cash_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/customer_model.dart';
-import 'package:hesab_ban/models/factor_model.dart';
-import 'package:hesab_ban/models/factor_row.dart';
+import 'package:hesab_ban/data/models/bill_model.dart';
+import 'package:hesab_ban/data/models/cash_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
+import 'package:hesab_ban/data/models/factor_model.dart';
+import 'package:hesab_ban/data/models/factor_row.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hive/hive.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../models/product_model.dart';
+import '../data/models/product_model.dart';
 import '../routes/app_pages.dart';
 import '../ui/theme/app_colors.dart';
 

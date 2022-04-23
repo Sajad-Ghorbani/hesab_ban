@@ -1,9 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:hesab_ban/constants.dart';
 import 'package:hesab_ban/controllers/home_controller.dart';
-import 'package:hesab_ban/models/bank_model.dart';
-import 'package:hesab_ban/models/check_model.dart';
-import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/data/models/bank_model.dart';
+import 'package:hesab_ban/data/models/check_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:hive/hive.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../models/bill_model.dart';
+import '../data/models/bill_model.dart';
 
 class CheckController extends GetxController {
   TextEditingController checkNumberController = TextEditingController();

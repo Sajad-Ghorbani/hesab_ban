@@ -1,5 +1,5 @@
 import 'package:hesab_ban/constants.dart';
-import 'package:hesab_ban/models/customer_model.dart';
+import 'package:hesab_ban/data/models/customer_model.dart';
 import 'package:hesab_ban/ui/widgets/data_table.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:flutter/material.dart';
