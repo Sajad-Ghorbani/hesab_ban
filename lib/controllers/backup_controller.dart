@@ -18,7 +18,6 @@ import 'package:hesab_ban/data/providers/google_auth_client.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hesab_ban/ui/widgets/confirm_button.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:google_sign_in/google_sign_in.dart' as sign_in;
@@ -93,17 +92,16 @@ class BackupController extends GetxController {
     if (!checkResult.isGranted) {
       await Permission.storage.request();
     }
-    await getApplicationSupportDirectory().then((newDirectory) async {
-      Directory rootDirectory = Directory(newDirectory.path + '/backup/.data/');
-      if (await rootDirectory.exists() == false) {
-        _appDataDirectory = await rootDirectory.create(recursive: true);
-        _appDirectory = Directory(newDirectory.path + '/backup/');
-        return;
-      }
-      _appDataDirectory = rootDirectory;
+    final newDirectory = Directory('/storage/emulated/0/Hesab Ban');
+    Directory rootDirectory = Directory(newDirectory.path + '/backup/.data/');
+    if (await rootDirectory.exists() == false) {
+      _appDataDirectory = await rootDirectory.create(recursive: true);
       _appDirectory = Directory(newDirectory.path + '/backup/');
       return;
-    });
+    }
+    _appDataDirectory = rootDirectory;
+    _appDirectory = Directory(newDirectory.path + '/backup/');
+    return;
   }
 
   // This is method for to map lazy box on hive
