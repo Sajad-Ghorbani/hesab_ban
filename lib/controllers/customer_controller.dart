@@ -21,6 +21,7 @@ class CustomerController extends GetxController {
   TextEditingController customerPhone2Controller = TextEditingController();
   TextEditingController customerAddressController = TextEditingController();
   TextEditingController customerBalanceController = TextEditingController();
+  TextEditingController customerDescriptionController = TextEditingController();
   late ScrollController scrollController;
 
   late final Box customerBox;
@@ -47,6 +48,7 @@ class CustomerController extends GetxController {
     customerPhone2Controller.dispose();
     customerAddressController.dispose();
     customerBalanceController.dispose();
+    customerDescriptionController.dispose();
   }
 
   saveBill(Customer customer) async {
@@ -86,6 +88,7 @@ class CustomerController extends GetxController {
                 : StaticMethods.removeSeparatorFromNumber(
                     customerBalanceController,
                   ),
+        description: customerDescriptionController.text.trim(),
       );
       final int key = await customerBox.add(newCustomer);
       newCustomer.id = key;
@@ -112,6 +115,7 @@ class CustomerController extends GetxController {
       customer.phoneNumber1 = customerPhoneController.text.trim();
       customer.phoneNumber2 = customerPhone2Controller.text.trim();
       customer.address = customerAddressController.text.trim();
+      customer.description = customerDescriptionController.text.trim();
       if (customerBalanceController.text.trim().isEmpty) {
         customer.initialAccountBalance = 0;
       } //
@@ -188,9 +192,7 @@ class CustomerController extends GetxController {
                   label: Row(
                     children: [
                       const Text('قیمت'),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5),
                       Text(
                         '(${Get.find<HomeController>().moneyUnit.value})',
                         style: kRialTextStyle,
@@ -202,9 +204,7 @@ class CustomerController extends GetxController {
                   label: Row(
                     children: [
                       const Text('قیمت کل'),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5),
                       Text(
                         '(${Get.find<HomeController>().moneyUnit.value})',
                         style: kRialTextStyle,

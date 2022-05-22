@@ -9,6 +9,7 @@ import 'package:hesab_ban/data/models/factor_model.dart';
 import 'package:hesab_ban/data/models/factor_row.dart';
 import 'package:hesab_ban/static_methods.dart';
 import 'package:hive/hive.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../data/models/product_model.dart';
@@ -19,6 +20,8 @@ class FactorController extends GetxController {
   TypeOfFactor typeOfFactor = Get.arguments;
   RxList<FactorRow> listFactorRow = <FactorRow>[].obs;
   RxString factorSum = '-1'.obs;
+  RxString factorDateLabel = '-1'.obs;
+  DateTime? factorDate;
   RxInt cashAmount = 0.obs;
   RxInt checkAmount = 0.obs;
   Check check = Check();
@@ -96,7 +99,8 @@ class FactorController extends GetxController {
     Get.back();
     productCountController.clear();
     productPriceController.clear();
-    FactorRow row = FactorRow(0,
+    FactorRow row = FactorRow(
+      0,
       productName: product.name!,
       productCount: count,
       productPrice: price,
@@ -230,6 +234,13 @@ class FactorController extends GetxController {
         return false;
       }
     }
+    if (factorSum.value == '-1') {
+      StaticMethods.showSnackBar(
+        title: 'خطا',
+        description: 'فاکتور خالی می باشد.',
+      );
+      return false;
+    }
     var productsBox = Hive.box<Product>(allProductBox);
     bool saveFactor = false;
     if (typeOfFactor == TypeOfFactor.buy ||
@@ -279,7 +290,7 @@ class FactorController extends GetxController {
         }
       }
       newFactor = Factor(
-        factorDate: DateTime.now(),
+        factorDate: factorDate ?? DateTime.now(),
         factorRows: [],
         factorSum: typeOfFactor == TypeOfFactor.buy ||
                 typeOfFactor == TypeOfFactor.returnOfSale
@@ -374,5 +385,23 @@ class FactorController extends GetxController {
     int index = await checkBox.add(check);
     check.id = index;
     await check.save();
+  }
+
+  void selectDate(BuildContext context) async {
+    Jalali? pickedDate = await showPersianDatePicker(
+      context: context,
+      initialDate: Jalali.now(),
+      firstDate: Jalali.now() - 30,
+      lastDate: Jalali(1450, 9),
+    );
+    if (pickedDate != null) {
+      factorDateLabel.value = pickedDate
+          .toJalaliDateTime()
+          .split(' ')
+          .first
+          .toPersianDigit()
+          .replaceAll('-', '/');
+      factorDate = pickedDate.toDateTime();
+    }
   }
 }

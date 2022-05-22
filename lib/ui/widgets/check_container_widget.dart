@@ -61,6 +61,21 @@ class CheckContainerWidget extends StatelessWidget {
               listOfCheckFromToday.add(check);
             }
           }
+          if (listOfCheckFromToday.isEmpty) {
+            return SliverToBoxAdapter(
+              child: Column(
+                children: const [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('لیست چک ها خالی می باشد.'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            );
+          } //
           listOfCheckFromToday.sort((a, b) {
             return a.checkDeliveryDate!.compareTo(b.checkDeliveryDate!);
           });

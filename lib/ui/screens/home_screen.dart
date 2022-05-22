@@ -24,62 +24,56 @@ class HomeScreen extends GetView<HomeController> {
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        GridMenuWidget(
-                          title: 'ایجاد حساب جدید',
-                          onTap: () {
-                            Get.toNamed(Routes.createCustomerScreen);
-                          },
-                          width: MediaQuery.of(context).size.width / 2 - 25,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GridMenuWidget(
-                          title: 'ورود چک',
-                          onTap: () {
-                            Get.toNamed(Routes.createCheckScreen);
-                          },
-                          width: MediaQuery.of(context).size.width / 2 - 25,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GridMenuWidget(
-                          title: 'ورود وجه نقد',
-                          onTap: () {
-                            controller.inputCash();
-                          },
-                          width: MediaQuery.of(context).size.width / 2 - 25,
-                        ),
-                      ],
-                    ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      GridMenuWidget(
+                        title: 'ایجاد حساب جدید',
+                        onTap: () {
+                          Get.toNamed(Routes.createCustomerScreen);
+                        },
+                        width: MediaQuery.of(context).size.width / 2 - 25,
+                      ),
+                      const SizedBox(width: 10),
+                      GridMenuWidget(
+                        title: 'ورود چک',
+                        onTap: () {
+                          Get.toNamed(Routes.createCheckScreen);
+                        },
+                        width: MediaQuery.of(context).size.width / 2 - 25,
+                      ),
+                      const SizedBox(width: 10),
+                      GridMenuWidget(
+                        title: 'ورود وجه نقد',
+                        onTap: () {
+                          controller.inputCash();
+                        },
+                        width: MediaQuery.of(context).size.width / 2 - 25,
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: const [
-                        FaIcon(
-                          FontAwesomeIcons.moneyCheck,
-                          color: kDarkGreenColor,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('لیست چک های دریافتی'),
-                      ],
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: const [
+                      FaIcon(
+                        FontAwesomeIcons.moneyCheck,
+                        color: kDarkGreenColor,
+                      ),
+                      SizedBox(width: 10),
+                      Text('لیست چک های دریافتی'),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           SliverBoxContainerWidget(
             child: CheckContainerWidget(
               typeOfCheck: TypeOfCheck.received,
@@ -97,18 +91,14 @@ class HomeScreen extends GetView<HomeController> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Row(
                     children: const [
                       FaIcon(
                         FontAwesomeIcons.moneyCheck,
                         color: kRedColor,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('لیست چک های پرداختی'),
                     ],
                   ),
@@ -133,18 +123,14 @@ class HomeScreen extends GetView<HomeController> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Row(
                     children: const [
                       FaIcon(
                         FontAwesomeIcons.addressCard,
                         color: kOrangeColor,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Text('لیست مشتریان'),
                     ],
                   ),
@@ -156,9 +142,7 @@ class HomeScreen extends GetView<HomeController> {
             child: CustomersContainerWidget(),
           ),
           const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 75,
-            ),
+            child: SizedBox(height: 75),
           ),
         ],
       ),

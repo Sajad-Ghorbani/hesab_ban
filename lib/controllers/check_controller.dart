@@ -137,7 +137,7 @@ class CheckController extends GetxController {
     Jalali? pickedDate = await showPersianDatePicker(
       context: context,
       initialDate: Jalali.now(),
-      firstDate: Jalali.now(),
+      firstDate: Jalali.now() - 30,
       lastDate: Jalali(1450, 9),
     );
     if (pickedDate != null) {
@@ -148,13 +148,21 @@ class CheckController extends GetxController {
           hours: hours,
           minutes: minutes,
         );
-        checkDeliveryDateLabel.value =
-            pickedDate.toJalaliDateTime().split(' ').first.toPersianDigit();
+        checkDeliveryDateLabel.value = pickedDate
+            .toJalaliDateTime()
+            .split(' ')
+            .first
+            .toPersianDigit()
+            .replaceAll('-', '/');
         checkDeliveryDate = pickedDate.toDateTime();
       } //
       else {
-        checkDueDateLabel.value =
-            pickedDate.toJalaliDateTime().split(' ').first.toPersianDigit();
+        checkDueDateLabel.value = pickedDate
+            .toJalaliDateTime()
+            .split(' ')
+            .first
+            .toPersianDigit()
+            .replaceAll('-', '/');
         checkDueDate = pickedDate.toDateTime();
       }
     }
@@ -225,7 +233,8 @@ class CheckController extends GetxController {
         checkDeliveryDate: checkDeliveryDate,
         customerCheck: checkCustomer,
         typeOfCheck: typeOfCheck,
-        checkBank: bankList.firstWhere((bank) => bank.name == checkBankName.value),
+        checkBank:
+            bankList.firstWhere((bank) => bank.name == checkBankName.value),
       );
       if (fromFactor != null) {
         Get.back(result: newCheck);

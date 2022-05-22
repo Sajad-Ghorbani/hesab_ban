@@ -2,7 +2,6 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:hesab_ban/controllers/customer_controller.dart';
-import 'package:hesab_ban/data/models/customer_model.dart';
 import 'package:hesab_ban/routes/app_pages.dart';
 import 'package:hesab_ban/ui/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,23 +19,24 @@ class CreateCustomerScreen extends GetView<CustomerController> {
 
   @override
   Widget build(BuildContext context) {
-    Customer? customer = Get.arguments;
-    if (customer != null) {
-      controller.customerNameController.text = customer.name!;
+    // Customer? customer = Get.arguments;
+    if (controller.customer != null) {
+      controller.customerNameController.text = controller.customer!.name!;
       controller.customerPhoneController.text =
-          customer.phoneNumber1 == null ? '' : customer.phoneNumber1.toString();
+      controller.customer!.phoneNumber1 == null ? '' : controller.customer!.phoneNumber1.toString();
       controller.customerPhone2Controller.text =
-          customer.phoneNumber2 == null ? '' : customer.phoneNumber2.toString();
+      controller.customer!.phoneNumber2 == null ? '' : controller.customer!.phoneNumber2.toString();
       controller.customerAddressController.text =
-          customer.address == null ? '' : customer.address!;
+      controller.customer!.address == null ? '' : controller.customer!.address!;
       controller.customerBalanceController.text =
-          customer.initialAccountBalance == null
+      controller.customer!.initialAccountBalance == null
               ? ''
-              : customer.initialAccountBalance.toString().seRagham();
+              : controller.customer!.initialAccountBalance.toString().seRagham();
+      controller.customerDescriptionController.text =
+      controller.customer!.description == null ? '' : controller.customer!.description!;
     }
     return BaseWidget(
       title: 'ایجاد حساب جدید',
-      resizeToAvoidBottomInset: false,
       appBarLeading: IconButton(
         onPressed: () {
           Get.back();
@@ -48,11 +48,11 @@ class CreateCustomerScreen extends GetView<CustomerController> {
       appBarActions: [
         IconButton(
           onPressed: () {
-            if (customer == null) {
+            if (controller.customer == null) {
               controller.saveCustomer(context);
             } //
             else {
-              controller.updateCustomer(context, customer);
+              controller.updateCustomer(context, controller.customer!);
             }
           },
           icon: const Icon(FontAwesomeIcons.check),
@@ -60,182 +60,209 @@ class CreateCustomerScreen extends GetView<CustomerController> {
           color: kGreenColor,
         ),
       ],
-      child: Column(
-        children: [
-          Card(
-            margin: const EdgeInsets.all(20),
-            color: kGreyColor,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Card(
+              margin: const EdgeInsets.all(20),
+              color: kGreyColor,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
               ),
-            ),
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      const Text('نام'),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextField(
-                          controller: controller.customerNameController,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('نام'),
+                        const SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    color: kDarkGreyColor,
-                    height: 10,
-                    thickness: 1.2,
-                  ),
-                  Row(
-                    children: [
-                      Text('شماره تماس 1'.toPersianDigit()),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextField(
-                          controller: controller.customerPhoneController,
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    color: kDarkGreyColor,
-                    height: 10,
-                    thickness: 1.2,
-                  ),
-                  Row(
-                    children: [
-                      Text('شماره تماس 2'.toPersianDigit()),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextField(
-                          controller: controller.customerPhone2Controller,
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    color: kDarkGreyColor,
-                    height: 10,
-                    thickness: 1.2,
-                  ),
-                  Row(
-                    children: [
-                      const Text('آدرس'),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextField(
-                          controller: controller.customerAddressController,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(
-                    color: kDarkGreyColor,
-                    height: 10,
-                    thickness: 1.2,
-                  ),
-                  Row(
-                    children: [
-                      const Text('مانده حساب اولیه'),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextField(
-                          controller: controller.customerBalanceController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            CurrencyTextInputFormatter(
-                              decimalDigits: 0,
-                              symbol: '',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        Get.find<HomeController>().moneyUnit.value,
-                        style: kRialTextStyle,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Text('نوع'),
-                      const Spacer(),
-                      SizedBox(
-                        width: 120,
-                        child: Obx(
-                          () => DropdownButtonFormField<bool>(
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide.none)),
-                            items: const [
-                              DropdownMenuItem(
-                                child: Text('بدهکار'),
-                                value: true,
-                              ),
-                              DropdownMenuItem(
-                                child: Text('بستانکار'),
-                                value: false,
-                              ),
-                            ],
-                            value: controller.customerIsDebtor.value,
-                            onChanged: (bool? value) {
-                              controller.customerIsDebtor.value = value!;
-                            },
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.customerNameController,
                           ),
                         ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        Text('شماره تماس 1'.toPersianDigit()),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.customerPhoneController,
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        Text('شماره تماس 2'.toPersianDigit()),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.customerPhone2Controller,
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        const Text('آدرس'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.customerAddressController,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        const Text('مانده حساب اولیه'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            controller: controller.customerBalanceController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              CurrencyTextInputFormatter(
+                                decimalDigits: 0,
+                                symbol: '',
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          Get.find<HomeController>().moneyUnit.value,
+                          style: kRialTextStyle,
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        const Text('نوع'),
+                        const Spacer(),
+                        SizedBox(
+                          width: 120,
+                          child: Obx(
+                            () => DropdownButtonFormField<bool>(
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none)),
+                              items: const [
+                                DropdownMenuItem(
+                                  child: Text('بدهکار'),
+                                  value: true,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text('بستانکار'),
+                                  value: false,
+                                ),
+                              ],
+                              value: controller.customerIsDebtor.value,
+                              onChanged: (bool? value) {
+                                controller.customerIsDebtor.value = value!;
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(
+                      color: kDarkGreyColor,
+                      height: 10,
+                      thickness: 1.2,
+                    ),
+                    Row(
+                      children: [
+                        const Text('توضیحات'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextField(
+                            controller:
+                                controller.customerDescriptionController,
+                            maxLines: 5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    RichText(
+                      text: TextSpan(
+                        style:
+                            const TextStyle(fontFamily: 'Yekan', fontSize: 12),
+                        children: [
+                          const TextSpan(text: 'شرایط استفاده از خدمات و '),
+                          TextSpan(
+                            text: 'حریم خصوصی',
+                            style: const TextStyle(
+                              color: kBackgroundColor,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Get.toNamed(Routes.privacyAndPolicyScreen);
+                              },
+                          ),
+                          const TextSpan(text: ' را میپذیرم.'),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
-          ),
-          const Spacer(),
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontFamily: 'Yekan', fontSize: 12),
-              children: [
-                const TextSpan(text: 'شرایط استفاده از خدمات و '),
-                TextSpan(
-                  text: 'حریم خصوصی',
-                  style: const TextStyle(
-                    color: kBackgroundColor,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Get.toNamed(Routes.privacyAndPolicyScreen);
-                    },
-                ),
-                const TextSpan(text: ' را میپذیرم.'),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

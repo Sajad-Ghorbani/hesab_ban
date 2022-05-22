@@ -85,8 +85,20 @@ class FactorScreen extends GetView<FactorController> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  DateTime.now().toPersianDate(),
+                                Obx(
+                                  () => GestureDetector(
+                                    onTap: () {
+                                      controller.selectDate(context);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        controller.factorDateLabel.value == '-1'
+                                            ? DateTime.now().toPersianDate()
+                                            : controller.factorDateLabel.value,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

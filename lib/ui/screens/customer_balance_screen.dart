@@ -59,9 +59,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      const SizedBox(width: 20),
                       Expanded(
                         child: Column(
                           children: [
@@ -72,9 +70,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                 Text(controller.customer!.phoneNumber1!),
                               ],
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             Visibility(
                               visible: controller.customer!.phoneNumber2 != '',
                               child: Column(
@@ -86,18 +82,14 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                       Text(controller.customer!.phoneNumber2!),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
                             ),
                             Row(
                               children: [
                                 const Text('آدرس:'),
-                                const SizedBox(
-                                  width: 10,
-                                ),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     controller.customer!.address!,
@@ -106,9 +98,28 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
+                            controller.customer!.description != '' &&
+                                    controller.customer!.description != null
+                                ? Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text('توضیحات:'),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              controller.customer!.description!,
+                                              style: kBodyText.copyWith(
+                                                  fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(),
                             GetBuilder<CustomerController>(
                               builder: (myController) {
                                 if (myController.customerBill == null) {
@@ -135,9 +146,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                                       : kGreenColor,
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
+                                              const SizedBox(width: 5),
                                               Text(
                                                 Get.find<HomeController>()
                                                     .moneyUnit
@@ -146,9 +155,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
+                                          const SizedBox(height: 5),
                                           Visibility(
                                             visible: myController.customerBill!
                                                     .cashPayment! !=
@@ -305,6 +312,7 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
     );
   }
 }
+
 // TODO: use nested scroll view for this page
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Container child;

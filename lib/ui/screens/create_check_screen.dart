@@ -17,7 +17,6 @@ class CreateCheckScreen extends GetView<CheckController> {
   @override
   Widget build(BuildContext context) {
     if (controller.check != null) {
-      // controller.checkBankName.value = controller.check!.bankName!;
       controller.checkNumberController.text = controller.check!.checkNumber!;
       controller.checkAmountController.text =
           controller.check!.checkAmount.toString();

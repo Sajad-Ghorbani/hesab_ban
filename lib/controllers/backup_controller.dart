@@ -88,9 +88,11 @@ class BackupController extends GetxController {
   }
 
   Future<void> _getDirectory() async {
-    var checkResult = await Permission.storage.status;
-    if (!checkResult.isGranted) {
+    var checkResult = await Permission.manageExternalStorage.status;
+    var checkExternalStorage = await Permission.storage.status;
+    if (!checkResult.isGranted && !checkExternalStorage.isGranted) {
       await Permission.storage.request();
+      await Permission.manageExternalStorage.request();
     }
     final newDirectory = Directory('/storage/emulated/0/Hesab Ban');
     Directory rootDirectory = Directory(newDirectory.path + '/backup/.data/');

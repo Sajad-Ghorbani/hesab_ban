@@ -24,6 +24,9 @@ class Customer extends HiveObject {
   @HiveField(5)
   int? initialAccountBalance;
 
+  @HiveField(6)
+  String? description;
+
   Customer({
     this.id,
     this.name,
@@ -31,6 +34,7 @@ class Customer extends HiveObject {
     this.phoneNumber1,
     this.phoneNumber2,
     this.initialAccountBalance,
+    this.description,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => _$CustomerFromJson(json);
