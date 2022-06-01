@@ -170,74 +170,81 @@ class CustomerController extends GetxController {
   ) {
     Get.defaultDialog(
       title: typeFactor,
-      content: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Obx(
-          () => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: DataTable(
-              columnSpacing: 20,
-              columns: [
-                const DataColumn(
-                  label: Text('ردیف'),
-                  numeric: true,
-                ),
-                const DataColumn(
-                  label: Text('شرح کالا'),
-                ),
-                const DataColumn(
-                  label: Text('تعداد'),
-                ),
-                DataColumn(
-                  label: Row(
-                    children: [
-                      const Text('قیمت'),
-                      const SizedBox(width: 5),
-                      Text(
-                        '(${Get.find<HomeController>().moneyUnit.value})',
-                        style: kRialTextStyle,
+      content: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: Get.height * 0.65,
+        ),
+        child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Obx(
+              () => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: DataTable(
+                  columnSpacing: 20,
+                  columns: [
+                    const DataColumn(
+                      label: Text('ردیف'),
+                      numeric: true,
+                    ),
+                    const DataColumn(
+                      label: Text('شرح کالا'),
+                    ),
+                    const DataColumn(
+                      label: Text('تعداد'),
+                    ),
+                    DataColumn(
+                      label: Row(
+                        children: [
+                          const Text('قیمت'),
+                          const SizedBox(width: 5),
+                          Text(
+                            '(${Get.find<HomeController>().moneyUnit.value})',
+                            style: kRialTextStyle,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
+                    DataColumn(
+                      label: Row(
+                        children: [
+                          const Text('قیمت کل'),
+                          const SizedBox(width: 5),
+                          Text(
+                            '(${Get.find<HomeController>().moneyUnit.value})',
+                            style: kRialTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  rows: List.generate(
+                    factor.factorRows!.length,
+                    (index) {
+                      FactorRow row = factor.factorRows![index];
+                      return DataRow(
+                        cells: [
+                          DataCell(
+                            Text('${index + 1}'),
+                          ),
+                          DataCell(
+                            Text(row.productName),
+                          ),
+                          DataCell(
+                            Text(
+                                '${row.productCount.toString().seRagham()} ${row.productUnit}'),
+                          ),
+                          DataCell(
+                            Text('${row.productPrice}'.seRagham()),
+                          ),
+                          DataCell(
+                            Text('${row.productSum}'.seRagham()),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-                DataColumn(
-                  label: Row(
-                    children: [
-                      const Text('قیمت کل'),
-                      const SizedBox(width: 5),
-                      Text(
-                        '(${Get.find<HomeController>().moneyUnit.value})',
-                        style: kRialTextStyle,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              rows: List.generate(
-                factor.factorRows!.length,
-                (index) {
-                  FactorRow row = factor.factorRows![index];
-                  return DataRow(
-                    cells: [
-                      DataCell(
-                        Text('${index + 1}'),
-                      ),
-                      DataCell(
-                        Text(row.productName),
-                      ),
-                      DataCell(
-                        Text(
-                            '${row.productCount.toString().seRagham()} ${row.productUnit}'),
-                      ),
-                      DataCell(
-                        Text('${row.productPrice}'.seRagham()),
-                      ),
-                      DataCell(
-                        Text('${row.productSum}'.seRagham()),
-                      ),
-                    ],
-                  );
-                },
               ),
             ),
           ),
