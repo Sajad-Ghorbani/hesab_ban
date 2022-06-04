@@ -10,6 +10,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../controllers/home_controller.dart';
 import '../theme/constants_app_styles.dart';
+import 'see_all_button.dart';
 
 class CheckContainerWidget extends StatelessWidget {
   const CheckContainerWidget({
@@ -185,19 +186,8 @@ class CheckContainerWidget extends StatelessWidget {
                               endIndent: 30,
                               thickness: 1.5,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: GestureDetector(
-                                onTap: onSeeAll,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                      color: kGreyColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: const Text('مشاهده همه'),
-                                ),
-                              ),
+                            SeeAllButton(
+                              onTap: onSeeAll,
                             ),
                             const SizedBox(
                               height: 10,

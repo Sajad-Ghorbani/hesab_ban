@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-
 class ConfirmButton extends StatelessWidget {
   const ConfirmButton({Key? key, required this.onTap}) : super(key: key);
   final VoidCallback onTap;
@@ -12,11 +10,11 @@ class ConfirmButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
             Radius.circular(15),
           ),
-          color: kGreyColor,
+          color: Theme.of(context).cardColor,
         ),
         child: const Icon(Icons.check),
       ),

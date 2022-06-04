@@ -12,6 +12,7 @@ import '../../routes/app_pages.dart';
 import '../../static_methods.dart';
 import '../screens/customers_screen.dart';
 import '../theme/app_colors.dart';
+import 'see_all_button.dart';
 
 class CustomersContainerWidget extends StatelessWidget {
   const CustomersContainerWidget({
@@ -151,22 +152,11 @@ class CustomersContainerWidget extends StatelessWidget {
                               endIndent: 30,
                               thickness: 1.5,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  pushNewScreen(context,
-                                      screen: const CustomersScreen());
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                      color: kGreyColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: const Text('مشاهده همه'),
-                                ),
-                              ),
+                            SeeAllButton(
+                              onTap: () {
+                                pushNewScreen(context,
+                                    screen: const CustomersScreen());
+                              },
                             ),
                             const SizedBox(
                               height: 10,

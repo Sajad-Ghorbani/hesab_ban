@@ -23,17 +23,27 @@ class CreateCustomerScreen extends GetView<CustomerController> {
     if (controller.customer != null) {
       controller.customerNameController.text = controller.customer!.name!;
       controller.customerPhoneController.text =
-      controller.customer!.phoneNumber1 == null ? '' : controller.customer!.phoneNumber1.toString();
-      controller.customerPhone2Controller.text =
-      controller.customer!.phoneNumber2 == null ? '' : controller.customer!.phoneNumber2.toString();
-      controller.customerAddressController.text =
-      controller.customer!.address == null ? '' : controller.customer!.address!;
-      controller.customerBalanceController.text =
-      controller.customer!.initialAccountBalance == null
+          controller.customer!.phoneNumber1 == null
               ? ''
-              : controller.customer!.initialAccountBalance.toString().seRagham();
+              : controller.customer!.phoneNumber1.toString();
+      controller.customerPhone2Controller.text =
+          controller.customer!.phoneNumber2 == null
+              ? ''
+              : controller.customer!.phoneNumber2.toString();
+      controller.customerAddressController.text =
+          controller.customer!.address == null
+              ? ''
+              : controller.customer!.address!;
+      controller.customerBalanceController.text =
+          controller.customer!.initialAccountBalance == null
+              ? ''
+              : controller.customer!.initialAccountBalance
+                  .toString()
+                  .seRagham();
       controller.customerDescriptionController.text =
-      controller.customer!.description == null ? '' : controller.customer!.description!;
+          controller.customer!.description == null
+              ? ''
+              : controller.customer!.description!;
     }
     return BaseWidget(
       title: 'ایجاد حساب جدید',
@@ -65,7 +75,6 @@ class CreateCustomerScreen extends GetView<CustomerController> {
           children: [
             Card(
               margin: const EdgeInsets.all(20),
-              color: kGreyColor,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
@@ -237,14 +246,19 @@ class CreateCustomerScreen extends GetView<CustomerController> {
                     const SizedBox(height: 20),
                     RichText(
                       text: TextSpan(
-                        style:
-                            const TextStyle(fontFamily: 'Yekan', fontSize: 12),
+                        style: TextStyle(
+                          fontFamily: 'Yekan',
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
                         children: [
                           const TextSpan(text: 'شرایط استفاده از خدمات و '),
                           TextSpan(
                             text: 'حریم خصوصی',
-                            style: const TextStyle(
-                              color: kBackgroundColor,
+                            style: TextStyle(
+                              color: Get.isDarkMode
+                                  ? Theme.of(context).colorScheme.background
+                                  : kGreyColor,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

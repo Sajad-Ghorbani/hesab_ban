@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:hesab_ban/data/models/product_model.dart';
 import 'package:hesab_ban/ui/screens/check_details.dart';
 import 'package:hesab_ban/ui/screens/product_folder_screen.dart';
+import 'package:hesab_ban/ui/theme/app_theme.dart';
 import 'package:hesab_ban/ui/widgets/confirm_button.dart';
 import 'package:hesab_ban/ui/widgets/grid_menu_widget.dart';
 import 'package:hive/hive.dart';
@@ -38,6 +39,7 @@ class HomeController extends GetxController {
   var customerBox = Hive.box<Customer>(customersBox);
   var homeChecksBox = Hive.box<Check>(checksBox);
   var boxSetting = Hive.lazyBox(settingBox);
+  var themeBox = Hive.box('theme');
   var productBox = Hive.box<Product>(allProductBox);
   var categoryBox = Hive.box<Category>(productCategoryBox);
 
@@ -58,6 +60,7 @@ class HomeController extends GetxController {
   Rx<File> storeLogo = File('-1').obs;
   RxInt hoursNotification = 8.obs;
   RxInt minutesNotification = 0.obs;
+  RxBool theme = false.obs;
 
   Customer? cashCustomer;
   String typeOfCash = '';
@@ -79,6 +82,7 @@ class HomeController extends GetxController {
     productScreenScrollController = ScrollController();
     getMoneyUnit();
     getUserInfo();
+    theme.value = themeBox.get('isLightTheme');
   }
 
   @override
@@ -511,5 +515,13 @@ class HomeController extends GetxController {
     else {
       return true;
     }
+  }
+
+  void changeTheme(bool value) async {
+    theme.value = value;
+    Get.changeTheme(
+      Get.isDarkMode ? AppThemeData.lightTheme : AppThemeData.darkTheme,
+    );
+    await themeBox.put('isLightTheme', value);
   }
 }

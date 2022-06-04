@@ -10,15 +10,18 @@ class BaseWidget extends StatelessWidget {
     this.appBarActions,
     required this.child,
     this.resizeToAvoidBottomInset,
+    this.showPaint = false,
   }) : super(key: key);
   final String title;
   final Widget? appBarLeading;
   final List<Widget>? appBarActions;
   final Widget child;
   final bool? resizeToAvoidBottomInset;
+  final bool showPaint;
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       appBar: AppBar(
@@ -30,27 +33,14 @@ class BaseWidget extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Positioned(
-            bottom: 30,
-            child: CustomPaint(
-              size: Size(Get.width, Get.width * 0.65),
-              painter: RPSCustomPainter2(),
+          if (showPaint)
+            Positioned(
+              bottom: 0,
+              child: CustomPaint(
+                size: Size(Get.width, Get.width * 0.55),
+                painter: RPSCustomPainter(isDark: isDark),
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 15,
-            child: CustomPaint(
-              size: Size(Get.width, Get.width * 0.65),
-              painter: RPSCustomPainter1(),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: CustomPaint(
-              size: Size(Get.width, Get.width * 0.65),
-              painter: RPSCustomPainter(),
-            ),
-          ),
           child,
         ],
       ),

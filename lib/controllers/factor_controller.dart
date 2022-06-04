@@ -308,8 +308,9 @@ class FactorController extends GetxController {
       Get.back();
       StaticMethods.showSnackBar(
         title: 'تبریک!',
-        description:
-            'فاکتور شما با موفقیت ثبت شد.\nبرای ارسال فاکتور وارد صورتحساب کاربر شوید.',
+        description: typeOfFactor != TypeOfFactor.oneSale
+            ? 'فاکتور شما با موفقیت ثبت شد.\nبرای ارسال فاکتور وارد صورتحساب کاربر شوید.'
+            : 'فاکتور شما با موفقیت ثبت شد.',
         color: kLightGreenColor,
         duration: const Duration(seconds: 4),
       );

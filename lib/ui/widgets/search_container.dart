@@ -14,6 +14,7 @@ class SearchContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       sliver: SliverList(
@@ -31,13 +32,13 @@ class SearchContainer extends StatelessWidget {
                   Radius.circular(15),
                 ),
                 border: Border.all(
-                  color: kGreyColor,
+                  color: isDark ? kGreyColor : kSurfaceLightColor,
                   width: 1.5,
                 ),
                 gradient: LinearGradient(
                   colors: [
-                    kGreyColor.withOpacity(0.4),
-                    kSurfaceColor.withOpacity(0.4),
+                    Theme.of(context).cardColor.withOpacity(0.4),
+                    Theme.of(context).colorScheme.surface.withOpacity(0.4),
                   ],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,

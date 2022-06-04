@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
     double _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: kSurfaceColor,
       body: GetBuilder<SplashController>(
         init: SplashController(),
         builder: (SplashController controller) {

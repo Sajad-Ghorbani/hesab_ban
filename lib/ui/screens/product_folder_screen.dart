@@ -26,6 +26,7 @@ class ProductFolderScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       title: categoryName,
+      showPaint: true,
       appBarLeading: IconButton(
         onPressed: () {
           Navigator.pop(context);

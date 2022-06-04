@@ -63,7 +63,6 @@ class CreateProductScreen extends GetView<ProductController> {
           children: [
             Card(
               margin: const EdgeInsets.all(20),
-              color: kGreyColor,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),

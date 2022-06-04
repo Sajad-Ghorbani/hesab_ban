@@ -34,35 +34,34 @@ class ProductWidget extends StatelessWidget {
         onTap: selectProductScreen
             ? selectProduct
             : () {
-          Get.toNamed(
-            Routes.createProductScreen,
-            arguments: product,
-            parameters: {'categoryName': categoryName},
-          );
-        },
+                Get.toNamed(
+                  Routes.createProductScreen,
+                  arguments: product,
+                  parameters: {'categoryName': categoryName},
+                );
+              },
         onLongPress: selectProductScreen
             ? null
             : () {
-          StaticMethods.productBottomSheet(
-            context,
-            name: product.name!,
-            onEditTap: () {
-              Get.toNamed(Routes.createProductScreen,
-                  arguments: product);
-            },
-            onDeleteTap: () {
-              Get.back();
-              StaticMethods.deleteDialog(
-                content: 'با حذف کالای "${product.name}" موافق هستید؟'
-                    ' این عملیات برگشت پذیر نیست.',
-                onConfirm: () {
-                  product.delete();
-                  Get.back();
-                },
-              );
-            },
-          );
-        },
+                StaticMethods.productBottomSheet(
+                  context,
+                  name: product.name!,
+                  onEditTap: () {
+                    Get.toNamed(Routes.createProductScreen, arguments: product);
+                  },
+                  onDeleteTap: () {
+                    Get.back();
+                    StaticMethods.deleteDialog(
+                      content: 'با حذف کالای "${product.name}" موافق هستید؟'
+                          ' این عملیات برگشت پذیر نیست.',
+                      onConfirm: () {
+                        product.delete();
+                        Get.back();
+                      },
+                    );
+                  },
+                );
+              },
         child: Row(
           children: [
             const FaIcon(
@@ -81,21 +80,39 @@ class ProductWidget extends StatelessWidget {
                 ),
                 Text(
                   'قیمت خرید: ' + '${product.priceOfBuy}'.seRagham(),
-                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.8),
+                  ),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
                   'قیمت فروش: ' + '${product.priceOfMajorSale}'.seRagham(),
-                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.8),
+                  ),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
                   'قیمت خرده فروشی: ' + '${product.priceOfOneSale}'.seRagham(),
-                  style: TextStyle(fontSize: 12,color: kWhiteColor.withOpacity(0.8)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.8),
+                  ),
                 ),
               ],
             ),

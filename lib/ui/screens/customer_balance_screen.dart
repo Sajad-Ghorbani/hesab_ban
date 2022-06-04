@@ -197,10 +197,11 @@ class CustomerBalanceScreen extends GetView<CustomerController> {
                   child: Container(
                     constraints:
                         const BoxConstraints(maxHeight: 48, minHeight: 48),
-                    color: kBackgroundColor,
-                    child: const TabBar(
-                      // labelColor: Colors.black,
-                      tabs: [
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: TabBar(
+                      labelColor:
+                          !Get.isDarkMode ? kDarkGreyColor : kWhiteGreyColor,
+                      tabs: const [
                         Tab(text: 'فاکتور'),
                         Tab(text: 'چک'),
                         Tab(text: 'وجه نقد'),

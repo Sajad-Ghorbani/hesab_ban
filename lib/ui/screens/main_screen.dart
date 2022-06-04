@@ -15,6 +15,7 @@ class MainScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: PersistentTabView(
         context,
@@ -52,17 +53,20 @@ class MainScreen extends GetView<HomeController> {
           ),
         ],
         confineInSafeArea: true,
-        backgroundColor: kSurfaceColor,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: true,
         decoration: NavBarDecoration(
           borderRadius: BorderRadius.circular(60),
-          colorBehindNavBar: kBackgroundColor,
+          // colorBehindNavBar: kBackgroundColor,
           gradient: LinearGradient(colors: [
-            kDarkGreyColor.withOpacity(0.6),
-            kSurfaceColor.withOpacity(0.6),
+            isDark
+                ? kDarkGreyColor.withOpacity(0.5)
+                : kWhiteBlueColor.withOpacity(0.5),
+            isDark
+                ? kSurfaceColor.withOpacity(0.5)
+                : kWhiteBlueColor.withOpacity(0.5),
           ]),
         ),
         popAllScreensOnTapOfSelectedTab: true,

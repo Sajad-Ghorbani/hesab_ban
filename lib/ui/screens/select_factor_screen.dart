@@ -13,19 +13,17 @@ class SelectFactorScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return BaseWidget(
       title: 'فاکتور',
+      showPaint: true,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10,bottom: 75),
-        child:Wrap(
-          alignment: WrapAlignment.spaceEvenly,
-          crossAxisAlignment: WrapCrossAlignment.end,
-          runSpacing: 10,
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 75),
+        child: Column(
           children: [
             SelectFactorWidget(
               factorName: 'فروش',
-              lottieAddress: 'assets/images/saleLottie.json',
-              cardColor: kSurfaceColor,
+              cardColor: isDark ? kSurfaceColor : kWhiteBlueColor,
               detailList: const [
                 'ایجاد فاکتور فروش با طرف حساب',
                 'قابلیت پرداخت نقدی و مدت دار',
@@ -38,10 +36,10 @@ class SelectFactorScreen extends GetView<HomeController> {
                 );
               },
             ),
+            const SizedBox(height: 20),
             SelectFactorWidget(
               factorName: 'خرید',
-              lottieAddress: 'assets/images/buyLottie.json',
-              cardColor: kDarkGreyColor,
+              cardColor: isDark ? kDarkGreyColor : kWhiteRedColor,
               detailList: const [
                 'ایجاد فاکتور خرید با طرف حساب',
                 'قابلیت پرداخت نقدی و مدت دار',
@@ -54,26 +52,10 @@ class SelectFactorScreen extends GetView<HomeController> {
                 );
               },
             ),
-            SelectFactorWidget(
-              factorName: 'برگشت از خرید',
-              lottieAddress: 'assets/images/buyLottie.json',
-              cardColor: kDarkGreyColor,
-              detailList: const [
-                'ایجاد فاکتور برگشت از خرید',
-                'قابلیت پرداخت نقدی و مدت دار',
-                'فاکتور سربرگ دار',
-              ],
-              onFactorTap: () {
-                Get.toNamed(
-                  Routes.factorScreen,
-                  arguments: TypeOfFactor.returnOfBuy,
-                );
-              },
-            ),
+            const SizedBox(height: 20),
             SelectFactorWidget(
               factorName: 'برگشت از فروش',
-              lottieAddress: 'assets/images/saleLottie.json',
-              cardColor: kSurfaceColor,
+              cardColor: isDark ? kSurfaceColor : kWhiteBlueColor,
               detailList: const [
                 'ایجاد فاکتور برگشت از فروش',
                 'قابلیت پرداخت نقدی و مدت دار',
@@ -86,10 +68,26 @@ class SelectFactorScreen extends GetView<HomeController> {
                 );
               },
             ),
+            const SizedBox(height: 20),
+            SelectFactorWidget(
+              factorName: 'برگشت از خرید',
+              cardColor: isDark ? kDarkGreyColor : kWhiteRedColor,
+              detailList: const [
+                'ایجاد فاکتور برگشت از خرید',
+                'قابلیت پرداخت نقدی و مدت دار',
+                'فاکتور سربرگ دار',
+              ],
+              onFactorTap: () {
+                Get.toNamed(
+                  Routes.factorScreen,
+                  arguments: TypeOfFactor.returnOfBuy,
+                );
+              },
+            ),
+            const SizedBox(height: 20),
             SelectFactorWidget(
               factorName: 'خرده فروشی',
-              lottieAddress: 'assets/images/saleLottie.json',
-              cardColor: kGreyColor,
+              cardColor: isDark ? kSurfaceColor : kWhiteBlueColor,
               detailList: const [
                 'ایجاد فاکتور فروش بدون طرف حساب',
                 'پرداخت فقط بصورت نقدی',

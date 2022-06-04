@@ -38,7 +38,12 @@ class CategoryWidget extends StatelessWidget {
               bottom: Radius.circular(category == categoryList.last ? 15 : 0),
             ),
           ),
-          title: Text(category.name!),
+          title: Text(
+            category.name!,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
           leading: const FaIcon(
             FontAwesomeIcons.solidFolder,
             color: kTealColor,
@@ -61,11 +66,10 @@ class CategoryWidget extends StatelessWidget {
                       Get.back();
                       StaticMethods.showFolderDialog(
                         title: 'ویرایش ${category.name}',
-                        controller: Get.find<HomeController>()
-                            .categoryNameController,
+                        controller:
+                            Get.find<HomeController>().categoryNameController,
                         onTap: () {
-                          Get.find<HomeController>()
-                              .updateCategory(category);
+                          Get.find<HomeController>().updateCategory(category);
                           Get.back();
                         },
                       );
@@ -77,8 +81,7 @@ class CategoryWidget extends StatelessWidget {
                             'در صورت حذف پوشه "${category.name}" تمام کالاهای داخل آن نیز حذف می شوند.'
                             ' این عملیات برگشت پذیر نیست. آیا مطمئن هستید؟',
                         onConfirm: () {
-                          Get.find<HomeController>()
-                              .deleteCategory(category);
+                          Get.find<HomeController>().deleteCategory(category);
                           Get.back();
                         },
                       );

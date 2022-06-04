@@ -21,6 +21,7 @@ class HomeScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return BaseWidget(
       title: 'حساب بان',
+      showPaint: true,
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [

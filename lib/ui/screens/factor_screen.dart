@@ -64,7 +64,9 @@ class FactorScreen extends GetView<FactorController> {
                                             TypeOfFactor.returnOfSale
                                     ? kRedColor
                                     : kDarkGreenColor,
-                                kDarkGreyColor,
+                                Get.isDarkMode
+                                    ? kDarkGreyColor
+                                    : kWhiteGreyColor,
                               ],
                               begin: Alignment.centerRight,
                               end: Alignment.centerLeft,
@@ -222,7 +224,9 @@ class FactorScreen extends GetView<FactorController> {
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(10),
                                       ),
-                                      color: kDarkGreyColor,
+                                      color: Get.isDarkMode
+                                          ? kDarkGreyColor
+                                          : kWhiteGreyColor,
                                       child: InkWell(
                                         borderRadius: const BorderRadius.all(
                                           Radius.circular(10),
@@ -265,7 +269,9 @@ class FactorScreen extends GetView<FactorController> {
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(10),
                                       ),
-                                      color: kDarkGreyColor,
+                                      color: Get.isDarkMode
+                                          ? kDarkGreyColor
+                                          : kWhiteGreyColor,
                                       child: InkWell(
                                         borderRadius: const BorderRadius.all(
                                           Radius.circular(10),

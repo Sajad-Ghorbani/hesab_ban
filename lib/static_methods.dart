@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:hesab_ban/data/models/bank_model.dart';
 import 'package:hesab_ban/ui/theme/app_colors.dart';
+import 'package:hesab_ban/ui/theme/app_text_theme.dart';
 import 'package:hesab_ban/ui/theme/constants_app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,14 +44,14 @@ class StaticMethods {
     if (toDouble) {
       double number = double.parse(text);
       return number;
-    }//
-    else{
+    } //
+    else {
       int number = int.parse(text);
       return number;
     }
   }
 
-  static double roundDouble(double value){
+  static double roundDouble(double value) {
     return ((value * 100).round().toDouble() / 100);
   }
 
@@ -65,13 +66,15 @@ class StaticMethods {
       '',
       titleText: Text(
         title,
+        style: const TextStyle(fontWeight: kWeightBold, color: Colors.white),
       ),
       messageText: Text(
         description,
-        style: const TextStyle(height: 1.5),
+        style: const TextStyle(height: 1.5, color: Colors.white),
       ),
-      backgroundColor:
-          color == null ? kRedColor.withOpacity(0.3) : color.withOpacity(0.3),
+      backgroundColor: color == null
+          ? kRedColor.withOpacity(Get.isDarkMode ? 0.3 : 0.8)
+          : color.withOpacity(Get.isDarkMode ? 0.3 : 0.8),
       duration: duration ?? const Duration(seconds: 3),
     );
   }
@@ -474,7 +477,8 @@ class StaticMethods {
                       SizedBox(
                         width: Get.width - 120,
                         child: DropdownButtonFormField<int>(
-                          items: dropDownList,elevation: 8,
+                          items: dropDownList,
+                          elevation: 8,
                           onChanged: onSelectCustomer,
                           value: 0,
                           decoration: kCustomInputDecoration,

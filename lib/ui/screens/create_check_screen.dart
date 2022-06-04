@@ -57,7 +57,7 @@ class CreateCheckScreen extends GetView<CheckController> {
         children: [
           Card(
             margin: const EdgeInsets.all(20),
-            color: kGreyColor,
+            // color: kGreyColor,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),

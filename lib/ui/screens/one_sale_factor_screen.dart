@@ -53,15 +53,17 @@ class OneSaleFactorScreen extends GetView<FactorController> {
                       Container(
                         height: 80,
                         padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           gradient: LinearGradient(
                               colors: [
                                 kBlueColor,
-                                kDarkGreyColor,
+                                Get.isDarkMode
+                                    ? kDarkGreyColor
+                                    : kWhiteGreyColor,
                               ],
                               begin: Alignment.centerRight,
                               end: Alignment.centerLeft,
-                              stops: [0, 0.7]),
+                              stops: const [0, 0.7]),
                         ),
                         child: Row(
                           children: [

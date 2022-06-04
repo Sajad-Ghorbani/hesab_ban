@@ -20,6 +20,7 @@ class CustomersScreen extends GetView<HomeController> {
     bool selectCustomer = Get.arguments ?? false;
     return BaseWidget(
       title: 'لیست مشتریان',
+      showPaint: true,
       appBarLeading: IconButton(
         onPressed: () {
           Navigator.pop(context);
@@ -54,13 +55,18 @@ class CustomersScreen extends GetView<HomeController> {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-              child: SearchBoxWidget(
-                searchText: 'جست و جو',
-                openBuilderWidget: SearchCustomerScreen(selectCustomer),
-                onClosed: (value) {
-                  Get.find<SearchController>().clearScreen();
-                },
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SearchBoxWidget(
+                    searchText: 'جست و جو',
+                    openBuilderWidget: SearchCustomerScreen(selectCustomer),
+                    onClosed: (value) {
+                      Get.find<SearchController>().clearScreen();
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
             GetBuilder<HomeController>(builder: (myController) {

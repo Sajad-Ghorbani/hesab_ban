@@ -16,6 +16,7 @@ class SearchBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: OpenContainer(
@@ -23,19 +24,20 @@ class SearchBoxWidget extends StatelessWidget {
           return Container(
             height: 45,
             width: 20,
-            margin: const EdgeInsets.only(bottom: 10),
+            // margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
               border: Border.all(
-                color: kGreyColor,
+                color:
+                    isDark ? kGreyColor : kSurfaceLightColor.withOpacity(0.4),
                 width: 1.5,
               ),
               gradient: LinearGradient(
                 colors: [
-                  kGreyColor.withOpacity(0.4),
-                  kSurfaceColor.withOpacity(0.4),
+                  Theme.of(context).cardColor.withOpacity(0.4),
+                  Theme.of(context).colorScheme.surface.withOpacity(0.4),
                 ],
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
@@ -61,7 +63,12 @@ class SearchBoxWidget extends StatelessWidget {
           return openBuilderWidget;
         },
         closedElevation: 0,
-        closedColor: Colors.transparent,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        closedColor: Theme.of(context).colorScheme.background,
         onClosed: onClosed,
       ),
     );

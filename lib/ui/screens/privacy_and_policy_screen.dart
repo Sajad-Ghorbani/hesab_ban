@@ -10,6 +10,7 @@ class PrivacyAndPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget(
       title: 'حریم خصوصی',
+      showPaint: true,
       appBarLeading: IconButton(
         onPressed: () {
           Navigator.pop(context);

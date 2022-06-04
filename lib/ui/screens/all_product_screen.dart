@@ -26,6 +26,7 @@ class AllProductScreen extends GetView<HomeController> {
     bool selectProduct = Get.arguments ?? false;
     return BaseWidget(
       title: 'کالاها',
+      showPaint: true,
       appBarLeading: selectProduct
           ? IconButton(
               onPressed: () {
@@ -43,7 +44,7 @@ class AllProductScreen extends GetView<HomeController> {
           controller: controller.productScreenScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            if (!selectProduct) ...[
+            if (!selectProduct)
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -76,22 +77,28 @@ class AllProductScreen extends GetView<HomeController> {
                     ],
                   ),
                 ),
-              ),
-            ] else ...[
+              )
+            else
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: 10,
                 ),
-              )
-            ],
-            SliverToBoxAdapter(
-              child: SearchBoxWidget(
-                searchText: 'جست و جو',
-                openBuilderWidget:
-                    SearchProductScreen(selectProduct: selectProduct),
-                onClosed: (value) {
-                  Get.find<SearchController>().clearScreen();
-                },
+              ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SearchBoxWidget(
+                    searchText: 'جست و جو',
+                    openBuilderWidget:
+                        SearchProductScreen(selectProduct: selectProduct),
+                    onClosed: (value) {
+                      Get.find<SearchController>().clearScreen();
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
             ),
             SliverBoxContainerWidget(

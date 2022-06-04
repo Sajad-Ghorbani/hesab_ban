@@ -30,6 +30,7 @@ class AllCheckScreen extends GetView<HomeController> {
         icon: const Icon(Icons.arrow_back_ios),
         splashRadius: 30,
       ),
+      showPaint: true,
       child: ScrollToUp(
         showFab: controller.showCheckFab,
         scrollController: controller.checkScreenScrollController,
@@ -37,25 +38,30 @@ class AllCheckScreen extends GetView<HomeController> {
           controller: controller.checkScreenScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverToBoxAdapter(
-                child: GridMenuWidget(
-                  title: 'ورود چک',
-                  onTap: () {
-                    Get.toNamed(Routes.createCheckScreen);
-                  },
-                  width: MediaQuery.of(context).size.width / 2 - 25,
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: SearchBoxWidget(
-                searchText: 'جست و جو',
-                openBuilderWidget: SearchCheckScreen(typeOfCheck: typeOfCheck,),
-                onClosed: (value) {
-                  Get.find<SearchController>().clearScreen();
-                },
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: GridMenuWidget(
+                      title: 'ورود چک',
+                      onTap: () {
+                        Get.toNamed(Routes.createCheckScreen);
+                      },
+                      width: MediaQuery.of(context).size.width / 2 - 25,
+                    ),
+                  ),
+                  SearchBoxWidget(
+                    searchText: 'جست و جو',
+                    openBuilderWidget: SearchCheckScreen(
+                      typeOfCheck: typeOfCheck,
+                    ),
+                    onClosed: (value) {
+                      Get.find<SearchController>().clearScreen();
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
             GetBuilder<HomeController>(

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-
 class GridMenuWidget extends StatelessWidget {
   const GridMenuWidget({
     Key? key,
     required this.title,
     required this.onTap,
-    this.color = kGreyColor,
+    this.color,
     this.width,
   }) : super(key: key);
   final String title;
   final VoidCallback onTap;
-  final Color color;
+  final Color? color;
   final double? width;
 
   @override
@@ -21,7 +19,7 @@ class GridMenuWidget extends StatelessWidget {
       children: [
         Card(
           margin: EdgeInsets.zero,
-          color: color,
+          color: color ?? Theme.of(context).cardColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(15),
