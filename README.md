@@ -19,3 +19,5 @@ The accounting Hesab Ban application is suitable for people who do not have acce
 - Ability to view customer invoices with full description
 
 - Ability to search all parts of the program
+
+- Dark mode and Light mode
