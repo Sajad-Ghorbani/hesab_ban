@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>468393642717-jimob63d7ic3vk8kgpeto1d442p9ouok.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.468393642717-jimob63d7ic3vk8kgpeto1d442p9ouok</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>468393642717-98geljv280153tmbn49qpg6e30pkpkgk.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB0BYt9qB77KeeLAVrz3Bl33Rs5098z5Ug</string>
+	<key>GCM_SENDER_ID</key>
+	<string>468393642717</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nahal1401.hesabBan</string>
+	<key>PROJECT_ID</key>
+	<string>hesab-ban-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hesab-ban-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:468393642717:ios:41832d061abf2e232fe934</string>
+</dict>
+</plist>
