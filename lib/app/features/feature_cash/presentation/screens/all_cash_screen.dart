@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hesab_ban/app/config/routes/app_pages.dart';
 import 'package:hesab_ban/app/core/widgets/base_widget.dart';
 import 'package:hesab_ban/app/core/widgets/box_container_widget.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/app/features/feature_search/presentation/controller/search_controller.dart';
 import 'package:hesab_ban/app/features/feature_search/presentation/screens/search_cash_screen.dart';
-import 'package:iconsax/iconsax.dart';
 
 class AllCashScreen extends GetView<CashController> {
   const AllCashScreen({Key? key}) : super(key: key);
@@ -27,20 +27,9 @@ class AllCashScreen extends GetView<CashController> {
         showFab: controller.showCashFab,
         scrollController: controller.cashScreenScrollController,
         showLeftButton: true,
-        leftIcon: const Stack(
-          children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Icon(
-                Icons.add,
-                size: 12,
-              ),
-            ),
-            Icon(
-              Iconsax.dollar_circle,
-            ),
-          ],
+        leftIcon: SvgPicture.asset(
+          'assets/images/coin-plus.svg',
+          colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
         ),
         onLeftPressed: () {
           Get.toNamed(Routes.createCashScreen);
