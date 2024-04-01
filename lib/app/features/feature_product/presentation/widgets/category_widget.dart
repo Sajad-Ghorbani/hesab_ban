@@ -17,6 +17,7 @@ class CategoryWidget extends StatelessWidget {
     this.fromSearch = false,
     this.highlighted = false,
   });
+
   final int index;
   final CategoryEntity category;
   final List<CategoryEntity> categoryList;
@@ -29,18 +30,21 @@ class CategoryWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: highlighted ? Border.all(
-          color: Theme.of(context).colorScheme.secondary,
-          width: 1.5,
-        ) : null,
-        borderRadius: const BorderRadius.all(Radius.circular(15))
+        border: highlighted
+            ? Border.all(
+                color: Theme.of(context).colorScheme.secondary,
+                width: 1.5,
+              )
+            : null,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: Transform.scale(
         scale: highlighted ? 1.05 : 1.0,
         child: Theme(
           data: AppThemeData.darkTheme.copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
           child: ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

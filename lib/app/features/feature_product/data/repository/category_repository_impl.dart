@@ -23,9 +23,9 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  DataState<List<CategoryEntity>> getAllCategory(){
+  DataState<List<CategoryEntity>> getAllCategory() {
     try {
-      List<Category> categories =  _categoryDB.getAll();
+      List<Category> categories = _categoryDB.getAll();
       List<CategoryEntity> categoriesEntity = [];
       for (var value in categories) {
         categoriesEntity.add(value.toEntity());
@@ -33,24 +33,26 @@ class CategoryRepositoryImpl extends CategoryRepository {
       return DataSuccess(categoriesEntity);
     } //
     catch (e) {
-      return const DataFailed('خطایی در دریافت اطلاعات دسته بندی ها به وجود آمده است.');
+      return const DataFailed(
+          'خطایی در دریافت اطلاعات دسته بندی ها به وجود آمده است.');
     }
   }
 
   @override
-  Future<DataState<CategoryEntity?>> getCategoryById(int id) async{
+  Future<DataState<CategoryEntity?>> getCategoryById(int id) async {
     try {
       var category = _categoryDB.getById(id);
       return DataSuccess(category?.toEntity());
     } //
     catch (e) {
-      return const DataFailed('خطایی در دریافت اطلاعات دسته بندی به وجود آمده است.');
+      return const DataFailed(
+          'خطایی در دریافت اطلاعات دسته بندی به وجود آمده است.');
     }
   }
 
   @override
   Future<DataState<CategoryEntity>> saveCategory(
-      CategoryEntity categoryEntity)async {
+      CategoryEntity categoryEntity) async {
     try {
       Category category = Category.fromEntity(categoryEntity);
       await _categoryDB.save(category);
@@ -63,25 +65,27 @@ class CategoryRepositoryImpl extends CategoryRepository {
 
   @override
   Future<DataState<CategoryEntity>> updateCategory(
-      CategoryEntity categoryEntity) async{
+      CategoryEntity categoryEntity) async {
     try {
       Category category = Category.fromEntity(categoryEntity);
       await _categoryDB.update(category);
       return DataSuccess(categoryEntity);
     } //
     catch (e) {
-      return const DataFailed('خطایی در بروزرسانی اطلاعات دسته بندی به وجود آمده است.');
+      return const DataFailed(
+          'خطایی در بروزرسانی اطلاعات دسته بندی به وجود آمده است.');
     }
   }
 
   @override
-  Future<DataState<CategoryEntity?>> getCategoryByName(String name) async{
+  Future<DataState<CategoryEntity?>> getCategoryByName(String name) async {
     try {
       var category = await _categoryDB.getByName(name);
       return DataSuccess(category?.toEntity());
     } //
     catch (e) {
-      return const DataFailed('خطایی در دریافت اطلاعات دسته بندی به وجود آمده است.');
+      return const DataFailed(
+          'خطایی در دریافت اطلاعات دسته بندی به وجود آمده است.');
     }
   }
 }

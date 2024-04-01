@@ -336,10 +336,12 @@ class ProductController extends GetxController {
       );
     } //
     else {
-      var response = await _updateCategoryUseCase(CategoryParams(
-        id: category.id,
-        name: categoryName,
-      ));
+      var response = await _updateCategoryUseCase(
+        CategoryParams(
+          id: category.id,
+          name: categoryName,
+        ),
+      );
       if (response.data == null) {
         StaticMethods.showSnackBar(
           title: 'خطا!',
@@ -353,6 +355,16 @@ class ProductController extends GetxController {
           description: 'دسته $categoryName با موفقیت ویرایش شد.',
           color: kLightGreenColor,
         );
+        for (var value in products) {
+          updateProduct(
+            ProductParams(
+              id: value.id,
+              category: response.data,
+            ),
+          );
+        }
+        getCategories();
+        getProducts();
       }
     }
   }
@@ -550,7 +562,8 @@ class ProductController extends GetxController {
     update();
   }
 
-  void moveProductToCategory(ProductEntity product, CategoryEntity category) async {
+  void moveProductToCategory(
+      ProductEntity product, CategoryEntity category) async {
     var response = await updateProduct(
       ProductParams(
         id: product.id,
@@ -570,7 +583,8 @@ class ProductController extends GetxController {
       update();
       StaticMethods.showSnackBar(
         title: 'تبریک!',
-        description: 'محصول ${product.name} با موفقیت به ${category.name} منتقل شد.',
+        description:
+            'محصول ${product.name} با موفقیت به ${category.name} منتقل شد.',
         color: kLightGreenColor,
       );
     }
