@@ -9,14 +9,14 @@ import 'package:iconsax/iconsax.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget({
-    Key? key,
+    super.key,
     required this.index,
     required this.category,
     required this.categoryList,
     this.selectProductScreen = false,
     this.fromSearch = false,
     this.highlighted = false,
-  }) : super(key: key);
+  });
   final int index;
   final CategoryEntity category;
   final List<CategoryEntity> categoryList;

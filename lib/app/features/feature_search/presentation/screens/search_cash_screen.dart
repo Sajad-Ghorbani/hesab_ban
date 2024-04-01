@@ -7,8 +7,7 @@ import 'package:hesab_ban/app/features/feature_cash/presentation/widgets/cash_co
 import 'package:hesab_ban/app/features/feature_search/presentation/controller/search_controller.dart';
 
 class SearchCashScreen extends StatelessWidget {
-  const SearchCashScreen({Key? key, required this.cashes, required this.type})
-      : super(key: key);
+  const SearchCashScreen({super.key, required this.cashes, required this.type});
   final List<CashEntity> cashes;
   final String type;
 

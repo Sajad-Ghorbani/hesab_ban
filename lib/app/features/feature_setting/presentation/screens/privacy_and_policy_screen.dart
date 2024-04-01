@@ -3,7 +3,7 @@ import 'package:hesab_ban/app/core/widgets/base_widget.dart';
 import 'package:hesab_ban/app/core/widgets/box_container_widget.dart';
 
 class PrivacyAndPolicyScreen extends StatelessWidget {
-  const PrivacyAndPolicyScreen({Key? key}) : super(key: key);
+  const PrivacyAndPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

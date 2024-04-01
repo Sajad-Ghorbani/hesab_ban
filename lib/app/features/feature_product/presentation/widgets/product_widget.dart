@@ -11,12 +11,12 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class ProductWidget extends GetView<ProductController> {
   const ProductWidget({
-    Key? key,
+    super.key,
     required this.product,
     this.selectProductScreen = false,
     this.selectProduct,
     required this.categoryName,
-  }) : super(key: key);
+  });
   final ProductEntity product;
   final bool selectProductScreen;
   final VoidCallback? selectProduct;

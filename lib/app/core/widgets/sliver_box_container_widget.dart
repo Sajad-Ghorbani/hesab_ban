@@ -6,10 +6,10 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 class SliverBoxContainerWidget extends StatelessWidget {
   const SliverBoxContainerWidget({
-    Key? key,
+    super.key,
     this.backBlur = true,
     required this.child,
-  }) : super(key: key);
+  });
   final Widget child;
   final bool backBlur;
 

@@ -12,7 +12,7 @@ import 'package:hesab_ban/app/features/feature_backup/presentation/controller/ba
 import 'package:iconsax/iconsax.dart';
 
 class BackupScreen extends GetView<BackupController> {
-  const BackupScreen({Key? key}) : super(key: key);
+  const BackupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateCustomerScreen extends GetView<CustomerController> {
-  const CreateCustomerScreen({Key? key}) : super(key: key);
+  const CreateCustomerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,9 @@ class CreateCustomerScreen extends GetView<CustomerController> {
     }
     controller.customerIsDebtor.value =
         type == Constants.debtorType ? true : false;
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         controller.resetCustomerScreen(context);
-        return true;
       },
       child: BaseWidget(
         titleText: 'ایجاد حساب جدید',

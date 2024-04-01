@@ -6,14 +6,14 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 
 class FactorFooterRow extends StatelessWidget {
   const FactorFooterRow({
-    Key? key,
+    super.key,
     required this.title,
     required this.amount,
     this.onTap,
     this.showMoneyUnit = true,
     this.textOverflow,
     this.amountWidth,
-  }) : super(key: key);
+  });
   final String title;
   final String amount;
   final VoidCallback? onTap;

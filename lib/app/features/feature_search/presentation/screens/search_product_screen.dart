@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchProductScreen extends StatelessWidget {
-  const SearchProductScreen({Key? key, required this.selectProduct})
-      : super(key: key);
+  const SearchProductScreen({super.key, required this.selectProduct});
   final bool selectProduct;
 
   @override

@@ -3,11 +3,11 @@ import 'package:lottie/lottie.dart';
 
 class Loading extends StatelessWidget {
   const Loading({
-    Key? key,
+    super.key,
     this.child = const SizedBox.shrink(),
     this.showLoading = false,
     this.backgroundColor,
-  }) : super(key: key);
+  });
   final Widget child;
   final bool showLoading;
   final Color? backgroundColor;

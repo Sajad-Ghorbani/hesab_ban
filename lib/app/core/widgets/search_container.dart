@@ -4,10 +4,10 @@ import 'package:hesab_ban/app/config/theme/constants_app_styles.dart';
 
 class SearchContainer extends StatelessWidget {
   const SearchContainer({
-    Key? key,
+    super.key,
     required this.textEditingController,
     required this.onChanged,
-  }) : super(key: key);
+  });
   final TextEditingController textEditingController;
   final ValueChanged<String> onChanged;
 

@@ -5,10 +5,10 @@ import 'package:iconsax/iconsax.dart';
 
 class SearchBoxWidget extends StatelessWidget {
   const SearchBoxWidget({
-    Key? key,
+    super.key,
     required this.openBuilderWidget,
     required this.onClosed,
-  }) : super(key: key);
+  });
   final Widget openBuilderWidget;
   final ValueChanged onClosed;
 

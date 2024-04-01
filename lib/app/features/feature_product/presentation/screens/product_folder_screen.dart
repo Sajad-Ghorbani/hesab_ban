@@ -11,11 +11,11 @@ import 'package:iconsax/iconsax.dart';
 
 class ProductFolderScreen extends GetView<ProductController> {
   const ProductFolderScreen({
-    Key? key,
+    super.key,
     required this.categoryName,
     this.selectProduct = false,
     this.fromSearch = false,
-  }) : super(key: key);
+  });
   final bool selectProduct;
   final bool fromSearch;
   final String categoryName;

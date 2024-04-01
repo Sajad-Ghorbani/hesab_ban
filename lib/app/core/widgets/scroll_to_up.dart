@@ -5,7 +5,7 @@ import 'package:hesab_ban/app/core/widgets/expandable_fab.dart';
 
 class ScrollToUp extends StatelessWidget {
   const ScrollToUp({
-    Key? key,
+    super.key,
     required this.showFab,
     required this.scrollController,
     required this.child,
@@ -18,7 +18,7 @@ class ScrollToUp extends StatelessWidget {
     this.secondIcon,
     this.firstIconOnTap,
     this.secondIconOnTap,
-  }) : super(key: key);
+  });
   final ScrollController scrollController;
   final Widget child;
   final RxBool showFab;

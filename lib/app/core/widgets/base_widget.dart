@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 
 class BaseWidget extends StatelessWidget {
   const BaseWidget({
-    Key? key,
+    super.key,
     this.title,
     this.titleText,
     this.appBarLeading,
@@ -16,7 +16,7 @@ class BaseWidget extends StatelessWidget {
     this.automaticallyImplyLeading = true,
     this.onLeadingTap,
     this.showLeading = false,
-  }) : super(key: key);
+  });
   final String? titleText;
   final bool showLeading;
   final Widget? appBarLeading;

@@ -14,7 +14,7 @@ class UnitOfProductRepositoryImpl extends UnitOfProductRepository {
   @override
   Future<DataState<String>> deleteUnitOfProduct(int id) async {
     try {
-      var response = await getUnitOfProductById(id);
+      var response = getUnitOfProductById(id);
       UnitOfProductEntity unitOfProductEntity = response.data!;
       await _unitDb.delete(id);
       return DataSuccess(unitOfProductEntity.name);

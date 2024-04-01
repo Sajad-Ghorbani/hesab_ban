@@ -13,7 +13,7 @@ import 'package:hesab_ban/app/features/feature_search/presentation/controller/se
 import 'package:hesab_ban/app/features/feature_search/presentation/screens/search_cash_screen.dart';
 
 class AllCashScreen extends GetView<CashController> {
-  const AllCashScreen({Key? key}) : super(key: key);
+  const AllCashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

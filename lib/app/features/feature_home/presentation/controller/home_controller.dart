@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/app/features/feature_factor/presentation/screens/select_factor_screen.dart';
 import 'package:hesab_ban/app/features/feature_home/presentation/screens/home_screen.dart';
@@ -14,7 +13,7 @@ class HomeController extends GetxController {
   int currentIndex = 0;
   bool reversScreensSlide = false;
 
-  List screens = const [
+  List<Widget> screens = const [
     HomeScreen(),
     AllProductScreen(),
     SelectFactorScreen(),
@@ -38,11 +37,11 @@ class HomeController extends GetxController {
     update();
   }
 
-  Future<bool> willPop() async {
+  willPop() {
     if (currentIndex != 0) {
       currentIndex = 0;
       update();
-      return false;
+      return;
     }
     if (!exitApp) {
       Get.snackbar('خروج', 'برای خروج یکبار دیگر دکمه بازگشت را بزنید.',
@@ -55,10 +54,9 @@ class HomeController extends GetxController {
           exitApp = false;
         },
       );
-      return false;
     } //
     else {
-      return true;
+      SystemNavigator.pop();
     }
   }
 }

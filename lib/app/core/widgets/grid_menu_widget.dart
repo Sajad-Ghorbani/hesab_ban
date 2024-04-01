@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class GridMenuWidget extends StatelessWidget {
   const GridMenuWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
     this.color,
     this.width,
-  }) : super(key: key);
+  });
   final String title;
   final VoidCallback onTap;
   final Color? color;

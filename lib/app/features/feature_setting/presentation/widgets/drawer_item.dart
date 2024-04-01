@@ -3,11 +3,11 @@ import 'package:hesab_ban/app/config/theme/app_colors.dart';
 
 class DrawerItem extends StatelessWidget {
   const DrawerItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.onTap,
-  }) : super(key: key);
+  });
   final IconData icon;
   final String title;
   final VoidCallback onTap;

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 class PaginatedDataTableWidget extends StatefulWidget {
   PaginatedDataTableWidget({
-    Key? key,
+    super.key,
     this.header,
     this.actions,
     required this.columns,
@@ -48,8 +48,7 @@ class PaginatedDataTableWidget extends StatefulWidget {
             assert(availableRowsPerPage.contains(rowsPerPage));
           }
           return true;
-        }()),
-        super(key: key);
+        }());
   final Widget? header;
   final List<Widget>? actions;
   final List<DataColumn> columns;
@@ -359,7 +358,8 @@ class PaginatedDataTableWidgetState extends State<PaginatedDataTableWidget> {
                     sortColumnIndex: widget.sortColumnIndex,
                     sortAscending: widget.sortAscending,
                     onSelectAll: widget.onSelectAll,
-                    dataRowHeight: widget.dataRowHeight,
+                    dataRowMinHeight: widget.dataRowHeight,
+                    dataRowMaxHeight: widget.dataRowHeight,
                     headingRowHeight: widget.headingRowHeight,
                     horizontalMargin: widget.horizontalMargin,
                     checkboxHorizontalMargin: widget.checkboxHorizontalMargin,

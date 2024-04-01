@@ -13,7 +13,7 @@ import 'package:hesab_ban/app/features/feature_search/presentation/screens/searc
 import 'package:iconsax/iconsax.dart';
 
 class AllCustomerScreen extends GetView<CustomerController> {
-  const AllCustomerScreen({Key? key}) : super(key: key);
+  const AllCustomerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,14 +12,13 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 import 'package:iconsax/iconsax.dart';
 
 class CreateCashScreen extends GetView<CashController> {
-  const CreateCashScreen({Key? key}) : super(key: key);
+  const CreateCashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         controller.resetCashScreen(context);
-        return true;
       },
       child: BaseWidget(
         titleText: 'ورود وجه نقد',

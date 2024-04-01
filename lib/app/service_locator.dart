@@ -173,7 +173,10 @@ setup() async {
   Get.put<SaveCustomerUseCase>(
       SaveCustomerUseCase(Get.find<CustomerRepository>()));
   Get.put<UpdateCustomerUseCase>(UpdateCustomerUseCase(
-      Get.find<CustomerRepository>(), Get.find<FactorRepository>()));
+    Get.find<CustomerRepository>(),
+    Get.find<FactorRepository>(),
+    Get.find<BillRepository>(),
+  ));
   Get.put<DeleteCustomerUseCase>(
       DeleteCustomerUseCase(Get.find<CustomerRepository>()));
   Get.put<GetCustomerByIdUseCase>(

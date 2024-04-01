@@ -11,7 +11,7 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 import 'package:iconsax/iconsax.dart';
 
 class HomeScreen extends GetView<HomeController> {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

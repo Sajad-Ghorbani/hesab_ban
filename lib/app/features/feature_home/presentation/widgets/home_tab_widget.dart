@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class HomeTabWidget extends StatelessWidget {
   const HomeTabWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
   final String title;
   final Color color;
   final VoidCallback onTap;

@@ -21,7 +21,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CustomerBalanceScreen extends StatelessWidget {
-  const CustomerBalanceScreen({Key? key}) : super(key: key);
+  const CustomerBalanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

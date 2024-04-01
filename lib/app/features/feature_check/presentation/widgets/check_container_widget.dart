@@ -14,10 +14,10 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CheckContainerWidget extends StatelessWidget {
   const CheckContainerWidget({
-    Key? key,
+    super.key,
     required this.typeOfCheck,
     required this.checkList,
-  }) : super(key: key);
+  });
   final TypeOfCheck typeOfCheck;
   final List<CheckEntity> checkList;
 

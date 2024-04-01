@@ -10,10 +10,10 @@ import 'package:share_plus/share_plus.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
-    Key? key,
+    super.key,
     required this.userName,
     // required this.lastSignedIn,
-  }) : super(key: key);
+  });
   final String userName;
 
   // final String lastSignedIn;

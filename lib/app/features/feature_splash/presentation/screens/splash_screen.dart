@@ -4,7 +4,7 @@ import 'package:hesab_ban/app/config/theme/app_colors.dart';
 import 'package:hesab_ban/app/features/feature_splash/presentation/controller/splash_controller.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -13,12 +13,11 @@ class ChangePasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<PasswordController>(
       builder: (controller) {
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          onPopInvoked: (_) async {
             if (controller.password.length < 4) {
               await Get.find<SettingController>().changeShowPassword(false);
             }
-            return true;
           },
           child: Scaffold(
             body: Column(

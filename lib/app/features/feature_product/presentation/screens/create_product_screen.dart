@@ -12,7 +12,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:hesab_ban/app/core/utils/extensions.dart';
 
 class CreateProductScreen extends GetView<ProductController> {
-  const CreateProductScreen({Key? key}) : super(key: key);
+  const CreateProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,9 @@ class CreateProductScreen extends GetView<ProductController> {
       controller.productCountController.text =
           product.count == null ? '' : product.count!.formatPrice();
     }
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) {
         controller.resetProductScreen(context);
-        return true;
       },
       child: BaseWidget(
         titleText: product == null ? 'کالای جدید' : 'ویرایش ${product.name}',

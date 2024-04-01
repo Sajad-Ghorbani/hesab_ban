@@ -17,7 +17,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AllProductScreen extends StatelessWidget {
-  const AllProductScreen({Key? key}) : super(key: key);
+  const AllProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +138,10 @@ class AllProductScreen extends StatelessWidget {
                                 highlighted: candidateData.isNotEmpty,
                               );
                             },
-                            onAccept: (ProductEntity data) {
-                              controller.moveProductToCategory(data, category);
+                            onAcceptWithDetails:
+                                (DragTargetDetails<ProductEntity> details) {
+                              controller.moveProductToCategory(
+                                  details.data, category);
                             },
                           ),
                         );

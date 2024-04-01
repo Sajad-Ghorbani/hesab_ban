@@ -6,7 +6,7 @@ import 'package:hesab_ban/app/core/widgets/base_widget.dart';
 import 'package:hesab_ban/app/features/feature_factor/presentation/widgets/select_factor_widget.dart';
 
 class SelectFactorScreen extends StatelessWidget {
-  const SelectFactorScreen({Key? key}) : super(key: key);
+  const SelectFactorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:hesab_ban/app/features/feature_product/presentation/controller/p
 import 'package:iconsax/iconsax.dart';
 
 class ManageUnitsScreen extends GetView<ProductController> {
-  const ManageUnitsScreen({Key? key}) : super(key: key);
+  const ManageUnitsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

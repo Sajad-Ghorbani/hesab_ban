@@ -8,8 +8,7 @@ import 'package:hesab_ban/app/features/feature_search/presentation/controller/se
 
 class SearchCustomerScreen extends StatelessWidget {
   const SearchCustomerScreen(this.selectCustomer,
-      {Key? key, required this.customers})
-      : super(key: key);
+      {super.key, required this.customers});
   final bool selectCustomer;
   final List<CustomerEntity> customers;
 

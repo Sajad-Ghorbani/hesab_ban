@@ -4,7 +4,7 @@ import 'package:hesab_ban/app/features/feature_factor/domain/entities/factor_row
 
 class FactorEntity {
   final int? id;
-  final CustomerEntity? customer;
+  CustomerEntity? customer;
   final DateTime? factorDate;
   final List<FactorRowEntity>? factorRows;
   final int? factorSum;

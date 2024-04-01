@@ -19,7 +19,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class FactorScreen extends StatefulWidget {
-  const FactorScreen({Key? key}) : super(key: key);
+  const FactorScreen({super.key});
 
   @override
   State<FactorScreen> createState() => _FactorScreenState();
@@ -54,18 +54,20 @@ class _FactorScreenState extends State<FactorScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<FactorController>(
       builder: (controller) {
-        return WillPopScope(
-          onWillPop: () async {
-            return controller.backFactorScreen(factor, _primitiveFactor);
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
+            }
+            controller.backFactorScreen(factor, _primitiveFactor);
           },
           child: BaseWidget(
             titleText: StaticMethods.setTypeFactorString(typeOfFactor),
             showLeading: true,
             appBarLeading: IconButton(
               onPressed: () {
-                if (controller.backFactorScreen(factor, _primitiveFactor)) {
-                  Get.back();
-                }
+                controller.backFactorScreen(factor, _primitiveFactor);
               },
               icon: const Icon(Iconsax.arrow_right_3),
               color: Colors.white,

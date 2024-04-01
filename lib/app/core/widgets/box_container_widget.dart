@@ -5,10 +5,10 @@ import 'package:hesab_ban/app/config/theme/app_colors.dart';
 
 class BoxContainerWidget extends StatelessWidget {
   const BoxContainerWidget({
-    Key? key,
+    super.key,
     this.backBlur = true,
     required this.child,
-  }) : super(key: key);
+  });
   final Widget child;
   final bool backBlur;
 

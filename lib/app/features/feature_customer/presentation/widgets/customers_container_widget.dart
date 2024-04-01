@@ -9,12 +9,12 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CustomersContainerWidget extends StatelessWidget {
   const CustomersContainerWidget({
-    Key? key,
+    super.key,
     required this.customerList,
     this.selectCustomer = false,
     this.fromSearch = false,
     this.type,
-  }) : super(key: key);
+  });
   final List<CustomerEntity> customerList;
   final bool selectCustomer;
   final bool fromSearch;

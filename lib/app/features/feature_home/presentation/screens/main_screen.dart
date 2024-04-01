@@ -13,15 +13,21 @@ import 'package:hesab_ban/app/features/feature_product/presentation/controller/p
 import 'package:iconsax/iconsax.dart';
 
 class MainScreen extends GetView<HomeController> {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GetBuilder<HomeController>(
       builder: (_) {
-        return WillPopScope(
-          onWillPop: controller.willPop,
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
+            }
+            controller.willPop();
+          },
           child: Scaffold(
             drawer: AppDrawer(
               userName: Get.find<SettingController>().storeName,

@@ -974,23 +974,22 @@ class FactorController extends GetxController {
     return true;
   }
 
-  bool backFactorScreen(
+  backFactorScreen(
       FactorEntity? factor, PrimitiveFactor? primitiveFactor) {
     if (listFactorRow.isEmpty) {
-      return true;
+      Get.back();
     } //
     else {
       if (factor != null) {
         if (!factorChanged(primitiveFactor!)) {
-          return true;
+          Get.back();
         }
       }
       StaticMethods.deleteDialog(
         content:
             'شما یک فاکتور دارید که آن را ذخیره نکرده اید. آیا میخواهید خارج شوید؟',
         onConfirm: () {
-          Get.back();
-          Get.back();
+          Get.back(closeOverlays: true);
           listFactorRow.clear();
           if (factor != null) {
             listFactorRow.addAll(primitiveFactor!.factorRows!);
@@ -998,7 +997,6 @@ class FactorController extends GetxController {
           update();
         },
       );
-      return false;
     }
   }
 

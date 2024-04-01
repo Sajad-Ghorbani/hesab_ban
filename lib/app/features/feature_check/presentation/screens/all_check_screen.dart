@@ -13,7 +13,7 @@ import 'package:hesab_ban/app/features/feature_search/presentation/screens/searc
 import 'package:iconsax/iconsax.dart';
 
 class AllCheckScreen extends GetView<CheckController> {
-  const AllCheckScreen({Key? key}) : super(key: key);
+  const AllCheckScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,14 +12,13 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 import 'package:iconsax/iconsax.dart';
 
 class CreateCheckScreen extends GetView<CheckController> {
-  const CreateCheckScreen({Key? key}) : super(key: key);
+  const CreateCheckScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         controller.resetCheckScreen(context);
-        return true;
       },
       child: BaseWidget(
         titleText: 'ورود چک',

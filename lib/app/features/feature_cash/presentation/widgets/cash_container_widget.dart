@@ -11,10 +11,10 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CashContainerWidget extends StatelessWidget {
   const CashContainerWidget({
-    Key? key,
+    super.key,
     required this.cashList,
     required this.type,
-  }) : super(key: key);
+  });
   final List<CashEntity> cashList;
   final String type;
 

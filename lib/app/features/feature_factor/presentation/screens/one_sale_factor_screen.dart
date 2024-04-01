@@ -19,7 +19,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class OneSaleFactorScreen extends StatefulWidget {
-  const OneSaleFactorScreen({Key? key}) : super(key: key);
+  const OneSaleFactorScreen({super.key});
 
   @override
   State<OneSaleFactorScreen> createState() => _OneSaleFactorScreenState();
@@ -54,18 +54,20 @@ class _OneSaleFactorScreenState extends State<OneSaleFactorScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<FactorController>(
       builder: (controller) {
-        return WillPopScope(
-          onWillPop: () async {
-            return controller.backFactorScreen(factor, _primitiveFactor);
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (didPop) {
+              return;
+            }
+            controller.backFactorScreen(factor, _primitiveFactor);
           },
           child: BaseWidget(
             titleText: 'فاکتور خرده فروشی',
             showLeading: true,
             appBarLeading: IconButton(
               onPressed: () {
-                if (controller.backFactorScreen(factor, _primitiveFactor)) {
-                  Get.back();
-                }
+                controller.backFactorScreen(factor, _primitiveFactor);
               },
               icon: const Icon(Iconsax.arrow_right_3),
               color: Colors.white,

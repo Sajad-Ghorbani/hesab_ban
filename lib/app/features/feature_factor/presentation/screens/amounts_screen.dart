@@ -10,7 +10,7 @@ import 'package:hesab_ban/app/features/feature_factor/presentation/widgets/check
 import 'package:iconsax/iconsax.dart';
 
 class AmountsScreen extends GetView<FactorController> {
-  const AmountsScreen({Key? key}) : super(key: key);
+  const AmountsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

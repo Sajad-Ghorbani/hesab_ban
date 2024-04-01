@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 
 class SelectFactorWidget extends StatelessWidget {
   const SelectFactorWidget({
-    Key? key,
+    super.key,
     required this.factorName,
     required this.detailList,
     required this.onFactorTap,
     required this.cardColor,
-  }) : super(key: key);
+  });
   final String factorName;
   final List<String> detailList;
   final VoidCallback onFactorTap;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SettingRowWidget extends StatelessWidget {
   const SettingRowWidget({
-    Key? key,
+    super.key,
     this.onTap,
     this.icon,
     this.title = '',
@@ -11,7 +11,7 @@ class SettingRowWidget extends StatelessWidget {
     this.iconWidget,
     this.verticalPadding = 10.0,
     this.isActive = true,
-  }) : super(key: key);
+  });
   final VoidCallback? onTap;
   final IconData? icon;
   final Widget? iconWidget;

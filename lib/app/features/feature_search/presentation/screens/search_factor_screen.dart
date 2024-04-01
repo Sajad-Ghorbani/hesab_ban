@@ -7,7 +7,7 @@ import 'package:hesab_ban/app/features/feature_factor/presentation/widgets/facto
 import 'package:hesab_ban/app/features/feature_search/presentation/controller/search_controller.dart';
 
 class SearchFactorScreen extends StatelessWidget {
-  const SearchFactorScreen({Key? key, required this.factors}) : super(key: key);
+  const SearchFactorScreen({super.key, required this.factors});
   final List<FactorEntity> factors;
 
   @override

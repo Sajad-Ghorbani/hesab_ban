@@ -5,13 +5,13 @@ import 'package:hesab_ban/app/core/utils/static_methods.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
-    Key? key,
+    super.key,
     this.controller,
     this.keyboardType,
     this.inputFormatters,
     this.maxLines = 3,
     this.focusNode,
-  }) : super(key: key);
+  });
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;

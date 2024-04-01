@@ -11,7 +11,7 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CheckDetails extends StatelessWidget {
-  const CheckDetails(this.check, {Key? key}) : super(key: key);
+  const CheckDetails(this.check, {super.key});
   final CheckEntity check;
 
   @override

@@ -10,7 +10,7 @@ import 'package:hesab_ban/app/features/feature_setting/presentation/controller/s
 import 'package:reorderables/reorderables.dart';
 
 class FactorContainerWidget extends GetView<FactorController> {
-  const FactorContainerWidget(this.typeOfFactor, {Key? key}) : super(key: key);
+  const FactorContainerWidget(this.typeOfFactor, {super.key});
   final String typeOfFactor;
 
   @override

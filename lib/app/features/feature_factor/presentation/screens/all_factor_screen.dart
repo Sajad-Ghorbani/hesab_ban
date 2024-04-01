@@ -14,12 +14,11 @@ import 'package:hesab_ban/app/features/feature_search/presentation/screens/searc
 import 'package:iconsax/iconsax.dart';
 
 class AllFactorScreen extends GetView<FactorController> {
-  const AllFactorScreen({Key? key}) : super(key: key);
+  const AllFactorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final String typeOfFactor = Get.arguments;
-    print(typeOfFactor);
     return GetBuilder<FactorController>(
       initState: (state) => controller.initializeFactors(typeOfFactor),
       builder: (_) {

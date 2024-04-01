@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchCheckScreen extends StatelessWidget {
-  const SearchCheckScreen({Key? key, required this.typeOfCheck})
-      : super(key: key);
+  const SearchCheckScreen({super.key, required this.typeOfCheck});
   final TypeOfCheck typeOfCheck;
 
   @override
