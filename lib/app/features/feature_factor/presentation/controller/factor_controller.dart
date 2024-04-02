@@ -983,6 +983,7 @@ class FactorController extends GetxController {
       if (factor != null) {
         if (!factorChanged(primitiveFactor!)) {
           Get.back();
+          return;
         }
       }
       StaticMethods.deleteDialog(
