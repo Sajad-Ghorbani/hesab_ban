@@ -93,6 +93,9 @@ class StaticMethods {
     Color? color,
     Duration duration = const Duration(seconds: 3),
   }) {
+    if (Get.isSnackbarOpen) {
+      Get.closeAllSnackbars();
+    }
     Get.snackbar(
       '',
       '',
