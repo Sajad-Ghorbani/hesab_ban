@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hesab_ban/app/config/theme/app_colors.dart';
 import 'package:hesab_ban/app/core/params/cash_params.dart';
@@ -12,8 +17,10 @@ import 'package:hesab_ban/app/features/feature_cash/domain/use_cases/save_cash_u
 import 'package:hesab_ban/app/features/feature_cash/domain/use_cases/update_cash_use_case.dart';
 import 'package:hesab_ban/app/features/feature_customer/domain/entities/customer_entity.dart';
 import 'package:hesab_ban/app/features/feature_customer/presentation/controller/customer_controller.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CashController extends GetxController {
   final SaveCashUseCase _saveCashUseCase;
@@ -45,6 +52,9 @@ class CashController extends GetxController {
   List<DropdownMenuItem<String>> customerLists = [];
   List<CustomerEntity> customers = [];
   List<CashEntity> cashes = [];
+
+  final GlobalKey globalKey = GlobalKey();
+  File cashImage = File('-1');
 
   @override
   onInit() {
@@ -286,5 +296,41 @@ class CashController extends GetxController {
     cashCustomer = null;
     cashDateLabel = '-1';
     update();
+  }
+
+  void shareCash() async {
+    try {
+      final boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final image = await boundary.toImage();
+      final byteData = await image.toByteData(format: ImageByteFormat.png);
+      final pngBytes = byteData!.buffer.asUint8List();
+      final newDirectory = await getTemporaryDirectory();
+      final dateFormatted = DateTime.now()
+          .toPersianDate(
+            digitType: NumStrLanguage.English,
+            showTime: true,
+            showTimeSecond: true,
+          )
+          .replaceAll('/', '')
+          .replaceAll(':', '')
+          .removeAllWhitespace;
+      File imgFile = File('${newDirectory.path}/$dateFormatted.png');
+      imgFile.writeAsBytes(pngBytes).then((value) async {
+        cashImage = imgFile;
+        update();
+        Share.shareXFiles([XFile(cashImage.path)]).then((value) async {
+          await imgFile.delete();
+        });
+      }).catchError((onError) {
+        if (kDebugMode) {
+          print(onError);
+        }
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 }
