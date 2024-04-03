@@ -356,12 +356,14 @@ class ProductController extends GetxController {
           color: kLightGreenColor,
         );
         for (var value in products) {
-          updateProduct(
-            ProductParams(
-              id: value.id,
-              category: response.data,
-            ),
-          );
+          if (value.category!.id == category.id) {
+            updateProduct(
+              ProductParams(
+                id: value.id,
+                category: response.data,
+              ),
+            );
+          }
         }
         getCategories();
         getProducts();
