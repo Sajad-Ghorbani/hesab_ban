@@ -3,7 +3,7 @@ description: The accounting Hesab Ban application is suitable for people who do 
 
 publish_to: 'none'
 
-version: 2.2.5+1037
+version: 2.2.6+1038
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
